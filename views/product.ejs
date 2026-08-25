@@ -1,181 +1,317 @@
-<%- include('partials/header') %> <!-- अगर आपका हेडर है तो -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Product - App View</title>
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Three.js for 3D View -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 
-<style>
-  body {
-    background-color: #f1f3f6; /* Flipkart jaisa background */
-    font-family: Arial, sans-serif;
-  }
-  .product-container {
-    display: flex;
-    flex-wrap: wrap;
-    max-width: 1200px;
-    margin: 20px auto;
-    background: #fff;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-  }
-  .left-column {
-    flex: 1;
-    min-width: 300px;
-    padding: 20px;
-    border-right: 1px solid #f0f0f0;
-  }
-  .right-column {
-    flex: 1.5;
-    min-width: 300px;
-    padding: 20px;
-  }
-  
-  /* Media Viewer Styling */
-  .media-viewer {
-    height: 400px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border: 1px solid #e0e0e0;
-    border-radius: 8px;
-    margin-bottom: 15px;
-    background: #fafafa;
-    overflow: hidden;
-  }
-  .media-viewer img, .media-viewer video {
-    max-width: 100%;
-    max-height: 100%;
-  }
-  
-  /* Buttons */
-  .media-tabs {
-    display: flex;
-    gap: 10px;
-    justify-content: center;
-  }
-  .media-tabs button {
-    padding: 10px 15px;
-    border: 2px solid #2874f0;
-    background: white;
-    color: #2874f0;
-    font-weight: bold;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: 0.3s;
-  }
-  .media-tabs button:hover, .media-tabs button.active {
-    background: #2874f0;
-    color: white;
-  }
-  
-  /* Product Details */
-  .product-title {
-    font-size: 24px;
-    font-weight: 500;
-    color: #212121;
-  }
-  .product-price {
-    font-size: 28px;
-    font-weight: bold;
-    color: #000;
-    margin: 15px 0;
-  }
-  .product-price span {
-    font-size: 16px;
-    color: #388e3c; /* Green offer text */
-    margin-left: 10px;
-  }
-  .buy-buttons {
-    display: flex;
-    gap: 15px;
-    margin-top: 20px;
-  }
-  .btn-cart {
-    background: #ff9f00;
-    color: white;
-    padding: 15px 30px;
-    border: none;
-    font-size: 16px;
-    font-weight: bold;
-    border-radius: 4px;
-    cursor: pointer;
-    flex: 1;
-  }
-  .btn-buy {
-    background: #fb641b;
-    color: white;
-    padding: 15px 30px;
-    border: none;
-    font-size: 16px;
-    font-weight: bold;
-    border-radius: 4px;
-    cursor: pointer;
-    flex: 1;
-  }
-</style>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
-<div class="product-container">
-  <!-- Left Side: Image/3D/Video -->
-  <div class="left-column">
-    <div class="media-viewer" id="media-viewer">
-      <!-- Default Image -->
-      <img id="view-image" src="https://picsum.photos/400/500" alt="Product Image">
-      
-      <!-- 3D Canvas (Hidden by default) -->
-      <canvas id="view-3d" style="display: none; width: 100%; height: 100%;"></canvas>
-      
-      <!-- Video (Hidden by default) -->
-      <video id="view-video" controls style="display: none;">
-        <source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4">
-        Your browser does not support HTML video.
-      </video>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; -webkit-tap-highlight-color: transparent; }
+
+        body {
+            background-color: #f4f5f7; /* Background around the app */
+            display: flex;
+            justify-content: center;
+        }
+
+        /* App Container to simulate mobile screen on desktop */
+        .app-container {
+            width: 100%;
+            max-width: 414px; /* iPhone Pro Max width */
+            background: #ffffff;
+            min-height: 100vh;
+            position: relative;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+            padding-bottom: 90px; /* Space for bottom bar */
+        }
+
+        /* Top Header */
+        .app-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+            background: #ffffff;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+        .app-header i { font-size: 20px; color: #1a1f36; cursor: pointer; }
+        .header-icons { display: flex; gap: 20px; position: relative; }
+        .cart-badge {
+            position: absolute;
+            top: -5px; right: -8px;
+            background: #ff4757; color: white;
+            font-size: 10px; font-weight: bold;
+            padding: 2px 5px; border-radius: 10px;
+        }
+
+        /* Product Media Section */
+        .media-section {
+            display: flex;
+            padding: 0 20px;
+            gap: 15px;
+            height: 320px;
+        }
+
+        /* Thumbnails (Left side like the image) */
+        .thumbnails {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            width: 60px;
+        }
+        .thumb {
+            width: 60px; height: 60px;
+            border-radius: 10px;
+            border: 2px solid transparent;
+            cursor: pointer;
+            overflow: hidden;
+            display: flex; justify-content: center; align-items: center;
+            background: #f8f9fa;
+        }
+        .thumb.active { border-color: #2f9c8f; }
+        .thumb img { width: 100%; height: 100%; object-fit: cover; }
+        .thumb-icon { font-size: 20px; color: #2f9c8f; }
+
+        /* Main Media Display */
+        .main-media {
+            flex: 1;
+            background: #f8f9fa;
+            border-radius: 15px;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+        .main-media img, .main-media video {
+            width: 100%; height: 100%;
+            object-fit: cover;
+        }
+        #view-3d { width: 100%; height: 100%; display: none; }
+        #view-video { display: none; }
+
+        /* Product Info */
+        .product-info { padding: 20px; }
+        .store-name { color: #8a8d93; font-size: 13px; margin-bottom: 8px; display: flex; align-items: center; gap: 5px; }
+        .product-title { font-size: 20px; font-weight: 700; color: #1a1f36; line-height: 1.4; margin-bottom: 12px; }
+        
+        /* Ratings Row */
+        .rating-row {
+            display: flex; align-items: center; gap: 15px;
+            font-size: 13px; color: #8a8d93;
+            margin-bottom: 25px;
+        }
+        .rating-row span { display: flex; align-items: center; gap: 5px; }
+        .star { color: #f39c12; }
+
+        /* Tabs */
+        .tabs {
+            display: flex; gap: 30px;
+            border-bottom: 1px solid #eee;
+            margin-bottom: 20px;
+        }
+        .tab {
+            padding-bottom: 10px;
+            font-size: 15px; font-weight: 600;
+            color: #8a8d93; cursor: pointer;
+            position: relative;
+        }
+        .tab.active { color: #1a1f36; }
+        .tab.active::after {
+            content: ''; position: absolute;
+            bottom: -1px; left: 0; width: 100%;
+            height: 2px; background: #2f9c8f;
+        }
+
+        /* Details */
+        .specs {
+            display: flex; gap: 40px;
+            font-size: 14px; margin-bottom: 15px;
+        }
+        .spec-item { color: #8a8d93; }
+        .spec-value { color: #1a1f36; font-weight: 600; margin-left: 5px; }
+
+        /* Bottom Action Bar */
+        .bottom-bar {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            max-width: 414px;
+            background: #ffffff;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 1px solid #eee;
+            z-index: 100;
+        }
+        .price-area p { font-size: 12px; color: #8a8d93; margin-bottom: 2px; }
+        .price-area h2 { font-size: 24px; color: #2f9c8f; font-weight: 700; }
+        
+        .action-buttons { display: flex; gap: 10px; align-items: center; }
+        .qty-btn {
+            background: #e8f5f3; color: #2f9c8f;
+            border: none; padding: 12px 15px;
+            border-radius: 10px; font-weight: 600; font-size: 16px;
+            display: flex; align-items: center; gap: 8px;
+        }
+        .buy-btn {
+            background: #1a1f36; color: #ffffff;
+            border: none; padding: 14px 30px;
+            border-radius: 10px; font-weight: 600; font-size: 16px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="app-container">
+        <!-- Header -->
+        <div class="app-header">
+            <i class="fa-solid fa-chevron-left" onclick="window.history.back()"></i>
+            <div class="header-icons">
+                <i class="fa-regular fa-heart"></i>
+                <i class="fa-solid fa-share-nodes"></i>
+                <div style="position: relative;">
+                    <i class="fa-solid fa-bag-shopping"></i>
+                    <span class="cart-badge">2</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Media Section -->
+        <div class="media-section">
+            <!-- Thumbnails for Switching -->
+            <div class="thumbnails">
+                <div class="thumb active" onclick="switchMedia('image', this)">
+                    <img src="https://picsum.photos/400/500" alt="Thumb 1">
+                </div>
+                <div class="thumb" onclick="switchMedia('3d', this)">
+                    <i class="fa-solid fa-cube thumb-icon"></i>
+                </div>
+                <div class="thumb" onclick="switchMedia('video', this)">
+                    <i class="fa-solid fa-play thumb-icon"></i>
+                </div>
+            </div>
+
+            <!-- Main Display -->
+            <div class="main-media" id="media-container">
+                <img id="view-image" src="https://picsum.photos/400/500" alt="Product Image">
+                <div id="view-3d"></div>
+                <video id="view-video" controls>
+                    <source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4">
+                </video>
+            </div>
+        </div>
+
+        <!-- Product Details -->
+        <div class="product-info">
+            <div class="store-name">
+                <i class="fa-solid fa-store"></i> Webglut Store
+            </div>
+            <h1 class="product-title">Essentials Men's Short-Sleeve Crewneck T-Shirt</h1>
+            
+            <div class="rating-row">
+                <span><i class="fa-solid fa-star star"></i> 4.9 Ratings</span>
+                <span>2.3k+ Reviews</span>
+                <span>2.1k+ Sold</span>
+            </div>
+
+            <div class="tabs">
+                <div class="tab active">About Item</div>
+                <div class="tab">Reviews</div>
+            </div>
+
+            <div class="specs">
+                <div class="spec-item">Brand: <span class="spec-value">ChArmkpR</span></div>
+                <div class="spec-item">Color: <span class="spec-value">Apricot</span></div>
+            </div>
+            
+            <p style="font-size: 14px; color: #8a8d93; line-height: 1.6; margin-top: 10px;">
+                Premium quality cotton blend fabric. Try our interactive 3D view to see the actual fit and explore the design from all angles.
+            </p>
+        </div>
+
+        <!-- Bottom Sticky Bar -->
+        <div class="bottom-bar">
+            <div class="price-area">
+                <p>Total Price</p>
+                <h2>$18.00</h2>
+            </div>
+            <div class="action-buttons">
+                <button class="qty-btn"><i class="fa-solid fa-bag-shopping"></i> 1</button>
+                <button class="buy-btn">Buy Now</button>
+            </div>
+        </div>
     </div>
 
-    <!-- Tabs to switch views -->
-    <div class="media-tabs">
-      <button class="active" onclick="switchMedia('image', this)">📸 Image</button>
-      <button onclick="switchMedia('3d', this)">🧊 3D View</button>
-      <button onclick="switchMedia('video', this)">🎥 Video</button>
-    </div>
-  </div>
+    <!-- Media Switcher & 3D Script -->
+    <script>
+        // Media Switcher Logic
+        function switchMedia(type, element) {
+            document.getElementById('view-image').style.display = 'none';
+            document.getElementById('view-3d').style.display = 'none';
+            document.getElementById('view-video').style.display = 'none';
+            
+            let thumbs = document.querySelectorAll('.thumb');
+            thumbs.forEach(t => t.classList.remove('active'));
+            element.classList.add('active');
 
-  <!-- Right Side: Details -->
-  <div class="right-column">
-    <h1 class="product-title">Awesome 3D T-Shirt - Slim Fit</h1>
-    <p style="color: #878787; font-weight: bold;">⭐ 4.5 (2,345 Ratings)</p>
-    
-    <div class="product-price">
-      ₹499 <span>75% off</span>
-    </div>
-    
-    <p style="color: #212121; font-size: 14px; line-height: 1.6;">
-      यह एक प्रीमियम क्वालिटी का प्रोडक्ट है। आप इसे 3D में घुमा कर देख सकते हैं और वीडियो में इसकी असली फिटिंग चेक कर सकते हैं।
-    </p>
+            document.getElementById('view-' + type).style.display = type === '3d' ? 'block' : 'block';
 
-    <div class="buy-buttons">
-      <button class="btn-cart">🛒 ADD TO CART</button>
-      <button class="btn-buy">⚡ BUY NOW</button>
-    </div>
-  </div>
-</div>
+            if(type !== 'video') {
+                document.getElementById('view-video').pause();
+            }
+            if(type === '3d' && !renderer) {
+                init3D(); // Initialize 3D only when clicked for performance
+            }
+        }
 
-<script>
-  function switchMedia(type, btn) {
-    // Hide everything
-    document.getElementById('view-image').style.display = 'none';
-    document.getElementById('view-3d').style.display = 'none';
-    document.getElementById('view-video').style.display = 'none';
+        // Three.js 3D Initialization
+        let renderer, scene, camera, mesh;
+        function init3D() {
+            const container = document.getElementById('view-3d');
+            scene = new THREE.Scene();
+            scene.background = new THREE.Color('#f8f9fa');
+            
+            camera = new THREE.PerspectiveCamera(50, container.clientWidth / container.clientHeight, 0.1, 1000);
+            camera.position.z = 4;
 
-    // Remove active class from all buttons
-    let buttons = document.querySelectorAll('.media-tabs button');
-    buttons.forEach(b => b.classList.remove('active'));
+            renderer = new THREE.WebGLRenderer({ antialias: true });
+            renderer.setSize(container.clientWidth, container.clientHeight);
+            container.appendChild(renderer.domElement);
 
-    // Show selected and make button active
-    document.getElementById('view-' + type).style.display = 'block';
-    btn.classList.add('active');
+            const ambientLight = new THREE.AmbientLight(0xffffff, 0.8);
+            scene.add(ambientLight);
+            const dirLight = new THREE.DirectionalLight(0xffffff, 0.6);
+            dirLight.position.set(5, 5, 5);
+            scene.add(dirLight);
 
-    // Pause video if switching away
-    if(type !== 'video') {
-      document.getElementById('view-video').pause();
-    }
-  }
-</script>
+            // Dummy 3D Object (Replace with actual GLTF loader later)
+            const geometry = new THREE.TorusKnotGeometry(0.8, 0.3, 100, 16);
+            const material = new THREE.MeshStandardMaterial({ color: 0x2f9c8f, roughness: 0.2, metalness: 0.5 });
+            mesh = new THREE.Mesh(geometry, material);
+            scene.add(mesh);
 
-<%- include('partials/footer') %> <!-- अगर आपका फूटर है तो -->
+            animate();
+        }
+
+        function animate() {
+            requestAnimationFrame(animate);
+            if(mesh) {
+                mesh.rotation.y += 0.01;
+                mesh.rotation.x += 0.005;
+            }
+            renderer.render(scene, camera);
+        }
+    </script>
+</body>
+</html>
