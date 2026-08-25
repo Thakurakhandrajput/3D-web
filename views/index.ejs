@@ -3,296 +3,182 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Webglut - Immersive 3D Experience</title>
-    
-    <!-- Three.js for 3D Background -->
+    <title>Webglut - Minimal 3D Store</title>
+    <!-- Three.js -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <!-- GSAP for Smooth Animations -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
 
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Syncopate:wght@400;700&family=Inter:wght@300;400;600&display=swap');
+        /* Importing elegant fonts like the video */
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Inter:wght@300;400;500&display=swap');
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+        :root {
+            --bg-color: #F4F1EC; /* Warm beige background */
+            --text-color: #2D2B2A; /* Dark charcoal text */
+            --accent-color: #D36B4A; /* Terracotta / Rust accent */
         }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
-            background-color: #050505;
-            color: #ffffff;
+            background-color: var(--bg-color);
+            color: var(--text-color);
             font-family: 'Inter', sans-serif;
             overflow-x: hidden;
-            /* Smooth scrolling */
-            scroll-behavior: smooth;
-        }
-
-        /* Fixed 3D Background */
-        #webgl-container {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            z-index: -1;
-            background: radial-gradient(circle at center, #1a1a2e 0%, #050505 100%);
         }
 
         /* Navbar */
         nav {
-            position: fixed;
-            top: 0;
-            width: 100%;
-            padding: 30px 50px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            z-index: 100;
-            mix-blend-mode: difference;
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 25px 50px; position: absolute; width: 100%; z-index: 10;
         }
-        .logo {
-            font-family: 'Syncopate', sans-serif;
-            font-size: 24px;
-            font-weight: 700;
-            letter-spacing: 2px;
-        }
-        .nav-links {
-            display: flex;
-            gap: 40px;
-        }
-        .nav-links a {
-            color: white;
-            text-decoration: none;
-            font-size: 14px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            font-weight: 600;
-        }
-
-        /* Content Sections */
-        .content {
-            position: relative;
-            z-index: 10;
-        }
-
-        section {
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            padding: 0 10%;
-        }
+        .logo { display: flex; align-items: center; gap: 8px; font-weight: 600; font-size: 18px; }
+        .logo-icon { width: 16px; height: 16px; background: var(--accent-color); border-radius: 3px; }
+        .nav-links { display: flex; gap: 40px; font-size: 13px; font-weight: 500; }
+        .nav-links a { text-decoration: none; color: var(--text-color); }
+        .nav-icons { display: flex; gap: 20px; font-size: 16px; cursor: pointer; }
 
         /* Hero Section */
         .hero {
-            align-items: center;
-            text-align: center;
-        }
-        .hero h1 {
-            font-family: 'Syncopate', sans-serif;
-            font-size: 5vw;
-            line-height: 1.1;
-            text-transform: uppercase;
-            letter-spacing: -2px;
-            margin-bottom: 20px;
-            opacity: 0;
-            transform: translateY(50px);
-        }
-        .hero p {
-            font-size: 1.2rem;
-            color: #a0a0a0;
-            max-width: 600px;
-            margin-bottom: 40px;
-            opacity: 0;
-        }
-        .explore-btn {
-            padding: 15px 40px;
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            background: transparent;
-            color: white;
-            font-family: 'Syncopate', sans-serif;
-            text-transform: uppercase;
-            font-size: 12px;
-            letter-spacing: 2px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            opacity: 0;
-            backdrop-filter: blur(5px);
-        }
-        .explore-btn:hover {
-            background: white;
-            color: black;
+            min-height: 100vh; display: flex; flex-direction: column;
+            justify-content: center; align-items: center; position: relative;
+            padding-top: 80px;
         }
 
-        /* Second Section */
-        .story {
-            align-items: flex-start;
+        /* The Arch (3D Container) mimicking the video */
+        .arch-container {
+            width: 340px; height: 480px;
+            border-radius: 170px 170px 0 0; /* Creates the beautiful Arch shape */
+            background: #E8E4DB;
+            position: relative; overflow: hidden;
+            box-shadow: inset 0 20px 50px rgba(0,0,0,0.03), 0 20px 40px rgba(0,0,0,0.05);
+            opacity: 0; transform: scale(0.95);
         }
-        .story h2 {
-            font-family: 'Syncopate', sans-serif;
-            font-size: 4vw;
-            margin-bottom: 30px;
-            max-width: 800px;
+        #canvas-container {
+            width: 100%; height: 100%; position: absolute; top: 0; left: 0; outline: none;
         }
-        .story p {
-            font-size: 1.2rem;
-            color: #a0a0a0;
-            max-width: 500px;
-            line-height: 1.8;
+
+        /* Text below the arch */
+        .hero-text {
+            text-align: center; margin-top: 40px; z-index: 2;
+            opacity: 0; transform: translateY(20px);
+        }
+        .hero-text h1 {
+            font-family: 'Playfair Display', serif; font-size: 3rem;
+            font-weight: 400; color: var(--text-color); line-height: 1.2;
+        }
+
+        .explore-btn {
+            margin-top: 25px;
+            background: var(--accent-color); color: white;
+            border: none; padding: 12px 30px; border-radius: 30px;
+            font-family: 'Inter', sans-serif; font-size: 13px; font-weight: 500;
+            cursor: pointer; opacity: 0; transition: 0.3s;
+        }
+        .explore-btn:hover { background: #b5573a; }
+
+        /* Mobile responsiveness */
+        @media (max-width: 768px) {
+            nav { padding: 20px; }
+            .nav-links { display: none; } /* Hide on mobile like an app */
+            .arch-container { width: 280px; height: 400px; border-radius: 140px 140px 0 0; }
+            .hero-text h1 { font-size: 2.2rem; }
         }
     </style>
 </head>
 <body>
 
-    <!-- 3D Canvas Background -->
-    <div id="webgl-container"></div>
-
     <nav>
-        <div class="logo">WEBGLUT</div>
+        <div class="logo"><div class="logo-icon"></div> Webglut</div>
         <div class="nav-links">
-            <a href="/shop">Collection</a>
+            <a href="/">Home</a>
             <a href="#">About</a>
+            <a href="/shop">Products</a>
+            <a href="#">Collections</a>
             <a href="#">Contact</a>
+        </div>
+        <div class="nav-icons">
+            <span>🔍</span> <span>🛒</span> <span>👤</span>
         </div>
     </nav>
 
-    <div class="content">
-        <!-- Hero Section -->
-        <section class="hero">
-            <h1 class="anim-title">Fashion Meets<br>Architecture</h1>
-            <p class="anim-sub">Experience clothing in a spatial dimension. Scroll down to dive into the storm.</p>
-            <button class="explore-btn anim-btn" onclick="window.location.href='/shop'">Enter The Store</button>
-        </section>
-
-        <!-- Story Section -->
-        <section class="story">
-            <h2>Depth is a kind of Index.</h2>
-            <p>Every garment is a weather event. Position records force. Fabric records time. Discover our 3D ready collection.</p>
-        </section>
+    <section class="hero">
+        <!-- The elegant Arch containing the 3D model -->
+        <div class="arch-container" id="arch">
+            <div id="canvas-container"></div>
+        </div>
         
-        <!-- More empty space to allow scrolling -->
-        <section style="height: 50vh; justify-content: flex-end; padding-bottom: 50px; align-items: center;">
-            <p style="color: #666; font-family: 'Syncopate'; font-size: 12px; letter-spacing: 2px;">© 2026 WEBGLUT</p>
-        </section>
-    </div>
+        <div class="hero-text" id="text-block">
+            <h1>Turn Your House Into<br>a Story Worth Living</h1>
+            <button class="explore-btn" id="btn" onclick="window.location.href='/shop'">Explore Collection</button>
+        </div>
+    </section>
 
     <script>
-        // --- GSAP TEXT ANIMATIONS ---
-        gsap.to(".anim-title", { opacity: 1, y: 0, duration: 1.5, ease: "power4.out", delay: 0.5 });
-        gsap.to(".anim-sub", { opacity: 1, duration: 1.5, delay: 1 });
-        gsap.to(".anim-btn", { opacity: 1, duration: 1.5, delay: 1.2 });
+        // --- GSAP Smooth Entry Animations ---
+        gsap.to("#arch", { opacity: 1, scale: 1, duration: 1.5, ease: "power3.out", delay: 0.2 });
+        gsap.to("#text-block", { opacity: 1, y: 0, duration: 1.2, ease: "power3.out", delay: 0.6 });
+        gsap.to("#btn", { opacity: 1, duration: 1, ease: "power3.out", delay: 1 });
 
-        // --- THREE.JS IMMERSIVE CINEMATIC SETUP ---
-        const container = document.getElementById('webgl-container');
+        // --- Three.js Setup (Elegant Ceramic Look) ---
+        const container = document.getElementById('canvas-container');
         const scene = new THREE.Scene();
-        // Adding dense fog for that moody, atmospheric look
-        scene.fog = new THREE.FogExp2(0x050505, 0.04);
+        scene.background = new THREE.Color('#E8E4DB'); // Matches arch interior
 
-        const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
-        camera.position.z = 15;
+        const camera = new THREE.PerspectiveCamera(45, container.clientWidth / container.clientHeight, 0.1, 100);
+        camera.position.z = 5;
 
-        const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-        renderer.setSize(window.innerWidth, window.innerHeight);
+        const renderer = new THREE.WebGLRenderer({ antialias: true });
+        renderer.setSize(container.clientWidth, container.clientHeight);
         renderer.setPixelRatio(window.devicePixelRatio);
         container.appendChild(renderer.domElement);
 
-        // Premium Lighting
-        const ambientLight = new THREE.AmbientLight(0xffffff, 0.2);
+        // Soft, studio-style lighting
+        const ambientLight = new THREE.AmbientLight(0xffffff, 0.7);
         scene.add(ambientLight);
 
-        const spotLight = new THREE.SpotLight(0xffffff, 5);
-        spotLight.position.set(10, 20, 10);
-        spotLight.angle = Math.PI / 4;
-        spotLight.penumbra = 0.5;
-        scene.add(spotLight);
+        const dirLight = new THREE.DirectionalLight(0xfffaed, 0.8);
+        dirLight.position.set(5, 5, 5);
+        scene.add(dirLight);
 
-        const blueLight = new THREE.PointLight(0x4a90e2, 3, 50);
-        blueLight.position.set(-10, -10, 5);
-        scene.add(blueLight);
-
-        // Abstract Floating Particles / Architecture
-        const particlesGeometry = new THREE.BufferGeometry();
-        const particlesCount = 2500;
-        const posArray = new Float32Array(particlesCount * 3);
-
-        for(let i = 0; i < particlesCount * 3; i++) {
-            posArray[i] = (Math.random() - 0.5) * 40;
-        }
-        particlesGeometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
-
-        const material = new THREE.PointsMaterial({
-            size: 0.05,
-            color: 0xffffff,
-            transparent: true,
-            opacity: 0.6,
-            blending: THREE.AdditiveBlending
+        // Abstract elegant shape (Torus) with Terracotta color
+        const geometry = new THREE.TorusGeometry(1, 0.4, 64, 100);
+        const material = new THREE.MeshStandardMaterial({ 
+            color: 0xD36B4A, 
+            roughness: 0.3, 
+            metalness: 0.1 
         });
+        const mesh = new THREE.Mesh(geometry, material);
+        scene.add(mesh);
 
-        const particlesMesh = new THREE.Points(particlesGeometry, material);
-        scene.add(particlesMesh);
-
-        // Huge Abstract Object (Representing the storm/depth)
-        const geometry = new THREE.IcosahedronGeometry(6, 1);
-        const wireframeMaterial = new THREE.MeshStandardMaterial({
-            color: 0x222222,
-            wireframe: true,
-            transparent: true,
-            opacity: 0.3
-        });
-        const mainObject = new THREE.Mesh(geometry, wireframeMaterial);
-        scene.add(mainObject);
-
-        // Mouse Parallax Effect
-        let mouseX = 0;
-        let mouseY = 0;
-        let targetX = 0;
-        let targetY = 0;
-        const windowHalfX = window.innerWidth / 2;
-        const windowHalfY = window.innerHeight / 2;
-
+        // Mouse interaction for slight 3D movement
+        let mouseX = 0; let mouseY = 0;
         document.addEventListener('mousemove', (event) => {
-            mouseX = (event.clientX - windowHalfX);
-            mouseY = (event.clientY - windowHalfY);
+            mouseX = (event.clientX / window.innerWidth) * 2 - 1;
+            mouseY = -(event.clientY / window.innerHeight) * 2 + 1;
         });
 
-        // Scroll Effect
-        let scrollY = window.scrollY;
-        window.addEventListener('scroll', () => {
-            scrollY = window.scrollY;
-        });
-
-        // Animation Loop
-        const clock = new THREE.Clock();
         function animate() {
             requestAnimationFrame(animate);
-            const elapsedTime = clock.getElapsedTime();
-
-            targetX = mouseX * 0.001;
-            targetY = mouseY * 0.001;
-
-            // Smooth parallax based on mouse
-            particlesMesh.rotation.y += 0.05 * (targetX - particlesMesh.rotation.y);
-            particlesMesh.rotation.x += 0.05 * (targetY - particlesMesh.rotation.x);
+            // Smooth auto-rotation
+            mesh.rotation.y += 0.005;
+            mesh.rotation.x += 0.002;
             
-            // Slow continuous rotation
-            mainObject.rotation.y += 0.002;
-            mainObject.rotation.x += 0.001;
-
-            // Camera movement tied to scroll (gives the cinematic depth feel)
-            camera.position.y = -scrollY * 0.01;
-            mainObject.position.y = scrollY * 0.005; 
-            mainObject.rotation.z = scrollY * 0.002;
+            // Interactive mouse follow
+            mesh.position.x += (mouseX * 0.5 - mesh.position.x) * 0.05;
+            mesh.position.y += (mouseY * 0.5 - mesh.position.y) * 0.05;
 
             renderer.render(scene, camera);
         }
         animate();
 
-        // Responsive handling
         window.addEventListener('resize', () => {
-            camera.aspect = window.innerWidth / window.innerHeight;
-            camera.updateProjectionMatrix();
-            renderer.setSize(window.innerWidth, window.innerHeight);
+            if(container) {
+                camera.aspect = container.clientWidth / container.clientHeight;
+                camera.updateProjectionMatrix();
+                renderer.setSize(container.clientWidth, container.clientHeight);
+            }
         });
     </script>
 </body>
