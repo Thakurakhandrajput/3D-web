@@ -2,310 +2,342 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Explore Shop - 3D Collection</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Shop - App View</title>
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
     <style>
-        :root {
-            --fk-blue: #2874F0;
-            --meesho-pink: #F43397;
-            --bg-gray: #F1F3F6;
-            --card-border: #E5E7EB;
-            --text-dark: #1E293B;
-            --text-muted: #64748B;
-            --rating-green: #388E3C;
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; -webkit-tap-highlight-color: transparent; }
+
+        body {
+            background-color: #f4f5f7;
+            display: flex;
+            justify-content: center;
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-        body { background-color: var(--bg-gray); color: var(--text-dark); }
-
-        /* Navbar */
-        header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 15px 40px;
+        /* App Container */
+        .app-container {
+            width: 100%;
+            max-width: 414px;
             background: #ffffff;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            min-height: 100vh;
+            position: relative;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+            padding-bottom: 70px;
+        }
+
+        /* Top Header with Search */
+        .app-header {
+            padding: 15px 20px;
+            background: #ffffff;
             position: sticky;
             top: 0;
-            z-index: 100;
+            z-index: 10;
         }
-        .logo { font-size: 24px; font-weight: 800; color: var(--fk-blue); text-decoration: none; }
-        .logo span { color: var(--meesho-pink); }
-        .nav-links a { margin-left: 20px; text-decoration: none; color: var(--text-dark); font-weight: 600; font-size: 15px; }
-
-        /* Top Filter / Category Bar */
-        .category-bar {
-            background: #ffffff;
-            padding: 12px 40px;
+        .search-row {
             display: flex;
-            gap: 12px;
-            border-bottom: 1px solid var(--card-border);
-            overflow-x: auto;
+            align-items: center;
+            justify-content: space-between;
+            gap: 15px;
         }
-        .filter-chip {
-            padding: 8px 18px;
-            border-radius: 20px;
-            background: #F8FAFC;
-            border: 1px solid var(--card-border);
-            font-size: 14px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: 0.2s;
-            white-space: nowrap;
+        .search-box {
+            flex: 1;
+            background: #f4f5f7;
+            display: flex;
+            align-items: center;
+            padding: 10px 15px;
+            border-radius: 12px;
+            gap: 10px;
         }
-        .filter-chip:hover, .filter-chip.active {
-            background: var(--fk-blue);
-            color: #ffffff;
-            border-color: var(--fk-blue);
+        .search-box input {
+            border: none; background: transparent; outline: none;
+            width: 100%; font-size: 14px; color: #1a1f36;
+        }
+        .search-box i { color: #8a8d93; }
+        .header-icon-btn {
+            position: relative;
+            background: #f4f5f7;
+            width: 40px; height: 40px;
+            border-radius: 12px;
+            display: flex; align-items: center; justify-content: center;
+            color: #1a1f36; cursor: pointer;
+        }
+        .badge-dot {
+            position: absolute; top: 10px; right: 10px;
+            width: 8px; height: 8px; background: #ff4757;
+            border-radius: 50%;
         }
 
-        /* Product Grid Container */
-        .container {
-            max-width: 1300px;
-            margin: 25px auto;
-            padding: 0 20px;
+        /* Category Chips Bar */
+        .category-scroll {
+            display: flex;
+            gap: 10px;
+            padding: 10px 20px;
+            overflow-x: auto;
+            background: #ffffff;
+            scrollbar-width: none;
         }
-        .section-header {
-            margin-bottom: 20px;
+        .category-scroll::-webkit-scrollbar { display: none; }
+        
+        .cat-chip {
+            padding: 8px 16px;
+            background: #f4f5f7;
+            border-radius: 20px;
+            font-size: 13px; font-weight: 600;
+            color: #8a8d93;
+            white-space: nowrap;
+            cursor: pointer;
+            border: 1px solid transparent;
+            transition: 0.2s;
+        }
+        .cat-chip.active {
+            background: #e8f5f3;
+            color: #2f9c8f;
+            border-color: #2f9c8f;
+        }
+
+        /* Promo Banner */
+        .banner-container {
+            padding: 10px 20px;
+        }
+        .promo-banner {
+            background: linear-gradient(135deg, #1a1f36, #2f9c8f);
+            border-radius: 15px;
+            padding: 20px;
+            color: white;
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
-        .section-header h2 { font-size: 22px; font-weight: 700; }
-
-        .product-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-            gap: 20px;
+        .promo-banner h2 { font-size: 20px; font-weight: 700; margin-bottom: 5px; }
+        .promo-banner p { font-size: 12px; opacity: 0.9; margin-bottom: 12px; }
+        .promo-btn {
+            background: white; color: #1a1f36;
+            border: none; padding: 6px 14px;
+            border-radius: 8px; font-size: 12px; font-weight: 700;
+            cursor: pointer;
         }
 
-        /* Flipkart / Meesho Style Product Card */
+        /* Section Title */
+        .section-title {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 20px 10px 20px;
+        }
+        .section-title h3 { font-size: 16px; font-weight: 700; color: #1a1f36; }
+        .section-title span { font-size: 13px; color: #2f9c8f; font-weight: 600; cursor: pointer; }
+
+        /* Product Grid (2 Columns like App) */
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            padding: 0 20px 20px 20px;
+        }
+
         .product-card {
             background: #ffffff;
             border-radius: 12px;
             overflow: hidden;
-            border: 1px solid #EDEDED;
-            transition: transform 0.25s ease, box-shadow 0.25s ease;
-            position: relative;
-            display: flex;
-            flex-direction: column;
+            border: 1px solid #eee;
             text-decoration: none;
             color: inherit;
-        }
-        .product-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.08);
-        }
-
-        /* 3D Spatial Badge */
-        .badge-3d {
-            position: absolute;
-            top: 10px;
-            left: 10px;
-            background: linear-gradient(135deg, var(--fk-blue), var(--meesho-pink));
-            color: #ffffff;
-            font-size: 11px;
-            font-weight: 700;
-            padding: 4px 10px;
-            border-radius: 12px;
-            z-index: 2;
-            letter-spacing: 0.5px;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.2);
-        }
-
-        .img-wrapper {
-            position: relative;
-            width: 100%;
-            height: 280px;
-            background: #FAFAFA;
             display: flex;
-            align-items: center;
-            justify-content: center;
-            overflow: hidden;
-        }
-        .img-wrapper img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: transform 0.3s ease;
-        }
-        .product-card:hover .img-wrapper img {
-            transform: scale(1.05);
+            flex-direction: column;
+            position: relative;
         }
 
-        .product-info {
-            padding: 15px;
+        .card-img-box {
+            width: 100%;
+            height: 160px;
+            background: #f8f9fa;
+            position: relative;
+        }
+        .card-img-box img {
+            width: 100%; height: 100%; object-fit: cover;
+        }
+        .fav-icon {
+            position: absolute; top: 10px; right: 10px;
+            background: white; width: 28px; height: 28px;
+            border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            font-size: 12px; color: #8a8d93; box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .card-details {
+            padding: 12px;
             display: flex;
             flex-direction: column;
             flex-grow: 1;
         }
-        .brand-name {
-            font-size: 12px;
-            text-transform: uppercase;
-            color: var(--text-muted);
-            font-weight: 700;
-            margin-bottom: 4px;
-        }
-        .product-title {
-            font-size: 15px;
-            font-weight: 600;
-            margin-bottom: 8px;
-            white-space: nowrap;
+        .card-title {
+            font-size: 13px; font-weight: 600; color: #1a1f36;
+            margin-bottom: 6px;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
             overflow: hidden;
-            text-overflow: ellipsis;
         }
-
-        .rating-pill {
-            display: inline-flex;
-            align-items: center;
-            gap: 3px;
-            background: var(--rating-green);
-            color: #fff;
-            padding: 2px 7px;
-            border-radius: 4px;
-            font-size: 12px;
-            font-weight: 700;
-            width: fit-content;
-            margin-bottom: 8px;
-        }
-
-        .price-row {
-            display: flex;
-            align-items: baseline;
-            gap: 8px;
+        .card-meta {
+            display: flex; align-items: center; justify-content: space-between;
             margin-top: auto;
         }
-        .selling-price { font-size: 18px; font-weight: 800; color: var(--text-dark); }
-        .original-price { font-size: 13px; text-decoration: line-through; color: var(--text-muted); }
-        .discount-tag { font-size: 13px; font-weight: 700; color: var(--meesho-pink); }
+        .card-price {
+            font-size: 15px; font-weight: 700; color: #2f9c8f;
+        }
+        .card-rating {
+            font-size: 11px; color: #8a8d93; display: flex; align-items: center; gap: 3px;
+        }
+        .card-rating i { color: #f39c12; }
 
-        .btn-view {
-            margin-top: 12px;
-            width: 100%;
-            padding: 9px;
-            border: none;
-            border-radius: 6px;
-            background: #F0F5FF;
-            color: var(--fk-blue);
-            font-weight: 700;
-            font-size: 13px;
-            cursor: pointer;
-            transition: 0.2s;
-            text-align: center;
+        /* Bottom Nav Bar */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0; width: 100%; max-width: 414px;
+            background: #ffffff;
+            border-top: 1px solid #eee;
+            display: flex;
+            justify-content: space-around;
+            padding: 12px 0;
+            z-index: 100;
         }
-        .product-card:hover .btn-view {
-            background: var(--fk-blue);
-            color: #ffffff;
+        .nav-item {
+            display: flex; flex-direction: column; align-items: center; gap: 4px;
+            text-decoration: none; color: #8a8d93; font-size: 11px; font-weight: 500;
         }
+        .nav-item.active { color: #2f9c8f; }
+        .nav-item i { font-size: 18px; }
     </style>
 </head>
 <body>
 
-    <!-- Header Navigation -->
-    <header>
-        <a href="/" class="logo">3D<span>Store</span></a>
-        <div class="nav-links">
-            <a href="/">Home</a>
-            <a href="/shop" style="color: var(--fk-blue);">Shop</a>
-            <a href="/cart">Cart 🛒</a>
-        </div>
-    </header>
-
-    <!-- Top Categories -->
-    <div class="category-bar">
-        <button class="filter-chip active">All Products</button>
-        <button class="filter-chip">Men's Fashion</button>
-        <button class="filter-chip">Footwear</button>
-        <button class="filter-chip">Accessories</button>
-        <button class="filter-chip">3D AR Ready</button>
-    </div>
-
-    <!-- Main Content -->
-    <div class="container">
-        <div class="section-header">
-            <h2>Trending 3D Catalog</h2>
-            <span style="font-size: 14px; color: var(--text-muted);">Showing live 3D models</span>
+    <div class="app-container">
+        <!-- Header -->
+        <div class="app-header">
+            <div class="search-row">
+                <div class="search-box">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <input type="text" placeholder="Search 3D clothes, shoes...">
+                </div>
+                <div class="header-icon-btn">
+                    <i class="fa-regular fa-bell"></i>
+                    <span class="badge-dot"></span>
+                </div>
+            </div>
         </div>
 
+        <!-- Categories -->
+        <div class="category-scroll">
+            <div class="cat-chip active">All Items</div>
+            <div class="cat-chip">👕 T-Shirts</div>
+            <div class="cat-chip">👔 Shirts</div>
+            <div class="cat-chip">👟 Sneakers</div>
+            <div class="cat-chip">🧥 Jackets</div>
+        </div>
+
+        <!-- Banner -->
+        <div class="banner-container">
+            <div class="promo-banner">
+                <div>
+                    <h2>#FASHION DAY</h2>
+                    <p>Discover 3D fashion style in your space.</p>
+                    <button class="promo-btn" onclick="window.location.href='/product'">Check this out</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Product Section -->
+        <div class="section-title">
+            <h3>Best Sale Product</h3>
+            <span>See more</span>
+        </div>
+
+        <!-- Product Grid -->
         <div class="product-grid">
             
-            <!-- Sample Product 1 -->
+            <!-- Card 1 -->
             <a href="/product" class="product-card">
-                <span class="badge-3d">✨ 3D / Video</span>
-                <div class="img-wrapper">
-                    <img src="https://picsum.photos/400/500?random=1" alt="Oversized Cotton Tee">
+                <div class="card-img-box">
+                    <img src="https://picsum.photos/400/500?random=10" alt="Product">
+                    <div class="fav-icon"><i class="fa-regular fa-heart"></i></div>
                 </div>
-                <div class="product-info">
-                    <span class="brand-name">Urban Edge</span>
-                    <h3 class="product-title">Oversized Heavyweight Cotton Tee</h3>
-                    <div class="rating-pill">4.4 ★</div>
-                    <div class="price-row">
-                        <span class="selling-price">₹599</span>
-                        <span class="original-price">₹1,499</span>
-                        <span class="discount-tag">60% off</span>
+                <div class="card-details">
+                    <div class="card-title">Essentials Men's Short-Sleeve Crewneck T-Shirt</div>
+                    <div class="card-meta">
+                        <span class="card-price">$12.00</span>
+                        <span class="card-rating"><i class="fa-solid fa-star"></i> 4.9 (25k)</span>
                     </div>
-                    <div class="btn-view">View in 3D & Buy</div>
                 </div>
             </a>
 
-            <!-- Sample Product 2 -->
+            <!-- Card 2 -->
             <a href="/product" class="product-card">
-                <span class="badge-3d">✨ 3D / Video</span>
-                <div class="img-wrapper">
-                    <img src="https://picsum.photos/400/500?random=2" alt="Slim Fit Casual Shirt">
+                <div class="card-img-box">
+                    <img src="https://picsum.photos/400/500?random=20" alt="Product">
+                    <div class="fav-icon"><i class="fa-regular fa-heart"></i></div>
                 </div>
-                <div class="product-info">
-                    <span class="brand-name">Vogue Studio</span>
-                    <h3 class="product-title">Formal Striped Slim Fit Shirt</h3>
-                    <div class="rating-pill">4.6 ★</div>
-                    <div class="price-row">
-                        <span class="selling-price">₹899</span>
-                        <span class="original-price">₹2,299</span>
-                        <span class="discount-tag">61% off</span>
+                <div class="card-details">
+                    <div class="card-title">Essentials Men's Hoodie Colorblock Jacket</div>
+                    <div class="card-meta">
+                        <span class="card-price">$18.00</span>
+                        <span class="card-rating"><i class="fa-solid fa-star"></i> 4.8 (18k)</span>
                     </div>
-                    <div class="btn-view">View in 3D & Buy</div>
                 </div>
             </a>
 
-            <!-- Sample Product 3 -->
+            <!-- Card 3 -->
             <a href="/product" class="product-card">
-                <span class="badge-3d">✨ 3D / Video</span>
-                <div class="img-wrapper">
-                    <img src="https://picsum.photos/400/500?random=3" alt="Sneakers">
+                <div class="card-img-box">
+                    <img src="https://picsum.photos/400/500?random=30" alt="Product">
+                    <div class="fav-icon"><i class="fa-regular fa-heart"></i></div>
                 </div>
-                <div class="product-info">
-                    <span class="brand-name">AeroStride</span>
-                    <h3 class="product-title">Chunky Spatial Mesh Sneakers</h3>
-                    <div class="rating-pill">4.2 ★</div>
-                    <div class="price-row">
-                        <span class="selling-price">₹1,249</span>
-                        <span class="original-price">₹3,999</span>
-                        <span class="discount-tag">68% off</span>
+                <div class="card-details">
+                    <div class="card-title">Vintage Graphic Printed Summer Resort Shirt</div>
+                    <div class="card-meta">
+                        <span class="card-price">$14.00</span>
+                        <span class="card-rating"><i class="fa-solid fa-star"></i> 4.7 (12k)</span>
                     </div>
-                    <div class="btn-view">View in 3D & Buy</div>
                 </div>
             </a>
 
-            <!-- Sample Product 4 -->
+            <!-- Card 4 -->
             <a href="/product" class="product-card">
-                <span class="badge-3d">✨ 3D / Video</span>
-                <div class="img-wrapper">
-                    <img src="https://picsum.photos/400/500?random=4" alt="Bomber Jacket">
+                <div class="card-img-box">
+                    <img src="https://picsum.photos/400/500?random=40" alt="Product">
+                    <div class="fav-icon"><i class="fa-regular fa-heart"></i></div>
                 </div>
-                <div class="product-info">
-                    <span class="brand-name">StreetVibe</span>
-                    <h3 class="product-title">Matte Finish Streetwear Bomber</h3>
-                    <div class="rating-pill">4.7 ★</div>
-                    <div class="price-row">
-                        <span class="selling-price">₹1,799</span>
-                        <span class="original-price">₹4,499</span>
-                        <span class="discount-tag">60% off</span>
+                <div class="card-details">
+                    <div class="card-title">Casual Regular Fit Oxford Cotton Shirt</div>
+                    <div class="card-meta">
+                        <span class="card-price">$22.00</span>
+                        <span class="card-rating"><i class="fa-solid fa-star"></i> 4.9 (30k)</span>
                     </div>
-                    <div class="btn-view">View in 3D & Buy</div>
                 </div>
             </a>
 
+        </div>
+
+        <!-- Bottom Navigation Bar -->
+        <div class="bottom-nav">
+            <a href="/shop" class="nav-item active">
+                <i class="fa-solid fa-house"></i>
+                <span>Home</span>
+            </a>
+            <a href="/shop" class="nav-item">
+                <i class="fa-solid fa-box-archive"></i>
+                <span>Voucher</span>
+            </a>
+            <a href="/shop" class="nav-item">
+                <i class="fa-solid fa-wallet"></i>
+                <span>Wallet</span>
+            </a>
+            <a href="/shop" class="nav-item">
+                <i class="fa-solid fa-gear"></i>
+                <span>Settings</span>
+            </a>
         </div>
     </div>
 
