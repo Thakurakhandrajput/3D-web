@@ -1,84 +1,181 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <%- include('partials/head') %>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Premium 3D Store</title>
+    <!-- Three.js CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    
+    <style>
+        :root {
+            --fk-blue: #2874F0;
+            --meesho-pink: #F43397;
+            --bg-light: #F1F3F6;
+            --text-dark: #212121;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Arial', sans-serif; }
+        
+        body { background-color: var(--bg-light); overflow-x: hidden; }
+
+        /* Navbar */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 50px;
+            background: #ffffff;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .logo { font-size: 24px; font-weight: bold; color: var(--fk-blue); display: flex; align-items: center; gap: 5px; }
+        .logo span { color: var(--meesho-pink); }
+        .nav-links a { margin-left: 20px; text-decoration: none; color: var(--text-dark); font-weight: 500; }
+        
+        /* Hero Section */
+        .hero {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 85vh;
+            padding: 0 50px;
+            position: relative;
+        }
+        .hero-content { flex: 1; z-index: 10; }
+        .hero-content h1 {
+            font-size: 3.5rem;
+            color: var(--text-dark);
+            line-height: 1.2;
+            margin-bottom: 20px;
+        }
+        .hero-content h1 span {
+            background: -webkit-linear-gradient(45deg, var(--fk-blue), var(--meesho-pink));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .hero-content p { color: #878787; font-size: 1.2rem; margin-bottom: 30px; }
+        
+        .btn-shop {
+            background: linear-gradient(90deg, var(--meesho-pink), #ff66b3);
+            color: white;
+            padding: 15px 40px;
+            border: none;
+            border-radius: 30px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(244, 51, 151, 0.4);
+            transition: 0.3s;
+        }
+        .btn-shop:hover { transform: translateY(-3px); box-shadow: 0 6px 20px rgba(244, 51, 151, 0.6); }
+
+        /* Spatial 3D Canvas Area */
+        .canvas-container {
+            flex: 1.2;
+            height: 100%;
+            position: relative;
+        }
+        canvas {
+            width: 100%;
+            height: 100%;
+            outline: none;
+        }
+    </style>
 </head>
 <body>
-  <%- include('partials/nav') %>
 
-  <section class="hero">
-    <canvas id="ribbon" class="hero__canvas" aria-hidden="true"></canvas>
-    <p class="hero__eyebrow">SS26 — 3D CAPSULE — <%= productCount %> SKU CATALOGUE</p>
-    <h1 class="hero__title">
-      <span class="hero__line hero__line--left">DIGITAL</span>
-      <span class="hero__line hero__line--right">COUTURE</span>
-    </h1>
-    <p class="hero__sub">Drag the ribbon. It's rendered live in your browser — the same engine that will carry your garments into 3D try-on.</p>
-    <div class="hero__actions">
-      <a href="/shop" class="btn btn--fill">Enter the shop</a>
-      <a href="#capsule" class="btn btn--ghost">See the capsule</a>
-    </div>
-  </section>
+    <header>
+        <div class="logo">3D<span>Store</span></div>
+        <div class="nav-links">
+            <a href="/">Home</a>
+            <a href="/shop">Shop</a>
+            <a href="/cart">Cart 🛒</a>
+        </div>
+    </header>
 
-  <section class="marquee" aria-hidden="true">
-    <div class="marquee__track">
-      <span>50 GARMENTS</span><span>·</span>
-      <span>3D TRY-ON</span><span>·</span>
-      <span>AI MODEL FILM</span><span>·</span>
-      <span>BUILT ON NODE.JS</span><span>·</span>
-      <span>50 GARMENTS</span><span>·</span>
-      <span>3D TRY-ON</span><span>·</span>
-      <span>AI MODEL FILM</span><span>·</span>
-      <span>BUILT ON NODE.JS</span><span>·</span>
-    </div>
-  </section>
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Experience Fashion in <span>True 3D</span></h1>
+            <p>Welcome to the next generation of online shopping. Rotate, zoom, and explore products like never before.</p>
+            <button class="btn-shop" onclick="window.location.href='/shop'">Explore Collection</button>
+        </div>
+        
+        <!-- Three.js Scene will render here -->
+        <div class="canvas-container" id="canvas-container"></div>
+    </section>
 
-  <section class="capsule" id="capsule">
-    <div class="capsule__head">
-      <h2>The capsule, rendering live</h2>
-      <p>A slice of the 50-piece catalogue. Every card below is pulled from one data file — add your real SKUs and photography and the grid scales with no layout work.</p>
-    </div>
-    <div class="capsule__grid">
-      <% featured.forEach(function(p, i) { %>
-        <article class="card" style="--delay: <%= i %>">
-          <div class="card__frame">
-            <img src="https://picsum.photos/seed/<%= p.seed %>/640/800" alt="<%= p.name %>" loading="lazy" />
-            <% if (p.threeD) { %><span class="card__tag">3D READY</span><% } %>
-          </div>
-          <div class="card__meta">
-            <span class="card__sku"><%= p.sku %></span>
-            <h3><%= p.name %></h3>
-            <p><%= p.fabric %> · <%= p.colorway %></p>
-            <span class="card__price">₹<%= p.price.toLocaleString('en-IN') %></span>
-          </div>
-        </article>
-      <% }); %>
-    </div>
-    <a href="/shop" class="btn btn--fill capsule__more">View all <%= productCount %> pieces</a>
-  </section>
+    <!-- 3D Spatial Script -->
+    <script>
+        const container = document.getElementById('canvas-container');
+        
+        // Scene Setup
+        const scene = new THREE.Scene();
+        
+        // Camera Setup
+        const camera = new THREE.PerspectiveCamera(45, container.clientWidth / container.clientHeight, 0.1, 1000);
+        camera.position.z = 5;
 
-  <section class="pitch">
-    <div class="pitch__col">
-      <span class="pitch__num">01</span>
-      <h3>3D on every product page</h3>
-      <p>Garments render as rotating 3D previews instead of static photos — built for the try-on layer you asked about.</p>
-    </div>
-    <div class="pitch__col">
-      <span class="pitch__num">02</span>
-      <h3>Catalogue that scales</h3>
-      <p>This demo ships 50 SKUs from one data file. Real inventory, sizes and stock plug into the same structure.</p>
-    </div>
-    <div class="pitch__col">
-      <span class="pitch__num">03</span>
-      <h3>AI model film, slotted in</h3>
-      <p>The hero and product-detail sections are built with a video slot ready — drop your AI-generated model footage in at build stage.</p>
-    </div>
-  </section>
+        // Renderer with transparent background to blend with CSS
+        const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+        renderer.setSize(container.clientWidth, container.clientHeight);
+        renderer.setPixelRatio(window.devicePixelRatio);
+        container.appendChild(renderer.domElement);
 
-  <%- include('partials/footer') %>
+        // Premium Lighting
+        const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
+        scene.add(ambientLight);
+        const directionalLight = new THREE.DirectionalLight(0xffffff, 0.8);
+        directionalLight.position.set(5, 5, 5);
+        scene.add(directionalLight);
+        const pinkLight = new THREE.PointLight(0xF43397, 1, 10);
+        pinkLight.position.set(-2, -2, 2);
+        scene.add(pinkLight);
+        const blueLight = new THREE.PointLight(0x2874F0, 1, 10);
+        blueLight.position.set(2, 2, 2);
+        scene.add(blueLight);
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-  <script src="/js/hero3d.js"></script>
-  <script src="/js/main.js"></script>
+        // Placeholder 3D Object (TorusKnot representing a spatial object)
+        const geometry = new THREE.TorusKnotGeometry(1, 0.3, 128, 64);
+        const material = new THREE.MeshStandardMaterial({ 
+            color: 0xffffff, 
+            roughness: 0.1, 
+            metalness: 0.8 
+        });
+        const mesh = new THREE.Mesh(geometry, material);
+        scene.add(mesh);
+
+        // Mouse Interaction
+        let mouseX = 0;
+        let mouseY = 0;
+        document.addEventListener('mousemove', (event) => {
+            mouseX = (event.clientX / window.innerWidth) * 2 - 1;
+            mouseY = -(event.clientY / window.innerHeight) * 2 + 1;
+        });
+
+        // Animation Loop
+        function animate() {
+            requestAnimationFrame(animate);
+            
+            // Auto rotation + Mouse movement effect
+            mesh.rotation.y += 0.005;
+            mesh.rotation.x += 0.002;
+            
+            mesh.position.x += (mouseX * 0.5 - mesh.position.x) * 0.05;
+            mesh.position.y += (mouseY * 0.5 - mesh.position.y) * 0.05;
+
+            renderer.render(scene, camera);
+        }
+        animate();
+
+        // Handle Resize
+        window.addEventListener('resize', () => {
+            camera.aspect = container.clientWidth / container.clientHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(container.clientWidth, container.clientHeight);
+        });
+    </script>
 </body>
 </html>
