@@ -1,185 +1,554 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Webglut - Minimal 3D Store</title>
-    <!-- Three.js -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-    <!-- GSAP for Smooth Animations -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Terrova — Furniture for Homes That Tell a Story</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --cream:#EEE7DA;
+    --cream-2:#F7F3EA;
+    --ink:#2A241C;
+    --ink-soft:#6E6455;
+    --terracotta:#C6714A;
+    --terracotta-dark:#A85C39;
+    --olive:#707A52;
+    --line:rgba(42,36,28,0.12);
+    --white:#FFFFFF;
+    --footer:#221D16;
+    --footer-soft:#B8AF9F;
+    --radius:22px;
+    --shadow: 0 30px 60px -20px rgba(42,36,28,0.25);
+  }
 
-    <style>
-        /* Importing elegant fonts like the video */
-        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Inter:wght@300;400;500&display=swap');
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--cream);
+    color:var(--ink);
+    font-family:'Inter',sans-serif;
+    overflow-x:hidden;
+    -webkit-font-smoothing:antialiased;
+  }
+  img{display:block;max-width:100%;}
+  a{text-decoration:none;color:inherit;}
+  ul{list-style:none;}
+  h1,h2,h3{font-family:'Playfair Display',serif;font-weight:500;letter-spacing:-0.01em;color:var(--ink);}
+  .eyebrow{
+    text-transform:uppercase;font-size:12px;letter-spacing:0.18em;color:var(--terracotta);font-weight:600;
+  }
+  .wrap{max-width:1240px;margin:0 auto;padding:0 32px;}
+  @media(max-width:640px){.wrap{padding:0 20px;}}
 
-        :root {
-            --bg-color: #F4F1EC; /* Warm beige background */
-            --text-color: #2D2B2A; /* Dark charcoal text */
-            --accent-color: #D36B4A; /* Terracotta / Rust accent */
-        }
+  button, .btn{
+    font-family:'Inter',sans-serif;cursor:pointer;border:none;
+  }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+  /* reveal on scroll */
+  .reveal{opacity:0;transform:translateY(28px);transition:opacity .8s cubic-bezier(.22,1,.36,1), transform .8s cubic-bezier(.22,1,.36,1);}
+  .reveal.in{opacity:1;transform:translateY(0);}
 
-        body {
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            font-family: 'Inter', sans-serif;
-            overflow-x: hidden;
-        }
+  /* ---------------- NAV ---------------- */
+  header{
+    position:sticky;top:0;z-index:100;
+    background:rgba(238,231,218,0.82);
+    backdrop-filter:blur(14px);
+    border-bottom:1px solid var(--line);
+  }
+  nav{
+    max-width:1240px;margin:0 auto;padding:20px 32px;
+    display:flex;align-items:center;justify-content:space-between;
+  }
+  .logo{display:flex;align-items:center;gap:10px;font-family:'Playfair Display',serif;font-size:22px;font-weight:600;}
+  .logo-mark{
+    width:26px;height:26px;border-radius:7px;
+    background:linear-gradient(135deg,var(--terracotta),var(--terracotta-dark));
+    display:flex;align-items:center;justify-content:center;color:#fff;font-size:13px;
+  }
+  .nav-links{display:flex;gap:40px;font-size:14.5px;font-weight:500;}
+  .nav-links a{position:relative;padding:4px 0;}
+  .nav-links a::after{
+    content:"";position:absolute;left:0;bottom:-2px;width:0;height:1.5px;background:var(--terracotta);
+    transition:width .3s ease;
+  }
+  .nav-links a:hover::after{width:100%;}
+  .nav-icons{display:flex;align-items:center;gap:22px;}
+  .nav-icons svg{width:19px;height:19px;stroke:var(--ink);}
+  .burger{display:none;background:none;}
+  @media(max-width:900px){
+    .nav-links{display:none;}
+    .burger{display:block;}
+  }
 
-        /* Navbar */
-        nav {
-            display: flex; justify-content: space-between; align-items: center;
-            padding: 25px 50px; position: absolute; width: 100%; z-index: 10;
-        }
-        .logo { display: flex; align-items: center; gap: 8px; font-weight: 600; font-size: 18px; }
-        .logo-icon { width: 16px; height: 16px; background: var(--accent-color); border-radius: 3px; }
-        .nav-links { display: flex; gap: 40px; font-size: 13px; font-weight: 500; }
-        .nav-links a { text-decoration: none; color: var(--text-color); }
-        .nav-icons { display: flex; gap: 20px; font-size: 16px; cursor: pointer; }
+  /* ---------------- HERO ---------------- */
+  .hero{padding:64px 0 100px;}
+  .hero-grid{
+    display:grid;grid-template-columns:0.95fr 1.15fr;gap:56px;align-items:center;
+  }
+  .hero-eyebrow{margin-bottom:18px;}
+  .hero h1{
+    font-size:clamp(36px,4.4vw,58px);line-height:1.08;margin-bottom:22px;
+  }
+  .hero h1 em{font-style:italic;color:var(--terracotta);}
+  .hero p{color:var(--ink-soft);font-size:16px;line-height:1.7;max-width:420px;margin-bottom:34px;}
+  .hero-ctas{display:flex;align-items:center;gap:28px;}
+  .btn-primary{
+    background:var(--terracotta);color:#fff;padding:15px 28px;border-radius:100px;
+    font-size:14.5px;font-weight:600;display:inline-flex;align-items:center;gap:10px;
+    box-shadow:0 14px 28px -10px rgba(198,113,74,0.55);
+    transition:transform .35s cubic-bezier(.22,1,.36,1), box-shadow .35s ease;
+  }
+  .btn-primary:hover{transform:translateY(-3px);box-shadow:0 20px 34px -10px rgba(198,113,74,0.65);}
+  .btn-primary svg{width:15px;height:15px;transition:transform .3s ease;}
+  .btn-primary:hover svg{transform:translate(3px,-3px);}
+  .link-ghost{font-size:14.5px;font-weight:600;border-bottom:1.5px solid var(--ink);padding-bottom:3px;}
 
-        /* Hero Section */
-        .hero {
-            min-height: 100vh; display: flex; flex-direction: column;
-            justify-content: center; align-items: center; position: relative;
-            padding-top: 80px;
-        }
+  .hero-visual{perspective:1400px;}
+  .hero-stage{
+    position:relative;border-radius:var(--radius);overflow:hidden;
+    box-shadow:var(--shadow);
+    transform-style:preserve-3d;
+    transition:transform .2s ease-out;
+    will-change:transform;
+  }
+  .hero-stage img{width:100%;height:520px;object-fit:cover;transform:scale(1.02);}
+  .hero-float-card{
+    position:absolute;bottom:22px;left:22px;background:rgba(255,255,255,0.92);
+    backdrop-filter:blur(10px);
+    border-radius:16px;padding:14px 18px;display:flex;align-items:center;gap:12px;
+    box-shadow:0 20px 40px -16px rgba(0,0,0,0.35);
+    transform:translateZ(60px);
+  }
+  .hero-float-card .dot{width:38px;height:38px;border-radius:50%;background:var(--olive);flex-shrink:0;}
+  .hero-float-card b{display:block;font-size:13.5px;}
+  .hero-float-card span{font-size:11.5px;color:var(--ink-soft);}
+  @media(max-width:900px){
+    .hero-grid{grid-template-columns:1fr;}
+    .hero p{max-width:100%;}
+    .hero-stage img{height:340px;}
+  }
 
-        /* The Arch (3D Container) mimicking the video */
-        .arch-container {
-            width: 340px; height: 480px;
-            border-radius: 170px 170px 0 0; /* Creates the beautiful Arch shape */
-            background: #E8E4DB;
-            position: relative; overflow: hidden;
-            box-shadow: inset 0 20px 50px rgba(0,0,0,0.03), 0 20px 40px rgba(0,0,0,0.05);
-            opacity: 0; transform: scale(0.95);
-        }
-        #canvas-container {
-            width: 100%; height: 100%; position: absolute; top: 0; left: 0; outline: none;
-        }
+  /* ---------------- STATS / BENTO ---------------- */
+  .section{padding:90px 0;}
+  .section-head{
+    display:flex;justify-content:space-between;align-items:flex-end;gap:40px;margin-bottom:48px;
+  }
+  .section-head h2{font-size:clamp(28px,3vw,40px);line-height:1.15;max-width:520px;}
+  .section-head p{color:var(--ink-soft);font-size:15px;max-width:320px;line-height:1.7;}
+  @media(max-width:760px){.section-head{flex-direction:column;align-items:flex-start;}}
 
-        /* Text below the arch */
-        .hero-text {
-            text-align: center; margin-top: 40px; z-index: 2;
-            opacity: 0; transform: translateY(20px);
-        }
-        .hero-text h1 {
-            font-family: 'Playfair Display', serif; font-size: 3rem;
-            font-weight: 400; color: var(--text-color); line-height: 1.2;
-        }
+  .bento{
+    display:grid;grid-template-columns:repeat(4,1fr);grid-template-rows:repeat(2,150px);gap:16px;
+  }
+  .bento .cell{border-radius:18px;overflow:hidden;position:relative;}
+  .bento .cell img{width:100%;height:100%;object-fit:cover;transition:transform .6s cubic-bezier(.22,1,.36,1);}
+  .bento .cell:hover img{transform:scale(1.08);}
+  .bento .img1{grid-column:1/2;grid-row:1/3;}
+  .bento .img2{grid-column:3/4;grid-row:1/3;}
+  .stat{
+    background:var(--white);display:flex;flex-direction:column;justify-content:center;padding:20px 22px;
+  }
+  .stat b{font-family:'Playfair Display',serif;font-size:32px;font-weight:600;color:var(--terracotta);}
+  .stat span{font-size:12.5px;color:var(--ink-soft);margin-top:4px;}
+  @media(max-width:760px){
+    .bento{grid-template-columns:repeat(2,1fr);grid-template-rows:repeat(4,140px);}
+    .bento .img1{grid-column:1/2;grid-row:1/3;}
+    .bento .img2{grid-column:2/3;grid-row:1/3;}
+  }
 
-        .explore-btn {
-            margin-top: 25px;
-            background: var(--accent-color); color: white;
-            border: none; padding: 12px 30px; border-radius: 30px;
-            font-family: 'Inter', sans-serif; font-size: 13px; font-weight: 500;
-            cursor: pointer; opacity: 0; transition: 0.3s;
-        }
-        .explore-btn:hover { background: #b5573a; }
+  /* ---------------- DISCOVER (category + carousel) ---------------- */
+  .discover{background:var(--cream-2);}
+  .discover-grid{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center;}
+  .cat-list{margin-top:30px;border-top:1px solid var(--line);}
+  .cat-item{
+    padding:18px 0;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;
+    cursor:pointer;font-size:15px;font-weight:500;color:var(--ink-soft);transition:color .3s ease;
+  }
+  .cat-item:hover, .cat-item.active{color:var(--ink);}
+  .cat-panel{
+    margin-top:8px;background:var(--ink);color:#fff;border-radius:16px;padding:20px 22px;
+    display:flex;align-items:center;gap:16px;
+  }
+  .cat-panel .tag{
+    width:34px;height:34px;border-radius:50%;background:var(--terracotta);flex-shrink:0;
+  }
+  .cat-panel b{display:block;font-size:14.5px;margin-bottom:4px;}
+  .cat-panel span{font-size:12.5px;color:#C8C1B4;line-height:1.5;}
 
-        /* Mobile responsiveness */
-        @media (max-width: 768px) {
-            nav { padding: 20px; }
-            .nav-links { display: none; } /* Hide on mobile like an app */
-            .arch-container { width: 280px; height: 400px; border-radius: 140px 140px 0 0; }
-            .hero-text h1 { font-size: 2.2rem; }
-        }
-    </style>
+  .discover-visual{position:relative;perspective:1200px;}
+  .discover-stage{
+    border-radius:var(--radius);overflow:hidden;height:440px;box-shadow:var(--shadow);
+    transform-style:preserve-3d;transition:transform .2s ease-out;
+  }
+  .discover-stage img{width:100%;height:100%;object-fit:cover;}
+  .discover-index{
+    position:absolute;bottom:20px;right:24px;font-family:'Playfair Display',serif;
+    font-size:15px;color:#fff;background:rgba(0,0,0,0.35);backdrop-filter:blur(6px);
+    padding:8px 16px;border-radius:100px;
+  }
+  @media(max-width:900px){.discover-grid{grid-template-columns:1fr;}.discover-stage{height:320px;}}
+
+  /* ---------------- PRODUCTS ---------------- */
+  .product-grid{
+    display:grid;grid-template-columns:repeat(4,1fr);gap:22px;
+  }
+  .card{
+    background:var(--white);border-radius:18px;padding:14px;
+    perspective:1000px;
+  }
+  .card-img{
+    border-radius:12px;overflow:hidden;height:230px;position:relative;background:#EFE9DD;
+    transform-style:preserve-3d;transition:transform .45s cubic-bezier(.22,1,.36,1);
+  }
+  .card:hover .card-img{transform:rotateY(6deg) rotateX(3deg) scale(1.03);}
+  .card-img img{width:100%;height:100%;object-fit:cover;}
+  .card-row{display:flex;justify-content:space-between;align-items:center;padding:14px 4px 4px;}
+  .card-row b{font-size:14px;font-weight:600;}
+  .card-row .price{display:block;font-size:13px;color:var(--terracotta);font-weight:600;margin-top:3px;}
+  .cart-btn{
+    width:38px;height:38px;border-radius:50%;background:var(--ink);color:#fff;
+    display:flex;align-items:center;justify-content:center;flex-shrink:0;
+    transition:background .3s ease, transform .3s ease;
+  }
+  .cart-btn:hover{background:var(--terracotta);transform:scale(1.08);}
+  .cart-btn svg{width:15px;height:15px;}
+  .carousel-nav{display:flex;gap:10px;justify-content:flex-end;margin-top:30px;}
+  .nav-circle{
+    width:40px;height:40px;border-radius:50%;border:1px solid var(--line);background:transparent;
+    display:flex;align-items:center;justify-content:center;transition:all .3s ease;
+  }
+  .nav-circle:hover{background:var(--ink);border-color:var(--ink);}
+  .nav-circle:hover svg{stroke:#fff;}
+  .nav-circle svg{width:15px;height:15px;stroke:var(--ink);}
+  @media(max-width:900px){.product-grid{grid-template-columns:repeat(2,1fr);}}
+  @media(max-width:520px){.product-grid{grid-template-columns:1fr;}}
+
+  /* ---------------- TESTIMONIALS ---------------- */
+  .testi{background:var(--cream-2);}
+  .testi-grid{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center;}
+  .testi-badge{
+    display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:600;color:var(--olive);
+    background:rgba(112,122,82,0.1);padding:8px 16px;border-radius:100px;margin-bottom:22px;
+  }
+  .testi blockquote{
+    font-family:'Playfair Display',serif;font-size:22px;line-height:1.5;font-style:italic;margin-bottom:20px;
+  }
+  .testi cite{font-style:normal;font-weight:600;font-size:14px;}
+  .stack{position:relative;height:380px;}
+  .stack img{
+    position:absolute;width:190px;height:240px;object-fit:cover;border-radius:16px;
+    box-shadow:0 20px 40px -14px rgba(0,0,0,0.3);border:5px solid var(--cream-2);
+    transition:transform .5s cubic-bezier(.22,1,.36,1);
+  }
+  .stack img:nth-child(1){top:0;left:40px;width:150px;height:190px;transform:rotate(-6deg);z-index:1;}
+  .stack img:nth-child(2){top:60px;left:150px;z-index:3;}
+  .stack img:nth-child(3){top:190px;left:280px;width:150px;height:190px;transform:rotate(5deg);z-index:2;}
+  .stack:hover img:nth-child(1){transform:rotate(-10deg) translateY(-8px);}
+  .stack:hover img:nth-child(3){transform:rotate(9deg) translateY(-8px);}
+  @media(max-width:900px){.testi-grid{grid-template-columns:1fr;}.stack{height:300px;margin-top:20px;}}
+
+  /* ---------------- NEWSLETTER + FOOTER ---------------- */
+  .newsletter{background:var(--footer);color:#fff;border-radius:32px 32px 0 0;padding-top:80px;}
+  .news-inner{
+    display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:center;
+    padding-bottom:64px;border-bottom:1px solid rgba(255,255,255,0.1);
+  }
+  .news-visual{position:relative;height:220px;}
+  .news-visual img{
+    position:absolute;width:150px;height:190px;object-fit:cover;border-radius:14px;
+    box-shadow:0 20px 40px -14px rgba(0,0,0,0.5);
+  }
+  .news-visual img:nth-child(1){top:10px;left:0;transform:rotate(-8deg);}
+  .news-visual img:nth-child(2){top:0;left:70px;transform:rotate(-2deg);z-index:2;}
+  .news-visual img:nth-child(3){top:20px;left:150px;transform:rotate(7deg);}
+  .news-text h2{color:#fff;font-size:clamp(26px,3vw,36px);margin-bottom:12px;line-height:1.2;}
+  .news-text p{color:var(--footer-soft);font-size:14.5px;margin-bottom:26px;max-width:420px;line-height:1.7;}
+  .news-form{display:flex;gap:10px;max-width:420px;}
+  .news-form input{
+    flex:1;padding:14px 18px;border-radius:100px;border:1px solid rgba(255,255,255,0.18);
+    background:rgba(255,255,255,0.06);color:#fff;font-size:14px;font-family:'Inter',sans-serif;
+  }
+  .news-form input::placeholder{color:#8A8072;}
+  .news-form button{
+    width:46px;height:46px;border-radius:50%;background:var(--terracotta);color:#fff;flex-shrink:0;
+    display:flex;align-items:center;justify-content:center;transition:transform .3s ease;
+  }
+  .news-form button:hover{transform:scale(1.08);}
+  .news-form button svg{width:16px;height:16px;}
+  @media(max-width:760px){.news-inner{grid-template-columns:1fr;}.news-visual{order:2;}}
+
+  .footer-cols{
+    display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:40px;padding:56px 0 40px;
+  }
+  .foot-brand .logo{color:#fff;margin-bottom:14px;}
+  .footer-cols p{color:var(--footer-soft);font-size:13.5px;line-height:1.7;max-width:260px;}
+  .footer-cols h4{font-size:13px;text-transform:uppercase;letter-spacing:0.08em;color:#fff;margin-bottom:16px;font-weight:600;}
+  .footer-cols li{margin-bottom:10px;}
+  .footer-cols a{color:var(--footer-soft);font-size:14px;transition:color .3s ease;}
+  .footer-cols a:hover{color:var(--terracotta);}
+  .foot-bottom{
+    border-top:1px solid rgba(255,255,255,0.1);padding:22px 0 30px;
+    display:flex;justify-content:space-between;color:var(--footer-soft);font-size:12.5px;
+  }
+  @media(max-width:760px){.footer-cols{grid-template-columns:1fr 1fr;}.foot-bottom{flex-direction:column;gap:8px;}}
+</style>
 </head>
 <body>
 
-    <nav>
-        <div class="logo"><div class="logo-icon"></div> Webglut</div>
-        <div class="nav-links">
-            <a href="/">Home</a>
-            <a href="#">About</a>
-            <a href="/shop">Products</a>
-            <a href="#">Collections</a>
-            <a href="#">Contact</a>
+<header>
+  <nav>
+    <a href="#" class="logo"><span class="logo-mark">T</span>Terrova</a>
+    <ul class="nav-links">
+      <li><a href="#home">Home</a></li>
+      <li><a href="#about">About</a></li>
+      <li><a href="#products">Products</a></li>
+      <li><a href="#collections">Collections</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+    <div class="nav-icons">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="1.7" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="1.7" stroke-linecap="round"><path d="M6 6h15l-1.5 9h-12z"/><circle cx="9" cy="20" r="1"/><circle cx="18" cy="20" r="1"/><path d="M6 6L4 3H2"/></svg>
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="1.7" stroke-linecap="round"><circle cx="12" cy="8" r="3.5"/><path d="M4.5 20c1.5-4 5-6 7.5-6s6 2 7.5 6"/></svg>
+      <button class="burger">
+        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#2A241C" stroke-width="1.8" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+      </button>
+    </div>
+  </nav>
+</header>
+
+<!-- HERO -->
+<section class="hero" id="home">
+  <div class="wrap hero-grid">
+    <div class="hero-copy reveal">
+      <p class="eyebrow hero-eyebrow">Modern Furniture Studio</p>
+      <h1>Turn Your House Into <em>a Story</em> Worth Living</h1>
+      <p>Thoughtfully crafted furniture that brings warmth, character and quiet luxury to every room you live in.</p>
+      <div class="hero-ctas">
+        <a href="#products" class="btn-primary">Shop Now
+          <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round"><path d="M7 17L17 7M9 7h8v8"/></svg>
+        </a>
+        <a href="#about" class="link-ghost">Our Story</a>
+      </div>
+    </div>
+    <div class="hero-visual reveal">
+      <div class="hero-stage" id="heroStage">
+        <img src="https://images.unsplash.com/photo-1567016432779-094069958ea5?w=1200&q=80" alt="Living room with cream sofa and terracotta accents">
+        <div class="hero-float-card">
+          <div class="dot"></div>
+          <div>
+            <b>Handcrafted Comfort</b>
+            <span>Since 2011 &middot; Studio made</span>
+          </div>
         </div>
-        <div class="nav-icons">
-            <span>🔍</span> <span>🛒</span> <span>👤</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CURATED / BENTO STATS -->
+<section class="section" id="about">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <h2>Curated Pieces for Contemporary Homes</h2>
+      <p>Elegant furniture for homes that value quality and quiet, considered style.</p>
+    </div>
+    <div class="bento reveal">
+      <div class="cell img1"><img src="https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=700&q=80" alt="Cream accent chair in sunlit corner"></div>
+      <div class="cell stat"><b>15+</b><span>Years of Experience</span></div>
+      <div class="cell img2"><img src="https://images.unsplash.com/photo-1493663284031-b7e3aefcae8e?w=700&q=80" alt="Living room styled with warm textures"></div>
+      <div class="cell stat"><b>25k+</b><span>Happy Customers</span></div>
+      <div class="cell stat"><b>40+</b><span>Signature Collections</span></div>
+      <div class="cell stat"><b>500+</b><span>Pieces Delivered Monthly</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- DISCOVER / CATEGORY -->
+<section class="section discover" id="collections">
+  <div class="wrap discover-grid">
+    <div class="reveal">
+      <p class="eyebrow">Collections</p>
+      <h2>Discover Timeless Furniture Designs</h2>
+      <p style="color:var(--ink-soft);font-size:15px;line-height:1.7;margin-top:14px;max-width:420px;">From statement pieces to everyday essentials, find furniture created to elevate every room.</p>
+
+      <div class="cat-list">
+        <div class="cat-item active" data-panel="0">
+          Curved &amp; Contemporary
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
         </div>
-    </nav>
-
-    <section class="hero">
-        <!-- The elegant Arch containing the 3D model -->
-        <div class="arch-container" id="arch">
-            <div id="canvas-container"></div>
+        <div class="cat-panel">
+          <div class="tag"></div>
+          <div>
+            <b>Scandinavian Style</b>
+            <span>Simple, functional and beautifully crafted — our Scandinavian pieces bring warmth and clarity to any space.</span>
+          </div>
         </div>
-        
-        <div class="hero-text" id="text-block">
-            <h1>Turn Your House Into<br>a Story Worth Living</h1>
-            <button class="explore-btn" id="btn" onclick="window.location.href='/shop'">Explore Collection</button>
+        <div class="cat-item" data-panel="1">Accent Chairs
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
         </div>
-    </section>
+        <div class="cat-item" data-panel="2">Modern Lounge Chairs
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+        </div>
+      </div>
+    </div>
 
-    <script>
-        // --- GSAP Smooth Entry Animations ---
-        gsap.to("#arch", { opacity: 1, scale: 1, duration: 1.5, ease: "power3.out", delay: 0.2 });
-        gsap.to("#text-block", { opacity: 1, y: 0, duration: 1.2, ease: "power3.out", delay: 0.6 });
-        gsap.to("#btn", { opacity: 1, duration: 1, ease: "power3.out", delay: 1 });
+    <div class="discover-visual reveal">
+      <div class="discover-stage" id="discoverStage">
+        <img src="https://images.unsplash.com/photo-1519947486511-46149fa0a254?w=900&q=80" alt="Wooden accent chair">
+      </div>
+      <div class="discover-index">02</div>
+    </div>
+  </div>
+</section>
 
-        // --- Three.js Setup (Elegant Ceramic Look) ---
-        const container = document.getElementById('canvas-container');
-        const scene = new THREE.Scene();
-        scene.background = new THREE.Color('#E8E4DB'); // Matches arch interior
+<!-- PRODUCTS -->
+<section class="section" id="products">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <h2>Where Comfort Meets Craftsmanship</h2>
+      <p>Discover timeless pieces created to complement every corner of your home.</p>
+    </div>
 
-        const camera = new THREE.PerspectiveCamera(45, container.clientWidth / container.clientHeight, 0.1, 100);
-        camera.position.z = 5;
+    <div class="product-grid reveal">
+      <div class="card">
+        <div class="card-img"><img src="https://images.unsplash.com/photo-1567538096630-e0c55bd6374c?w=500&q=80" alt="Nova Accent Chair"></div>
+        <div class="card-row">
+          <div><b>Nova Accent Chair</b><span class="price">$200</span></div>
+          <div class="cart-btn"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round"><path d="M6 6h15l-1.5 9h-12z"/><circle cx="9" cy="20" r="1"/><circle cx="18" cy="20" r="1"/></svg></div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-img"><img src="https://images.unsplash.com/photo-1598300042247-d088f8ab3a91?w=500&q=80" alt="Orion Luxe Chair"></div>
+        <div class="card-row">
+          <div><b>Orion Luxe Chair</b><span class="price">$260</span></div>
+          <div class="cart-btn"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round"><path d="M6 6h15l-1.5 9h-12z"/><circle cx="9" cy="20" r="1"/><circle cx="18" cy="20" r="1"/></svg></div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-img"><img src="https://images.unsplash.com/photo-1503602642458-232111445657?w=500&q=80" alt="Luna Modern Chair"></div>
+        <div class="card-row">
+          <div><b>Luna Modern Chair</b><span class="price">$220</span></div>
+          <div class="cart-btn"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round"><path d="M6 6h15l-1.5 9h-12z"/><circle cx="9" cy="20" r="1"/><circle cx="18" cy="20" r="1"/></svg></div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-img"><img src="https://images.unsplash.com/photo-1519710164239-da123dc03ef4?w=500&q=80" alt="Astra Comfort Chair"></div>
+        <div class="card-row">
+          <div><b>Astra Comfort Chair</b><span class="price">$215</span></div>
+          <div class="cart-btn"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round"><path d="M6 6h15l-1.5 9h-12z"/><circle cx="9" cy="20" r="1"/><circle cx="18" cy="20" r="1"/></svg></div>
+        </div>
+      </div>
+    </div>
 
-        const renderer = new THREE.WebGLRenderer({ antialias: true });
-        renderer.setSize(container.clientWidth, container.clientHeight);
-        renderer.setPixelRatio(window.devicePixelRatio);
-        container.appendChild(renderer.domElement);
+    <div class="carousel-nav reveal">
+      <button class="nav-circle" id="prodPrev"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M15 18l-6-6 6-6"/></svg></button>
+      <button class="nav-circle" id="prodNext"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M9 18l6-6-6-6"/></svg></button>
+    </div>
+  </div>
+</section>
 
-        // Soft, studio-style lighting
-        const ambientLight = new THREE.AmbientLight(0xffffff, 0.7);
-        scene.add(ambientLight);
+<!-- TESTIMONIALS -->
+<section class="section testi">
+  <div class="wrap testi-grid">
+    <div class="reveal">
+      <p class="eyebrow" style="margin-bottom:14px;">Testimonials</p>
+      <h2 style="margin-bottom:16px;">Stories from Our Happy Customers</h2>
+      <p style="color:var(--ink-soft);font-size:15px;line-height:1.7;margin-bottom:28px;max-width:400px;">See why design lovers trust our collections to bring elegance, warmth, and functionality into their homes.</p>
+      <span class="testi-badge">✓ Trusted</span>
+      <blockquote>"From the premium materials to the flawless finish, every detail feels carefully crafted. It adds elegance and warmth to the space, completely transforming the look and feel of our home."</blockquote>
+      <cite>David Anderson</cite>
+    </div>
+    <div class="stack reveal">
+      <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=300&q=80" alt="Happy customer portrait">
+      <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=300&q=80" alt="Happy customer portrait">
+      <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=300&q=80" alt="Happy customer portrait">
+    </div>
+  </div>
+</section>
 
-        const dirLight = new THREE.DirectionalLight(0xfffaed, 0.8);
-        dirLight.position.set(5, 5, 5);
-        scene.add(dirLight);
+<!-- NEWSLETTER + FOOTER -->
+<section class="newsletter" id="contact">
+  <div class="wrap news-inner">
+    <div class="news-visual reveal">
+      <img src="https://images.unsplash.com/photo-1567016432779-094069958ea5?w=300&q=80" alt="">
+      <img src="https://images.unsplash.com/photo-1493663284031-b7e3aefcae8e?w=300&q=80" alt="">
+      <img src="https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=300&q=80" alt="">
+    </div>
+    <div class="news-text reveal">
+      <h2>Be the First to Discover New Collections</h2>
+      <p>Join our community and enjoy early access to new collections, special offers and expert interior styling ideas.</p>
+      <form class="news-form" onsubmit="return false;">
+        <input type="email" placeholder="Enter your email" required>
+        <button type="submit" aria-label="Subscribe">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </button>
+      </form>
+    </div>
+  </div>
 
-        // Abstract elegant shape (Torus) with Terracotta color
-        const geometry = new THREE.TorusGeometry(1, 0.4, 64, 100);
-        const material = new THREE.MeshStandardMaterial({ 
-            color: 0xD36B4A, 
-            roughness: 0.3, 
-            metalness: 0.1 
-        });
-        const mesh = new THREE.Mesh(geometry, material);
-        scene.add(mesh);
+  <div class="wrap">
+    <div class="footer-cols">
+      <div class="foot-brand">
+        <a href="#" class="logo"><span class="logo-mark">T</span>Terrova</a>
+        <p>A modern furniture studio crafting elegant and functional home pieces.</p>
+      </div>
+      <div>
+        <h4>Features</h4>
+        <ul><li><a href="#">High-Quality Goods</a></li><li><a href="#">Latest Trends</a></li></ul>
+      </div>
+      <div>
+        <h4>Support Info</h4>
+        <ul><li><a href="#">FAQ</a></li><li><a href="#">Terms &amp; Conditions</a></li></ul>
+      </div>
+      <div>
+        <h4>Social Media</h4>
+        <ul><li><a href="#">Instagram</a></li><li><a href="#">Pinterest</a></li></ul>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>&copy; <%= new Date().getFullYear() %> Terrova. All rights reserved.</span>
+      <span>Built by Webglut.in</span>
+    </div>
+  </div>
+</section>
 
-        // Mouse interaction for slight 3D movement
-        let mouseX = 0; let mouseY = 0;
-        document.addEventListener('mousemove', (event) => {
-            mouseX = (event.clientX / window.innerWidth) * 2 - 1;
-            mouseY = -(event.clientY / window.innerHeight) * 2 + 1;
-        });
+<script>
+  // Scroll reveal
+  const revealEls = document.querySelectorAll('.reveal');
+  const io = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
+  }, { threshold: 0.15 });
+  revealEls.forEach(el=>io.observe(el));
 
-        function animate() {
-            requestAnimationFrame(animate);
-            // Smooth auto-rotation
-            mesh.rotation.y += 0.005;
-            mesh.rotation.x += 0.002;
-            
-            // Interactive mouse follow
-            mesh.position.x += (mouseX * 0.5 - mesh.position.x) * 0.05;
-            mesh.position.y += (mouseY * 0.5 - mesh.position.y) * 0.05;
+  // 3D tilt effect helper
+  function tilt(el, strength){
+    if(!el) return;
+    el.addEventListener('mousemove', (e)=>{
+      const r = el.getBoundingClientRect();
+      const x = (e.clientX - r.left) / r.width - 0.5;
+      const y = (e.clientY - r.top) / r.height - 0.5;
+      el.style.transform = `rotateY(${x*strength}deg) rotateX(${-y*strength}deg)`;
+    });
+    el.addEventListener('mouseleave', ()=>{ el.style.transform = 'rotateY(0deg) rotateX(0deg)'; });
+  }
+  tilt(document.getElementById('heroStage'), 6);
+  tilt(document.getElementById('discoverStage'), 5);
 
-            renderer.render(scene, camera);
-        }
-        animate();
+  // Category list interaction
+  document.querySelectorAll('.cat-item').forEach(item=>{
+    item.addEventListener('click', ()=>{
+      document.querySelectorAll('.cat-item').forEach(i=>i.classList.remove('active'));
+      item.classList.add('active');
+    });
+  });
 
-        window.addEventListener('resize', () => {
-            if(container) {
-                camera.aspect = container.clientWidth / container.clientHeight;
-                camera.updateProjectionMatrix();
-                renderer.setSize(container.clientWidth, container.clientHeight);
-            }
-        });
-    </script>
+  // Product carousel (simple visual scroll)
+  const grid = document.querySelector('.product-grid');
+  document.getElementById('prodNext')?.addEventListener('click', ()=> grid.scrollBy({left:280, behavior:'smooth'}));
+  document.getElementById('prodPrev')?.addEventListener('click', ()=> grid.scrollBy({left:-280, behavior:'smooth'}));
+</script>
+
 </body>
 </html>
