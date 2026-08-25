@@ -1,40 +1,313 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <%- include('partials/head') %>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Explore Shop - 3D Collection</title>
+    <style>
+        :root {
+            --fk-blue: #2874F0;
+            --meesho-pink: #F43397;
+            --bg-gray: #F1F3F6;
+            --card-border: #E5E7EB;
+            --text-dark: #1E293B;
+            --text-muted: #64748B;
+            --rating-green: #388E3C;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        body { background-color: var(--bg-gray); color: var(--text-dark); }
+
+        /* Navbar */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 40px;
+            background: #ffffff;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .logo { font-size: 24px; font-weight: 800; color: var(--fk-blue); text-decoration: none; }
+        .logo span { color: var(--meesho-pink); }
+        .nav-links a { margin-left: 20px; text-decoration: none; color: var(--text-dark); font-weight: 600; font-size: 15px; }
+
+        /* Top Filter / Category Bar */
+        .category-bar {
+            background: #ffffff;
+            padding: 12px 40px;
+            display: flex;
+            gap: 12px;
+            border-bottom: 1px solid var(--card-border);
+            overflow-x: auto;
+        }
+        .filter-chip {
+            padding: 8px 18px;
+            border-radius: 20px;
+            background: #F8FAFC;
+            border: 1px solid var(--card-border);
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+            white-space: nowrap;
+        }
+        .filter-chip:hover, .filter-chip.active {
+            background: var(--fk-blue);
+            color: #ffffff;
+            border-color: var(--fk-blue);
+        }
+
+        /* Product Grid Container */
+        .container {
+            max-width: 1300px;
+            margin: 25px auto;
+            padding: 0 20px;
+        }
+        .section-header {
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .section-header h2 { font-size: 22px; font-weight: 700; }
+
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 20px;
+        }
+
+        /* Flipkart / Meesho Style Product Card */
+        .product-card {
+            background: #ffffff;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid #EDEDED;
+            transition: transform 0.25s ease, box-shadow 0.25s ease;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            text-decoration: none;
+            color: inherit;
+        }
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.08);
+        }
+
+        /* 3D Spatial Badge */
+        .badge-3d {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: linear-gradient(135deg, var(--fk-blue), var(--meesho-pink));
+            color: #ffffff;
+            font-size: 11px;
+            font-weight: 700;
+            padding: 4px 10px;
+            border-radius: 12px;
+            z-index: 2;
+            letter-spacing: 0.5px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+        }
+
+        .img-wrapper {
+            position: relative;
+            width: 100%;
+            height: 280px;
+            background: #FAFAFA;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+        .img-wrapper img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+        .product-card:hover .img-wrapper img {
+            transform: scale(1.05);
+        }
+
+        .product-info {
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+        }
+        .brand-name {
+            font-size: 12px;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+        .product-title {
+            font-size: 15px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .rating-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 3px;
+            background: var(--rating-green);
+            color: #fff;
+            padding: 2px 7px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 700;
+            width: fit-content;
+            margin-bottom: 8px;
+        }
+
+        .price-row {
+            display: flex;
+            align-items: baseline;
+            gap: 8px;
+            margin-top: auto;
+        }
+        .selling-price { font-size: 18px; font-weight: 800; color: var(--text-dark); }
+        .original-price { font-size: 13px; text-decoration: line-through; color: var(--text-muted); }
+        .discount-tag { font-size: 13px; font-weight: 700; color: var(--meesho-pink); }
+
+        .btn-view {
+            margin-top: 12px;
+            width: 100%;
+            padding: 9px;
+            border: none;
+            border-radius: 6px;
+            background: #F0F5FF;
+            color: var(--fk-blue);
+            font-weight: 700;
+            font-size: 13px;
+            cursor: pointer;
+            transition: 0.2s;
+            text-align: center;
+        }
+        .product-card:hover .btn-view {
+            background: var(--fk-blue);
+            color: #ffffff;
+        }
+    </style>
 </head>
 <body>
-  <%- include('partials/nav') %>
 
-  <section class="shop-head">
-    <p class="shop-head__eyebrow">FULL CATALOGUE</p>
-    <h1><%= productCount %> pieces</h1>
-    <div class="filters">
-      <% categories.forEach(function(c) { %>
-        <a href="/shop<%= c === 'All' ? '' : '?category=' + encodeURIComponent(c) %>"
-           class="filters__pill <%= c === activeCategory ? 'is-active' : '' %>"><%= c %></a>
-      <% }); %>
+    <!-- Header Navigation -->
+    <header>
+        <a href="/" class="logo">3D<span>Store</span></a>
+        <div class="nav-links">
+            <a href="/">Home</a>
+            <a href="/shop" style="color: var(--fk-blue);">Shop</a>
+            <a href="/cart">Cart 🛒</a>
+        </div>
+    </header>
+
+    <!-- Top Categories -->
+    <div class="category-bar">
+        <button class="filter-chip active">All Products</button>
+        <button class="filter-chip">Men's Fashion</button>
+        <button class="filter-chip">Footwear</button>
+        <button class="filter-chip">Accessories</button>
+        <button class="filter-chip">3D AR Ready</button>
     </div>
-  </section>
 
-  <section class="grid">
-    <% products.forEach(function(p, i) { %>
-      <article class="card" style="--delay: <%= i % 8 %>">
-        <div class="card__frame">
-          <img src="https://picsum.photos/seed/<%= p.seed %>/640/800" alt="<%= p.name %>" loading="lazy" />
-          <% if (p.threeD) { %><span class="card__tag">3D READY</span><% } %>
+    <!-- Main Content -->
+    <div class="container">
+        <div class="section-header">
+            <h2>Trending 3D Catalog</h2>
+            <span style="font-size: 14px; color: var(--text-muted);">Showing live 3D models</span>
         </div>
-        <div class="card__meta">
-          <span class="card__sku"><%= p.sku %></span>
-          <h3><%= p.name %></h3>
-          <p><%= p.fabric %> · <%= p.colorway %></p>
-          <span class="card__price">₹<%= p.price.toLocaleString('en-IN') %></span>
-        </div>
-      </article>
-    <% }); %>
-  </section>
 
-  <%- include('partials/footer') %>
-  <script src="/js/main.js"></script>
+        <div class="product-grid">
+            
+            <!-- Sample Product 1 -->
+            <a href="/product" class="product-card">
+                <span class="badge-3d">✨ 3D / Video</span>
+                <div class="img-wrapper">
+                    <img src="https://picsum.photos/400/500?random=1" alt="Oversized Cotton Tee">
+                </div>
+                <div class="product-info">
+                    <span class="brand-name">Urban Edge</span>
+                    <h3 class="product-title">Oversized Heavyweight Cotton Tee</h3>
+                    <div class="rating-pill">4.4 ★</div>
+                    <div class="price-row">
+                        <span class="selling-price">₹599</span>
+                        <span class="original-price">₹1,499</span>
+                        <span class="discount-tag">60% off</span>
+                    </div>
+                    <div class="btn-view">View in 3D & Buy</div>
+                </div>
+            </a>
+
+            <!-- Sample Product 2 -->
+            <a href="/product" class="product-card">
+                <span class="badge-3d">✨ 3D / Video</span>
+                <div class="img-wrapper">
+                    <img src="https://picsum.photos/400/500?random=2" alt="Slim Fit Casual Shirt">
+                </div>
+                <div class="product-info">
+                    <span class="brand-name">Vogue Studio</span>
+                    <h3 class="product-title">Formal Striped Slim Fit Shirt</h3>
+                    <div class="rating-pill">4.6 ★</div>
+                    <div class="price-row">
+                        <span class="selling-price">₹899</span>
+                        <span class="original-price">₹2,299</span>
+                        <span class="discount-tag">61% off</span>
+                    </div>
+                    <div class="btn-view">View in 3D & Buy</div>
+                </div>
+            </a>
+
+            <!-- Sample Product 3 -->
+            <a href="/product" class="product-card">
+                <span class="badge-3d">✨ 3D / Video</span>
+                <div class="img-wrapper">
+                    <img src="https://picsum.photos/400/500?random=3" alt="Sneakers">
+                </div>
+                <div class="product-info">
+                    <span class="brand-name">AeroStride</span>
+                    <h3 class="product-title">Chunky Spatial Mesh Sneakers</h3>
+                    <div class="rating-pill">4.2 ★</div>
+                    <div class="price-row">
+                        <span class="selling-price">₹1,249</span>
+                        <span class="original-price">₹3,999</span>
+                        <span class="discount-tag">68% off</span>
+                    </div>
+                    <div class="btn-view">View in 3D & Buy</div>
+                </div>
+            </a>
+
+            <!-- Sample Product 4 -->
+            <a href="/product" class="product-card">
+                <span class="badge-3d">✨ 3D / Video</span>
+                <div class="img-wrapper">
+                    <img src="https://picsum.photos/400/500?random=4" alt="Bomber Jacket">
+                </div>
+                <div class="product-info">
+                    <span class="brand-name">StreetVibe</span>
+                    <h3 class="product-title">Matte Finish Streetwear Bomber</h3>
+                    <div class="rating-pill">4.7 ★</div>
+                    <div class="price-row">
+                        <span class="selling-price">₹1,799</span>
+                        <span class="original-price">₹4,499</span>
+                        <span class="discount-tag">60% off</span>
+                    </div>
+                    <div class="btn-view">View in 3D & Buy</div>
+                </div>
+            </a>
+
+        </div>
+    </div>
+
 </body>
 </html>
