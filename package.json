@@ -1,0 +1,14 @@
+{
+  "name": "webglut-3d-clothing-sample",
+  "version": "1.0.0",
+  "description": "Premium 3D-animated clothing store demo built for a Webglut client pitch",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.19.2",
+    "ejs": "^3.1.10"
+  }
+}
