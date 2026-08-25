@@ -8,6 +8,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Three.js for 3D View -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <!-- OrbitControls for Touch/Mouse Interaction -->
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
 
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
@@ -15,65 +17,43 @@
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; -webkit-tap-highlight-color: transparent; }
 
         body {
-            background-color: #f4f5f7; /* Background around the app */
+            background-color: #f4f5f7;
             display: flex;
             justify-content: center;
         }
 
-        /* App Container to simulate mobile screen on desktop */
         .app-container {
             width: 100%;
-            max-width: 414px; /* iPhone Pro Max width */
+            max-width: 414px;
             background: #ffffff;
             min-height: 100vh;
             position: relative;
             box-shadow: 0 0 20px rgba(0,0,0,0.1);
-            padding-bottom: 90px; /* Space for bottom bar */
+            padding-bottom: 90px;
         }
 
         /* Top Header */
         .app-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 20px;
-            background: #ffffff;
-            position: sticky;
-            top: 0;
-            z-index: 10;
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 20px; background: #ffffff; position: sticky; top: 0; z-index: 10;
         }
         .app-header i { font-size: 20px; color: #1a1f36; cursor: pointer; }
         .header-icons { display: flex; gap: 20px; position: relative; }
         .cart-badge {
-            position: absolute;
-            top: -5px; right: -8px;
-            background: #ff4757; color: white;
-            font-size: 10px; font-weight: bold;
-            padding: 2px 5px; border-radius: 10px;
+            position: absolute; top: -5px; right: -8px; background: #ff4757; color: white;
+            font-size: 10px; font-weight: bold; padding: 2px 5px; border-radius: 10px;
         }
 
         /* Product Media Section */
         .media-section {
-            display: flex;
-            padding: 0 20px;
-            gap: 15px;
-            height: 320px;
+            display: flex; padding: 0 20px; gap: 15px; height: 320px;
         }
 
-        /* Thumbnails (Left side like the image) */
-        .thumbnails {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            width: 60px;
-        }
+        /* Thumbnails */
+        .thumbnails { display: flex; flex-direction: column; gap: 10px; width: 60px; }
         .thumb {
-            width: 60px; height: 60px;
-            border-radius: 10px;
-            border: 2px solid transparent;
-            cursor: pointer;
-            overflow: hidden;
-            display: flex; justify-content: center; align-items: center;
+            width: 60px; height: 60px; border-radius: 10px; border: 2px solid transparent;
+            cursor: pointer; overflow: hidden; display: flex; justify-content: center; align-items: center;
             background: #f8f9fa;
         }
         .thumb.active { border-color: #2f9c8f; }
@@ -82,20 +62,11 @@
 
         /* Main Media Display */
         .main-media {
-            flex: 1;
-            background: #f8f9fa;
-            border-radius: 15px;
-            overflow: hidden;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            position: relative;
+            flex: 1; background: #f8f9fa; border-radius: 15px; overflow: hidden;
+            display: flex; justify-content: center; align-items: center; position: relative;
         }
-        .main-media img, .main-media video {
-            width: 100%; height: 100%;
-            object-fit: cover;
-        }
-        #view-3d { width: 100%; height: 100%; display: none; }
+        .main-media img, .main-media video { width: 100%; height: 100%; object-fit: cover; }
+        #view-3d { width: 100%; height: 100%; display: none; outline: none; }
         #view-video { display: none; }
 
         /* Product Info */
@@ -103,71 +74,38 @@
         .store-name { color: #8a8d93; font-size: 13px; margin-bottom: 8px; display: flex; align-items: center; gap: 5px; }
         .product-title { font-size: 20px; font-weight: 700; color: #1a1f36; line-height: 1.4; margin-bottom: 12px; }
         
-        /* Ratings Row */
-        .rating-row {
-            display: flex; align-items: center; gap: 15px;
-            font-size: 13px; color: #8a8d93;
-            margin-bottom: 25px;
-        }
+        .rating-row { display: flex; align-items: center; gap: 15px; font-size: 13px; color: #8a8d93; margin-bottom: 25px; }
         .rating-row span { display: flex; align-items: center; gap: 5px; }
         .star { color: #f39c12; }
 
         /* Tabs */
-        .tabs {
-            display: flex; gap: 30px;
-            border-bottom: 1px solid #eee;
-            margin-bottom: 20px;
-        }
-        .tab {
-            padding-bottom: 10px;
-            font-size: 15px; font-weight: 600;
-            color: #8a8d93; cursor: pointer;
-            position: relative;
-        }
+        .tabs { display: flex; gap: 30px; border-bottom: 1px solid #eee; margin-bottom: 20px; }
+        .tab { padding-bottom: 10px; font-size: 15px; font-weight: 600; color: #8a8d93; cursor: pointer; position: relative; }
         .tab.active { color: #1a1f36; }
-        .tab.active::after {
-            content: ''; position: absolute;
-            bottom: -1px; left: 0; width: 100%;
-            height: 2px; background: #2f9c8f;
-        }
+        .tab.active::after { content: ''; position: absolute; bottom: -1px; left: 0; width: 100%; height: 2px; background: #2f9c8f; }
 
         /* Details */
-        .specs {
-            display: flex; gap: 40px;
-            font-size: 14px; margin-bottom: 15px;
-        }
+        .specs { display: flex; gap: 40px; font-size: 14px; margin-bottom: 15px; }
         .spec-item { color: #8a8d93; }
         .spec-value { color: #1a1f36; font-weight: 600; margin-left: 5px; }
 
         /* Bottom Action Bar */
         .bottom-bar {
-            position: fixed;
-            bottom: 0;
-            width: 100%;
-            max-width: 414px;
-            background: #ffffff;
-            padding: 15px 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-top: 1px solid #eee;
-            z-index: 100;
+            position: fixed; bottom: 0; width: 100%; max-width: 414px; background: #ffffff;
+            padding: 15px 20px; display: flex; justify-content: space-between; align-items: center;
+            border-top: 1px solid #eee; z-index: 100;
         }
         .price-area p { font-size: 12px; color: #8a8d93; margin-bottom: 2px; }
         .price-area h2 { font-size: 24px; color: #2f9c8f; font-weight: 700; }
         
         .action-buttons { display: flex; gap: 10px; align-items: center; }
         .qty-btn {
-            background: #e8f5f3; color: #2f9c8f;
-            border: none; padding: 12px 15px;
-            border-radius: 10px; font-weight: 600; font-size: 16px;
-            display: flex; align-items: center; gap: 8px;
+            background: #e8f5f3; color: #2f9c8f; border: none; padding: 12px 15px;
+            border-radius: 10px; font-weight: 600; font-size: 16px; display: flex; align-items: center; gap: 8px;
         }
         .buy-btn {
-            background: #1a1f36; color: #ffffff;
-            border: none; padding: 14px 30px;
-            border-radius: 10px; font-weight: 600; font-size: 16px;
-            cursor: pointer;
+            background: #1a1f36; color: #ffffff; border: none; padding: 14px 30px;
+            border-radius: 10px; font-weight: 600; font-size: 16px; cursor: pointer;
         }
     </style>
 </head>
@@ -189,7 +127,6 @@
 
         <!-- Media Section -->
         <div class="media-section">
-            <!-- Thumbnails for Switching -->
             <div class="thumbnails">
                 <div class="thumb active" onclick="switchMedia('image', this)">
                     <img src="https://picsum.photos/400/500" alt="Thumb 1">
@@ -202,7 +139,6 @@
                 </div>
             </div>
 
-            <!-- Main Display -->
             <div class="main-media" id="media-container">
                 <img id="view-image" src="https://picsum.photos/400/500" alt="Product Image">
                 <div id="view-3d"></div>
@@ -236,7 +172,7 @@
             </div>
             
             <p style="font-size: 14px; color: #8a8d93; line-height: 1.6; margin-top: 10px;">
-                Premium quality cotton blend fabric. Try our interactive 3D view to see the actual fit and explore the design from all angles.
+                Premium quality cotton blend fabric. Try our interactive 3D view to see the actual fit and explore the design from all angles. Pinch to zoom and swipe to rotate.
             </p>
         </div>
 
@@ -253,9 +189,8 @@
         </div>
     </div>
 
-    <!-- Media Switcher & 3D Script -->
+    <!-- Media Switcher & Interactive 3D Script -->
     <script>
-        // Media Switcher Logic
         function switchMedia(type, element) {
             document.getElementById('view-image').style.display = 'none';
             document.getElementById('view-3d').style.display = 'none';
@@ -265,18 +200,18 @@
             thumbs.forEach(t => t.classList.remove('active'));
             element.classList.add('active');
 
-            document.getElementById('view-' + type).style.display = type === '3d' ? 'block' : 'block';
+            document.getElementById('view-' + type).style.display = 'block';
 
             if(type !== 'video') {
                 document.getElementById('view-video').pause();
             }
             if(type === '3d' && !renderer) {
-                init3D(); // Initialize 3D only when clicked for performance
+                init3D();
             }
         }
 
-        // Three.js 3D Initialization
-        let renderer, scene, camera, mesh;
+        let renderer, scene, camera, mesh, controls;
+
         function init3D() {
             const container = document.getElementById('view-3d');
             scene = new THREE.Scene();
@@ -289,13 +224,20 @@
             renderer.setSize(container.clientWidth, container.clientHeight);
             container.appendChild(renderer.domElement);
 
+            // --- ORBIT CONTROLS ADDED HERE ---
+            controls = new THREE.OrbitControls(camera, renderer.domElement);
+            controls.enableDamping = true; // स्मूथ रोटेशन के लिए
+            controls.dampingFactor = 0.05;
+            controls.enableZoom = true; // ज़ूम इन/आउट चालू करने के लिए
+            controls.autoRotate = true; // अपने आप घूमने के लिए
+            controls.autoRotateSpeed = 2.0;
+
             const ambientLight = new THREE.AmbientLight(0xffffff, 0.8);
             scene.add(ambientLight);
             const dirLight = new THREE.DirectionalLight(0xffffff, 0.6);
             dirLight.position.set(5, 5, 5);
             scene.add(dirLight);
 
-            // Dummy 3D Object (Replace with actual GLTF loader later)
             const geometry = new THREE.TorusKnotGeometry(0.8, 0.3, 100, 16);
             const material = new THREE.MeshStandardMaterial({ color: 0x2f9c8f, roughness: 0.2, metalness: 0.5 });
             mesh = new THREE.Mesh(geometry, material);
@@ -306,10 +248,12 @@
 
         function animate() {
             requestAnimationFrame(animate);
-            if(mesh) {
-                mesh.rotation.y += 0.01;
-                mesh.rotation.x += 0.005;
+            
+            // कंट्रोल्स को हर फ्रेम में अपडेट करना ज़रूरी है
+            if(controls) {
+                controls.update(); 
             }
+            
             renderer.render(scene, camera);
         }
     </script>
