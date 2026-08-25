@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <%- include('partials/head') %>
+</head>
+<body>
+  <%- include('partials/nav') %>
+
+  <section class="shop-head">
+    <p class="shop-head__eyebrow">FULL CATALOGUE</p>
+    <h1><%= productCount %> pieces</h1>
+    <div class="filters">
+      <% categories.forEach(function(c) { %>
+        <a href="/shop<%= c === 'All' ? '' : '?category=' + encodeURIComponent(c) %>"
+           class="filters__pill <%= c === activeCategory ? 'is-active' : '' %>"><%= c %></a>
+      <% }); %>
+    </div>
+  </section>
+
+  <section class="grid">
+    <% products.forEach(function(p, i) { %>
+      <article class="card" style="--delay: <%= i % 8 %>">
+        <div class="card__frame">
+          <img src="https://picsum.photos/seed/<%= p.seed %>/640/800" alt="<%= p.name %>" loading="lazy" />
+          <% if (p.threeD) { %><span class="card__tag">3D READY</span><% } %>
+        </div>
+        <div class="card__meta">
+          <span class="card__sku"><%= p.sku %></span>
+          <h3><%= p.name %></h3>
+          <p><%= p.fabric %> · <%= p.colorway %></p>
+          <span class="card__price">₹<%= p.price.toLocaleString('en-IN') %></span>
+        </div>
+      </article>
+    <% }); %>
+  </section>
+
+  <%- include('partials/footer') %>
+  <script src="/js/main.js"></script>
+</body>
+</html>

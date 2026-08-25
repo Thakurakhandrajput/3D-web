@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <%- include('partials/head') %>
+</head>
+<body>
+  <%- include('partials/nav') %>
+
+  <section class="hero">
+    <canvas id="ribbon" class="hero__canvas" aria-hidden="true"></canvas>
+    <p class="hero__eyebrow">SS26 — 3D CAPSULE — <%= productCount %> SKU CATALOGUE</p>
+    <h1 class="hero__title">
+      <span class="hero__line hero__line--left">DIGITAL</span>
+      <span class="hero__line hero__line--right">COUTURE</span>
+    </h1>
+    <p class="hero__sub">Drag the ribbon. It's rendered live in your browser — the same engine that will carry your garments into 3D try-on.</p>
+    <div class="hero__actions">
+      <a href="/shop" class="btn btn--fill">Enter the shop</a>
+      <a href="#capsule" class="btn btn--ghost">See the capsule</a>
+    </div>
+  </section>
+
+  <section class="marquee" aria-hidden="true">
+    <div class="marquee__track">
+      <span>50 GARMENTS</span><span>·</span>
+      <span>3D TRY-ON</span><span>·</span>
+      <span>AI MODEL FILM</span><span>·</span>
+      <span>BUILT ON NODE.JS</span><span>·</span>
+      <span>50 GARMENTS</span><span>·</span>
+      <span>3D TRY-ON</span><span>·</span>
+      <span>AI MODEL FILM</span><span>·</span>
+      <span>BUILT ON NODE.JS</span><span>·</span>
+    </div>
+  </section>
+
+  <section class="capsule" id="capsule">
+    <div class="capsule__head">
+      <h2>The capsule, rendering live</h2>
+      <p>A slice of the 50-piece catalogue. Every card below is pulled from one data file — add your real SKUs and photography and the grid scales with no layout work.</p>
+    </div>
+    <div class="capsule__grid">
+      <% featured.forEach(function(p, i) { %>
+        <article class="card" style="--delay: <%= i %>">
+          <div class="card__frame">
+            <img src="https://picsum.photos/seed/<%= p.seed %>/640/800" alt="<%= p.name %>" loading="lazy" />
+            <% if (p.threeD) { %><span class="card__tag">3D READY</span><% } %>
+          </div>
+          <div class="card__meta">
+            <span class="card__sku"><%= p.sku %></span>
+            <h3><%= p.name %></h3>
+            <p><%= p.fabric %> · <%= p.colorway %></p>
+            <span class="card__price">₹<%= p.price.toLocaleString('en-IN') %></span>
+          </div>
+        </article>
+      <% }); %>
+    </div>
+    <a href="/shop" class="btn btn--fill capsule__more">View all <%= productCount %> pieces</a>
+  </section>
+
+  <section class="pitch">
+    <div class="pitch__col">
+      <span class="pitch__num">01</span>
+      <h3>3D on every product page</h3>
+      <p>Garments render as rotating 3D previews instead of static photos — built for the try-on layer you asked about.</p>
+    </div>
+    <div class="pitch__col">
+      <span class="pitch__num">02</span>
+      <h3>Catalogue that scales</h3>
+      <p>This demo ships 50 SKUs from one data file. Real inventory, sizes and stock plug into the same structure.</p>
+    </div>
+    <div class="pitch__col">
+      <span class="pitch__num">03</span>
+      <h3>AI model film, slotted in</h3>
+      <p>The hero and product-detail sections are built with a video slot ready — drop your AI-generated model footage in at build stage.</p>
+    </div>
+  </section>
+
+  <%- include('partials/footer') %>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="/js/hero3d.js"></script>
+  <script src="/js/main.js"></script>
+</body>
+</html>
