@@ -1,0 +1,181 @@
+<%- include('partials/header') %> <!-- अगर आपका हेडर है तो -->
+
+<style>
+  body {
+    background-color: #f1f3f6; /* Flipkart jaisa background */
+    font-family: Arial, sans-serif;
+  }
+  .product-container {
+    display: flex;
+    flex-wrap: wrap;
+    max-width: 1200px;
+    margin: 20px auto;
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  }
+  .left-column {
+    flex: 1;
+    min-width: 300px;
+    padding: 20px;
+    border-right: 1px solid #f0f0f0;
+  }
+  .right-column {
+    flex: 1.5;
+    min-width: 300px;
+    padding: 20px;
+  }
+  
+  /* Media Viewer Styling */
+  .media-viewer {
+    height: 400px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    background: #fafafa;
+    overflow: hidden;
+  }
+  .media-viewer img, .media-viewer video {
+    max-width: 100%;
+    max-height: 100%;
+  }
+  
+  /* Buttons */
+  .media-tabs {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+  }
+  .media-tabs button {
+    padding: 10px 15px;
+    border: 2px solid #2874f0;
+    background: white;
+    color: #2874f0;
+    font-weight: bold;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: 0.3s;
+  }
+  .media-tabs button:hover, .media-tabs button.active {
+    background: #2874f0;
+    color: white;
+  }
+  
+  /* Product Details */
+  .product-title {
+    font-size: 24px;
+    font-weight: 500;
+    color: #212121;
+  }
+  .product-price {
+    font-size: 28px;
+    font-weight: bold;
+    color: #000;
+    margin: 15px 0;
+  }
+  .product-price span {
+    font-size: 16px;
+    color: #388e3c; /* Green offer text */
+    margin-left: 10px;
+  }
+  .buy-buttons {
+    display: flex;
+    gap: 15px;
+    margin-top: 20px;
+  }
+  .btn-cart {
+    background: #ff9f00;
+    color: white;
+    padding: 15px 30px;
+    border: none;
+    font-size: 16px;
+    font-weight: bold;
+    border-radius: 4px;
+    cursor: pointer;
+    flex: 1;
+  }
+  .btn-buy {
+    background: #fb641b;
+    color: white;
+    padding: 15px 30px;
+    border: none;
+    font-size: 16px;
+    font-weight: bold;
+    border-radius: 4px;
+    cursor: pointer;
+    flex: 1;
+  }
+</style>
+
+<div class="product-container">
+  <!-- Left Side: Image/3D/Video -->
+  <div class="left-column">
+    <div class="media-viewer" id="media-viewer">
+      <!-- Default Image -->
+      <img id="view-image" src="https://picsum.photos/400/500" alt="Product Image">
+      
+      <!-- 3D Canvas (Hidden by default) -->
+      <canvas id="view-3d" style="display: none; width: 100%; height: 100%;"></canvas>
+      
+      <!-- Video (Hidden by default) -->
+      <video id="view-video" controls style="display: none;">
+        <source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4">
+        Your browser does not support HTML video.
+      </video>
+    </div>
+
+    <!-- Tabs to switch views -->
+    <div class="media-tabs">
+      <button class="active" onclick="switchMedia('image', this)">📸 Image</button>
+      <button onclick="switchMedia('3d', this)">🧊 3D View</button>
+      <button onclick="switchMedia('video', this)">🎥 Video</button>
+    </div>
+  </div>
+
+  <!-- Right Side: Details -->
+  <div class="right-column">
+    <h1 class="product-title">Awesome 3D T-Shirt - Slim Fit</h1>
+    <p style="color: #878787; font-weight: bold;">⭐ 4.5 (2,345 Ratings)</p>
+    
+    <div class="product-price">
+      ₹499 <span>75% off</span>
+    </div>
+    
+    <p style="color: #212121; font-size: 14px; line-height: 1.6;">
+      यह एक प्रीमियम क्वालिटी का प्रोडक्ट है। आप इसे 3D में घुमा कर देख सकते हैं और वीडियो में इसकी असली फिटिंग चेक कर सकते हैं।
+    </p>
+
+    <div class="buy-buttons">
+      <button class="btn-cart">🛒 ADD TO CART</button>
+      <button class="btn-buy">⚡ BUY NOW</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  function switchMedia(type, btn) {
+    // Hide everything
+    document.getElementById('view-image').style.display = 'none';
+    document.getElementById('view-3d').style.display = 'none';
+    document.getElementById('view-video').style.display = 'none';
+
+    // Remove active class from all buttons
+    let buttons = document.querySelectorAll('.media-tabs button');
+    buttons.forEach(b => b.classList.remove('active'));
+
+    // Show selected and make button active
+    document.getElementById('view-' + type).style.display = 'block';
+    btn.classList.add('active');
+
+    // Pause video if switching away
+    if(type !== 'video') {
+      document.getElementById('view-video').pause();
+    }
+  }
+</script>
+
+<%- include('partials/footer') %> <!-- अगर आपका फूटर है तो -->
