@@ -50,26 +50,23 @@
   .reveal{opacity:0;transform:translateY(28px);transition:opacity .8s cubic-bezier(.22,1,.36,1), transform .8s cubic-bezier(.22,1,.36,1);}
   .reveal.in{opacity:1;transform:translateY(0);}
 
-  /* page load intro (runs once on load, before scroll-reveal takes over) */
+  /* page load intro */
   .intro-up{opacity:0;transform:translateY(36px);animation:introUp 1s cubic-bezier(.22,1,.36,1) forwards;}
   .intro-scale{opacity:0;transform:scale(0.82) translateY(30px) rotateX(10deg);transform-origin:center bottom;animation:introScale 1.3s cubic-bezier(.16,1,.3,1) forwards;}
   @keyframes introUp{to{opacity:1;transform:translateY(0);}}
   @keyframes introScale{to{opacity:1;transform:scale(1) translateY(0) rotateX(0deg);}}
 
-  /* 3D "rise and settle" — driven directly by scroll position (see updateSettle() in
-     the script below), not a one-shot trigger. As you scroll, the card physically
-     travels up from below and tilts flat into its resting spot in real time, so the
-     motion is glued to the scroll gesture itself and always visible. */
+  /* 3D "rise and settle" */
   .reveal-settle-parent{perspective:1200px;}
   .reveal-settle{
     opacity:0;
     transform:translateY(130px) scale(0.88) rotateX(18deg);
     transform-origin:center bottom;
-    transition:transform .06s linear, opacity .06s linear;
+    transition:transform .1s ease-out, opacity .1s ease-out; /* thoda smooth kiya gaya */
     will-change:transform, opacity;
   }
 
-  /* stagger the hero copy children so text opens up one line at a time */
+  /* stagger the hero copy children */
   .hero-copy > *{opacity:0;transform:translateY(24px);animation:introUp .9s cubic-bezier(.22,1,.36,1) forwards;}
   .hero-copy > .hero-eyebrow{animation-delay:.05s;}
   .hero-copy > h1{animation-delay:.18s;}
@@ -189,7 +186,7 @@
     .bento .img2{grid-column:2/3;grid-row:1/3;}
   }
 
-  /* ---------------- DISCOVER (category + carousel) ---------------- */
+  /* ---------------- DISCOVER ---------------- */
   .discover{background:var(--cream-2);}
   .discover-grid{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center;}
   .cat-list{margin-top:30px;border-top:1px solid var(--line);}
@@ -222,12 +219,21 @@
   @media(max-width:900px){.discover-grid{grid-template-columns:1fr;}.discover-stage{height:320px;}}
 
   /* ---------------- PRODUCTS ---------------- */
+  /* Scroll functionality add kar diya gaya hai  */
   .product-grid{
-    display:grid;grid-template-columns:repeat(4,1fr);gap:22px;perspective:1200px;
+    display:flex;
+    overflow-x:auto;
+    gap:22px;
+    perspective:1200px;
+    scrollbar-width: none; /* Hide scrollbar for clean look */
+    scroll-behavior: smooth;
   }
+  .product-grid::-webkit-scrollbar { display: none; }
   .card{
     background:var(--white);border-radius:18px;padding:14px;
     perspective:1000px;
+    min-width: 280px; /* Force width */
+    flex-shrink: 0;
   }
   .card-img{
     border-radius:12px;overflow:hidden;height:230px;position:relative;background:#EFE9DD;
@@ -249,12 +255,11 @@
   .nav-circle{
     width:40px;height:40px;border-radius:50%;border:1px solid var(--line);background:transparent;
     display:flex;align-items:center;justify-content:center;transition:all .3s ease;
+    cursor: pointer;
   }
   .nav-circle:hover{background:var(--ink);border-color:var(--ink);}
   .nav-circle:hover svg{stroke:#fff;}
   .nav-circle svg{width:15px;height:15px;stroke:var(--ink);}
-  @media(max-width:900px){.product-grid{grid-template-columns:repeat(2,1fr);}}
-  @media(max-width:520px){.product-grid{grid-template-columns:1fr;}}
 
   /* ---------------- TESTIMONIALS ---------------- */
   .testi{background:var(--cream-2);}
@@ -549,7 +554,12 @@
   // Scroll reveal — plain fade-up for text only (one-shot on entering view)
   const revealEls = document.querySelectorAll('.reveal');
   const io = new IntersectionObserver((entries)=>{
-    entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
+    entries.forEach(e=>{ 
+      if(e.isIntersecting){ 
+        e.target.classList.add('in'); 
+        io.unobserve(e.target); 
+      } 
+    });
   }, { threshold: 0.15 });
   revealEls.forEach(el=>io.observe(el));
 
@@ -567,8 +577,7 @@
   tilt(document.getElementById('heroStage'), 6);
   tilt(document.getElementById('discoverStage'), 5);
 
-  // Scroll parallax — hero (and discover) image drifts inside its frame as you scroll,
-  // giving the "sofa moves down" depth effect from the reference video.
+  // Scroll parallax — hero (and discover) image drifts inside its frame as you scroll
   const heroSection = document.querySelector('.hero');
   const heroImg = document.getElementById('heroImg');
   const discoverSection = document.querySelector('.discover');
@@ -580,14 +589,12 @@
   function updateParallax(){
     if(heroSection && heroImg){
       const rect = heroSection.getBoundingClientRect();
-      // progress: 0 when hero top is at viewport top, 1 once fully scrolled past
       const progress = clamp(-rect.top / (rect.height || 1), 0, 1);
       heroImg.style.transform = `translateY(${progress * 70}px) scale(1.06)`;
     }
     if(discoverSection && discoverImg){
       const rect = discoverSection.getBoundingClientRect();
       const vh = window.innerHeight || document.documentElement.clientHeight;
-      // progress: -1 (section below viewport) .. 0 (centered) .. 1 (above viewport)
       const centerOffset = (rect.top + rect.height / 2 - vh / 2) / (vh / 2 + rect.height / 2);
       const progress = clamp(centerOffset, -1, 1);
       discoverImg.style.transform = `translateY(${progress * -40}px) scale(1.08)`;
@@ -598,17 +605,15 @@
   window.addEventListener('resize', updateParallax);
   updateParallax();
 
-  // Scroll-scrubbed "rise and settle" — each card's tilt/scale/position is a direct
-  // function of how far it has traveled up through the viewport, so the motion tracks
-  // the scroll gesture 1:1 (no one-shot trigger to miss on a fast flick).
+  // Scroll-scrubbed "rise and settle"
   const settleEls = Array.from(document.querySelectorAll('.reveal-settle'));
   const easeOut = p => 1 - Math.pow(1 - p, 3);
 
   function settleProgress(el, startVH, endVH){
     const rect = el.getBoundingClientRect();
     const vh = window.innerHeight || document.documentElement.clientHeight;
-    const start = vh * startVH; // rect.top value where progress = 0 (card still low / off-screen)
-    const end = vh * endVH;     // rect.top value where progress = 1 (card settled)
+    const start = vh * startVH; 
+    const end = vh * endVH;     
     return clamp((start - rect.top) / (start - end), 0, 1);
   }
 
@@ -618,7 +623,6 @@
       const staggerKids = el.querySelectorAll('.stagger');
       if(staggerKids.length){
         staggerKids.forEach((kid, i)=>{
-          // each card in the row settles slightly after the previous one
           const kp = easeOut(settleProgress(el, 1.05 + i*0.05, 0.62 + i*0.05));
           kid.style.opacity = kp;
           kid.style.transform = `translateY(${(1-kp)*70}px) scale(${0.92 + kp*0.08})`;
@@ -633,10 +637,17 @@
   }
 
   window.addEventListener('scroll', ()=>{
-    if(!ticking){ requestAnimationFrame(()=>{ updateParallax(); updateSettle(); ticking = false; }); ticking = true; }
+    if(!ticking){ 
+      requestAnimationFrame(()=>{ 
+        updateParallax(); 
+        updateSettle(); 
+        ticking = false; 
+      }); 
+      ticking = true; 
+    }
   }, { passive: true });
   window.addEventListener('resize', updateSettle);
-  updateSettle();
+  updateSettle(); // trigger once on load
 
   // Category list interaction
   document.querySelectorAll('.cat-item').forEach(item=>{
@@ -646,10 +657,10 @@
     });
   });
 
-  // Product carousel (simple visual scroll)
+  // Product carousel 
   const grid = document.querySelector('.product-grid');
-  document.getElementById('prodNext')?.addEventListener('click', ()=> grid.scrollBy({left:280, behavior:'smooth'}));
-  document.getElementById('prodPrev')?.addEventListener('click', ()=> grid.scrollBy({left:-280, behavior:'smooth'}));
+  document.getElementById('prodNext')?.addEventListener('click', ()=> grid.scrollBy({left:300, behavior:'smooth'}));
+  document.getElementById('prodPrev')?.addEventListener('click', ()=> grid.scrollBy({left:-300, behavior:'smooth'}));
 </script>
 
 </body>
