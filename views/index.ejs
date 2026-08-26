@@ -50,6 +50,20 @@
   .reveal{opacity:0;transform:translateY(28px);transition:opacity .8s cubic-bezier(.22,1,.36,1), transform .8s cubic-bezier(.22,1,.36,1);}
   .reveal.in{opacity:1;transform:translateY(0);}
 
+  /* page load intro (runs once on load, before scroll-reveal takes over) */
+  .intro-up{opacity:0;transform:translateY(36px);animation:introUp 1s cubic-bezier(.22,1,.36,1) forwards;}
+  .intro-scale{opacity:0;transform:scale(0.82) translateY(30px);animation:introScale 1.3s cubic-bezier(.16,1,.3,1) forwards;}
+  @keyframes introUp{to{opacity:1;transform:translateY(0);}}
+  @keyframes introScale{to{opacity:1;transform:scale(1) translateY(0);}}
+
+  /* stagger the hero copy children so text opens up one line at a time */
+  .hero-copy > *{opacity:0;transform:translateY(24px);animation:introUp .9s cubic-bezier(.22,1,.36,1) forwards;}
+  .hero-copy > .hero-eyebrow{animation-delay:.05s;}
+  .hero-copy > h1{animation-delay:.18s;}
+  .hero-copy > p{animation-delay:.32s;}
+  .hero-copy > .hero-ctas{animation-delay:.46s;}
+  .hero-float-card{opacity:0;animation:introUp .8s cubic-bezier(.22,1,.36,1) forwards;animation-delay:.75s;}
+
   /* ---------------- NAV ---------------- */
   header{
     position:sticky;top:0;z-index:100;
@@ -108,12 +122,15 @@
   .hero-visual{perspective:1400px;}
   .hero-stage{
     position:relative;border-radius:var(--radius);overflow:hidden;
-    box-shadow:var(--shadow);
+    box-shadow:var(--shadow);height:520px;
     transform-style:preserve-3d;
     transition:transform .2s ease-out;
     will-change:transform;
   }
-  .hero-stage img{width:100%;height:520px;object-fit:cover;transform:scale(1.02);}
+  .hero-stage img{
+    position:absolute;top:-40px;left:0;width:100%;height:600px;object-fit:cover;
+    will-change:transform;transition:transform .05s linear;
+  }
   .hero-float-card{
     position:absolute;bottom:22px;left:22px;background:rgba(255,255,255,0.92);
     backdrop-filter:blur(10px);
@@ -182,7 +199,7 @@
     border-radius:var(--radius);overflow:hidden;height:440px;box-shadow:var(--shadow);
     transform-style:preserve-3d;transition:transform .2s ease-out;
   }
-  .discover-stage img{width:100%;height:100%;object-fit:cover;}
+  .discover-stage img{width:100%;height:100%;object-fit:cover;will-change:transform;transition:transform .05s linear;}
   .discover-index{
     position:absolute;bottom:20px;right:24px;font-family:'Playfair Display',serif;
     font-size:15px;color:#fff;background:rgba(0,0,0,0.35);backdrop-filter:blur(6px);
@@ -321,7 +338,7 @@
 <!-- HERO -->
 <section class="hero" id="home">
   <div class="wrap hero-grid">
-    <div class="hero-copy reveal">
+    <div class="hero-copy">
       <p class="eyebrow hero-eyebrow">Modern Furniture Studio</p>
       <h1>Turn Your House Into <em>a Story</em> Worth Living</h1>
       <p>Thoughtfully crafted furniture that brings warmth, character and quiet luxury to every room you live in.</p>
@@ -332,9 +349,9 @@
         <a href="#about" class="link-ghost">Our Story</a>
       </div>
     </div>
-    <div class="hero-visual reveal">
+    <div class="hero-visual intro-scale" style="animation-delay:.15s;">
       <div class="hero-stage" id="heroStage">
-        <img src="https://images.unsplash.com/photo-1567016432779-094069958ea5?w=1200&q=80" alt="Living room with cream sofa and terracotta accents">
+        <img id="heroImg" src="https://images.unsplash.com/photo-1567016432779-094069958ea5?w=1200&q=80" alt="Living room with cream sofa and terracotta accents">
         <div class="hero-float-card">
           <div class="dot"></div>
           <div>
@@ -535,6 +552,40 @@
   }
   tilt(document.getElementById('heroStage'), 6);
   tilt(document.getElementById('discoverStage'), 5);
+
+  // Scroll parallax — hero (and discover) image drifts inside its frame as you scroll,
+  // giving the "sofa moves down" depth effect from the reference video.
+  const heroSection = document.querySelector('.hero');
+  const heroImg = document.getElementById('heroImg');
+  const discoverSection = document.querySelector('.discover');
+  const discoverImg = discoverSection ? discoverSection.querySelector('.discover-stage img') : null;
+
+  let ticking = false;
+  function clamp(v, min, max){ return Math.min(Math.max(v, min), max); }
+
+  function updateParallax(){
+    if(heroSection && heroImg){
+      const rect = heroSection.getBoundingClientRect();
+      // progress: 0 when hero top is at viewport top, 1 once fully scrolled past
+      const progress = clamp(-rect.top / (rect.height || 1), 0, 1);
+      heroImg.style.transform = `translateY(${progress * 70}px) scale(1.06)`;
+    }
+    if(discoverSection && discoverImg){
+      const rect = discoverSection.getBoundingClientRect();
+      const vh = window.innerHeight || document.documentElement.clientHeight;
+      // progress: -1 (section below viewport) .. 0 (centered) .. 1 (above viewport)
+      const centerOffset = (rect.top + rect.height / 2 - vh / 2) / (vh / 2 + rect.height / 2);
+      const progress = clamp(centerOffset, -1, 1);
+      discoverImg.style.transform = `translateY(${progress * -40}px) scale(1.08)`;
+    }
+    ticking = false;
+  }
+
+  window.addEventListener('scroll', ()=>{
+    if(!ticking){ requestAnimationFrame(updateParallax); ticking = true; }
+  }, { passive: true });
+  window.addEventListener('resize', updateParallax);
+  updateParallax();
 
   // Category list interaction
   document.querySelectorAll('.cat-item').forEach(item=>{
