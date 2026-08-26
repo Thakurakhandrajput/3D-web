@@ -56,27 +56,18 @@
   @keyframes introUp{to{opacity:1;transform:translateY(0);}}
   @keyframes introScale{to{opacity:1;transform:scale(1) translateY(0) rotateX(0deg);}}
 
-  /* 3D "rise and settle" reveal — the card lifts up out of the fold, tilted back,
-     then eases into its resting flat position (spring overshoot on settle). Used for
-     every visual "card" section: hero image, bento, discover stage, product cards,
-     testimonial stack, newsletter visual — so the same motion repeats site-wide. */
+  /* 3D "rise and settle" — driven directly by scroll position (see updateSettle() in
+     the script below), not a one-shot trigger. As you scroll, the card physically
+     travels up from below and tilts flat into its resting spot in real time, so the
+     motion is glued to the scroll gesture itself and always visible. */
   .reveal-settle-parent{perspective:1200px;}
   .reveal-settle{
     opacity:0;
-    transform:translateY(110px) scale(0.9) rotateX(16deg);
+    transform:translateY(130px) scale(0.88) rotateX(18deg);
     transform-origin:center bottom;
-    transition:opacity 1s cubic-bezier(.16,1,.3,1), transform 1.1s cubic-bezier(.34,1.42,.4,1);
+    transition:transform .06s linear, opacity .06s linear;
+    will-change:transform, opacity;
   }
-  .reveal-settle.in{opacity:1;transform:translateY(0) scale(1) rotateX(0deg);}
-  .reveal-settle .stagger{
-    opacity:0;transform:translateY(60px) scale(0.94);
-    transition:opacity .8s cubic-bezier(.16,1,.3,1), transform .9s cubic-bezier(.34,1.42,.4,1);
-  }
-  .reveal-settle.in .stagger{opacity:1;transform:translateY(0) scale(1);}
-  .reveal-settle.in .stagger:nth-child(1){transition-delay:.05s;}
-  .reveal-settle.in .stagger:nth-child(2){transition-delay:.15s;}
-  .reveal-settle.in .stagger:nth-child(3){transition-delay:.25s;}
-  .reveal-settle.in .stagger:nth-child(4){transition-delay:.35s;}
 
   /* stagger the hero copy children so text opens up one line at a time */
   .hero-copy > *{opacity:0;transform:translateY(24px);animation:introUp .9s cubic-bezier(.22,1,.36,1) forwards;}
@@ -555,8 +546,8 @@
 </section>
 
 <script>
-  // Scroll reveal — plain fade-up for text, 3D rise-and-settle for card/image sections
-  const revealEls = document.querySelectorAll('.reveal, .reveal-settle');
+  // Scroll reveal — plain fade-up for text only (one-shot on entering view)
+  const revealEls = document.querySelectorAll('.reveal');
   const io = new IntersectionObserver((entries)=>{
     entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
   }, { threshold: 0.15 });
@@ -604,11 +595,48 @@
     ticking = false;
   }
 
-  window.addEventListener('scroll', ()=>{
-    if(!ticking){ requestAnimationFrame(updateParallax); ticking = true; }
-  }, { passive: true });
   window.addEventListener('resize', updateParallax);
   updateParallax();
+
+  // Scroll-scrubbed "rise and settle" — each card's tilt/scale/position is a direct
+  // function of how far it has traveled up through the viewport, so the motion tracks
+  // the scroll gesture 1:1 (no one-shot trigger to miss on a fast flick).
+  const settleEls = Array.from(document.querySelectorAll('.reveal-settle'));
+  const easeOut = p => 1 - Math.pow(1 - p, 3);
+
+  function settleProgress(el, startVH, endVH){
+    const rect = el.getBoundingClientRect();
+    const vh = window.innerHeight || document.documentElement.clientHeight;
+    const start = vh * startVH; // rect.top value where progress = 0 (card still low / off-screen)
+    const end = vh * endVH;     // rect.top value where progress = 1 (card settled)
+    return clamp((start - rect.top) / (start - end), 0, 1);
+  }
+
+  function updateSettle(){
+    settleEls.forEach(el=>{
+      const p = easeOut(settleProgress(el, 1.05, 0.62));
+      const staggerKids = el.querySelectorAll('.stagger');
+      if(staggerKids.length){
+        staggerKids.forEach((kid, i)=>{
+          // each card in the row settles slightly after the previous one
+          const kp = easeOut(settleProgress(el, 1.05 + i*0.05, 0.62 + i*0.05));
+          kid.style.opacity = kp;
+          kid.style.transform = `translateY(${(1-kp)*70}px) scale(${0.92 + kp*0.08})`;
+        });
+        el.style.opacity = 1;
+        el.style.transform = 'none';
+      } else {
+        el.style.opacity = p;
+        el.style.transform = `translateY(${(1-p)*130}px) scale(${0.88 + p*0.12}) rotateX(${(1-p)*18}deg)`;
+      }
+    });
+  }
+
+  window.addEventListener('scroll', ()=>{
+    if(!ticking){ requestAnimationFrame(()=>{ updateParallax(); updateSettle(); ticking = false; }); ticking = true; }
+  }, { passive: true });
+  window.addEventListener('resize', updateSettle);
+  updateSettle();
 
   // Category list interaction
   document.querySelectorAll('.cat-item').forEach(item=>{
