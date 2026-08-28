@@ -3,24 +3,24 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Terrova — Furniture for Homes That Tell a Story</title>
+<title>R.K sales — Premium Hardware & Accessories</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
   :root{
-    --cream:#EEE7DA;
-    --cream-2:#F7F3EA;
-    --ink:#2A241C;
-    --ink-soft:#6E6455;
-    --terracotta:#C6714A;
-    --terracotta-dark:#A85C39;
-    --olive:#707A52;
-    --line:rgba(42,36,28,0.12);
+    --cream:#F4F4F4;
+    --cream-2:#EAEAEA;
+    --ink:#1A1A1A;
+    --ink-soft:#555555;
+    --terracotta:#D35400;
+    --terracotta-dark:#A04000;
+    --olive:#5D6D7E;
+    --line:rgba(0,0,0,0.1);
     --white:#FFFFFF;
-    --footer:#221D16;
-    --footer-soft:#B8AF9F;
-    --radius:22px;
-    --shadow: 0 30px 60px -20px rgba(42,36,28,0.25);
+    --footer:#111111;
+    --footer-soft:#A6ACAF;
+    --radius:16px;
+    --shadow: 0 20px 40px -10px rgba(0,0,0,0.15);
   }
 
   *{margin:0;padding:0;box-sizing:border-box;}
@@ -35,9 +35,9 @@
   img{display:block;max-width:100%;}
   a{text-decoration:none;color:inherit;}
   ul{list-style:none;}
-  h1,h2,h3{font-family:'Playfair Display',serif;font-weight:500;letter-spacing:-0.01em;color:var(--ink);}
+  h1,h2,h3{font-family:'Playfair Display',serif;font-weight:600;letter-spacing:-0.01em;color:var(--ink);}
   .eyebrow{
-    text-transform:uppercase;font-size:12px;letter-spacing:0.18em;color:var(--terracotta);font-weight:600;
+    text-transform:uppercase;font-size:12px;letter-spacing:0.15em;color:var(--terracotta);font-weight:700;
   }
   .wrap{max-width:1240px;margin:0 auto;padding:0 32px;}
   @media(max-width:640px){.wrap{padding:0 20px;}}
@@ -46,309 +46,171 @@
     font-family:'Inter',sans-serif;cursor:pointer;border:none;
   }
 
-  /* reveal on scroll */
+  /* Reveal animations */
   .reveal{opacity:0;transform:translateY(28px);transition:opacity .8s cubic-bezier(.22,1,.36,1), transform .8s cubic-bezier(.22,1,.36,1);}
   .reveal.in{opacity:1;transform:translateY(0);}
-
-  /* page load intro */
-  .intro-up{opacity:0;transform:translateY(36px);animation:introUp 1s cubic-bezier(.22,1,.36,1) forwards;}
-  .intro-scale{opacity:0;transform:scale(0.82) translateY(30px) rotateX(10deg);transform-origin:center bottom;animation:introScale 1.3s cubic-bezier(.16,1,.3,1) forwards;}
-  @keyframes introUp{to{opacity:1;transform:translateY(0);}}
-  @keyframes introScale{to{opacity:1;transform:scale(1) translateY(0) rotateX(0deg);}}
-
-  /* 3D "rise and settle" */
-  .reveal-settle-parent{perspective:1200px;}
-  .reveal-settle{
-    opacity:0;
-    transform:translateY(130px) scale(0.88) rotateX(18deg);
-    transform-origin:center bottom;
-    transition:transform .1s ease-out, opacity .1s ease-out; /* thoda smooth kiya gaya */
-    will-change:transform, opacity;
-  }
-
-  /* stagger the hero copy children */
   .hero-copy > *{opacity:0;transform:translateY(24px);animation:introUp .9s cubic-bezier(.22,1,.36,1) forwards;}
   .hero-copy > .hero-eyebrow{animation-delay:.05s;}
   .hero-copy > h1{animation-delay:.18s;}
   .hero-copy > p{animation-delay:.32s;}
   .hero-copy > .hero-ctas{animation-delay:.46s;}
   .hero-float-card{opacity:0;animation:introUp .8s cubic-bezier(.22,1,.36,1) forwards;animation-delay:.75s;}
+  .intro-scale{opacity:0;transform:scale(0.82) translateY(30px) rotateX(10deg);transform-origin:center bottom;animation:introScale 1.3s cubic-bezier(.16,1,.3,1) forwards;}
+  @keyframes introUp{to{opacity:1;transform:translateY(0);}}
+  @keyframes introScale{to{opacity:1;transform:scale(1) translateY(0) rotateX(0deg);}}
 
-  /* ---------------- NAV ---------------- */
+  /* ---------------- NAV & SEARCH ---------------- */
   header{
     position:sticky;top:0;z-index:100;
-    background:rgba(238,231,218,0.82);
-    backdrop-filter:blur(14px);
+    background:rgba(244,244,244,0.9);
+    backdrop-filter:blur(12px);
     border-bottom:1px solid var(--line);
   }
   nav{
-    max-width:1240px;margin:0 auto;padding:20px 32px;
+    max-width:1240px;margin:0 auto;padding:16px 32px;
     display:flex;align-items:center;justify-content:space-between;
   }
-  .logo{display:flex;align-items:center;gap:10px;font-family:'Playfair Display',serif;font-size:22px;font-weight:600;}
+  .logo{display:flex;align-items:center;gap:10px;font-family:'Playfair Display',serif;font-size:24px;font-weight:700;}
   .logo-mark{
-    width:26px;height:26px;border-radius:7px;
+    width:28px;height:28px;border-radius:6px;
     background:linear-gradient(135deg,var(--terracotta),var(--terracotta-dark));
-    display:flex;align-items:center;justify-content:center;color:#fff;font-size:13px;
+    display:flex;align-items:center;justify-content:center;color:#fff;font-size:14px;
   }
-  .nav-links{display:flex;gap:40px;font-size:14.5px;font-weight:500;}
+  
+  .search-bar {
+    display: flex; align-items: center; background: var(--white); border-radius: 100px; 
+    padding: 6px 14px; border: 1px solid var(--line); flex: 0.5;
+  }
+  .search-bar input {
+    border: none; outline: none; background: transparent; width: 100%; padding-left: 8px; font-family: 'Inter', sans-serif;
+  }
+
+  .nav-links{display:flex;gap:32px;font-size:14.5px;font-weight:600;}
   .nav-links a{position:relative;padding:4px 0;}
   .nav-links a::after{
-    content:"";position:absolute;left:0;bottom:-2px;width:0;height:1.5px;background:var(--terracotta);
+    content:"";position:absolute;left:0;bottom:-2px;width:0;height:2px;background:var(--terracotta);
     transition:width .3s ease;
   }
   .nav-links a:hover::after{width:100%;}
-  .nav-icons{display:flex;align-items:center;gap:22px;}
-  .nav-icons svg{width:19px;height:19px;stroke:var(--ink);}
+  .nav-icons{display:flex;align-items:center;gap:20px;}
   .burger{display:none;background:none;}
+  
+  /* Mobile Nav active state */
   @media(max-width:900px){
-    .nav-links{display:none;}
+    .nav-links{
+      display:none; position:absolute; top:70px; left:0; width:100%; 
+      background:var(--white); flex-direction:column; padding:20px; 
+      box-shadow: 0 10px 20px rgba(0,0,0,0.1); gap:15px;
+    }
+    .nav-links.active{display:flex;}
+    .search-bar{display:none;} /* Hidden on mobile header, can put in menu or hero */
     .burger{display:block;}
   }
 
-  /* ---------------- HERO ---------------- */
-  .hero{padding:64px 0 100px;}
-  .hero-grid{
-    display:grid;grid-template-columns:0.95fr 1.15fr;gap:56px;align-items:center;
+  /* ---------------- BOTTOM STICKY NAV (Mobile) ---------------- */
+  .bottom-nav {
+    display: none; position: fixed; bottom: 0; width: 100%; background: var(--white);
+    z-index: 1000; justify-content: space-around; padding: 10px 0 15px 0;
+    border-top: 1px solid var(--line); box-shadow: 0 -4px 15px rgba(0,0,0,0.05);
   }
-  .hero-eyebrow{margin-bottom:18px;}
-  .hero h1{
-    font-size:clamp(36px,4.4vw,58px);line-height:1.08;margin-bottom:22px;
+  .b-nav-item {
+    display: flex; flex-direction: column; align-items: center; font-size: 11px; font-weight: 600; color: var(--ink-soft); gap: 4px;
   }
-  .hero h1 em{font-style:italic;color:var(--terracotta);}
-  .hero p{color:var(--ink-soft);font-size:16px;line-height:1.7;max-width:420px;margin-bottom:34px;}
-  .hero-ctas{display:flex;align-items:center;gap:28px;}
-  .btn-primary{
-    background:var(--terracotta);color:#fff;padding:15px 28px;border-radius:100px;
-    font-size:14.5px;font-weight:600;display:inline-flex;align-items:center;gap:10px;
-    box-shadow:0 14px 28px -10px rgba(198,113,74,0.55);
-    transition:transform .35s cubic-bezier(.22,1,.36,1), box-shadow .35s ease;
+  .b-nav-item.active { color: var(--terracotta); }
+  @media(max-width:900px){
+    .bottom-nav { display: flex; }
+    body { padding-bottom: 70px; } /* Prevent footer hide */
   }
-  .btn-primary:hover{transform:translateY(-3px);box-shadow:0 20px 34px -10px rgba(198,113,74,0.65);}
-  .btn-primary svg{width:15px;height:15px;transition:transform .3s ease;}
-  .btn-primary:hover svg{transform:translate(3px,-3px);}
-  .link-ghost{font-size:14.5px;font-weight:600;border-bottom:1.5px solid var(--ink);padding-bottom:3px;}
 
-  .hero-visual{perspective:1400px;}
+  /* ---------------- HERO ---------------- */
+  .hero{padding:50px 0 90px;}
+  .hero-grid{display:grid;grid-template-columns:1fr 1.1fr;gap:40px;align-items:center;}
+  .hero-eyebrow{margin-bottom:16px;}
+  .hero h1{font-size:clamp(32px,4vw,52px);line-height:1.1;margin-bottom:20px;}
+  .hero p{color:var(--ink-soft);font-size:16px;line-height:1.6;max-width:400px;margin-bottom:30px;}
+  .hero-ctas{display:flex;align-items:center;gap:20px;}
+  .btn-primary{
+    background:var(--terracotta);color:#fff;padding:14px 26px;border-radius:100px;
+    font-size:14px;font-weight:600;display:inline-flex;align-items:center;gap:8px;
+    transition:transform .3s ease, box-shadow .3s ease;
+  }
+  .btn-primary:hover{transform:translateY(-2px);box-shadow:0 10px 20px rgba(211,84,0,0.3);}
   .hero-stage{
-    position:relative;border-radius:var(--radius);overflow:hidden;
-    box-shadow:var(--shadow);height:520px;
-    transform-style:preserve-3d;
-    transition:transform .2s ease-out;
-    will-change:transform;
+    position:relative;border-radius:var(--radius);overflow:hidden; height:480px; box-shadow:var(--shadow);
   }
-  .hero-stage img{
-    position:absolute;top:-40px;left:0;width:100%;height:600px;object-fit:cover;
-    will-change:transform;transition:transform .05s linear;
-  }
+  .hero-stage img{ width:100%;height:100%;object-fit:cover; }
   .hero-float-card{
-    position:absolute;bottom:22px;left:22px;background:rgba(255,255,255,0.92);
-    backdrop-filter:blur(10px);
-    border-radius:16px;padding:14px 18px;display:flex;align-items:center;gap:12px;
-    box-shadow:0 20px 40px -16px rgba(0,0,0,0.35);
-    transform:translateZ(60px);
+    position:absolute;bottom:20px;left:20px;background:rgba(255,255,255,0.95);
+    backdrop-filter:blur(8px); border-radius:12px;padding:12px 16px;display:flex;align-items:center;gap:12px;
+    box-shadow:0 10px 20px rgba(0,0,0,0.15);
   }
-  .hero-float-card .dot{width:38px;height:38px;border-radius:50%;background:var(--olive);flex-shrink:0;}
-  .hero-float-card b{display:block;font-size:13.5px;}
-  .hero-float-card span{font-size:11.5px;color:var(--ink-soft);}
+  .hero-float-card .dot{width:32px;height:32px;border-radius:50%;background:var(--olive);flex-shrink:0;}
+  .hero-float-card b{display:block;font-size:13px;}
+  .hero-float-card span{font-size:11px;color:var(--ink-soft);}
   @media(max-width:900px){
     .hero-grid{grid-template-columns:1fr;}
-    .hero p{max-width:100%;}
-    .hero-stage img{height:340px;}
+    .hero-stage{height:300px;}
   }
-
-  /* ---------------- STATS / BENTO ---------------- */
-  .section{padding:90px 0;}
-  .section-head{
-    display:flex;justify-content:space-between;align-items:flex-end;gap:40px;margin-bottom:48px;
-  }
-  .section-head h2{font-size:clamp(28px,3vw,40px);line-height:1.15;max-width:520px;}
-  .section-head p{color:var(--ink-soft);font-size:15px;max-width:320px;line-height:1.7;}
-  @media(max-width:760px){.section-head{flex-direction:column;align-items:flex-start;}}
-
-  .bento{
-    display:grid;grid-template-columns:repeat(4,1fr);grid-template-rows:repeat(2,150px);gap:16px;
-    perspective:1200px;
-  }
-  .bento .cell{border-radius:18px;overflow:hidden;position:relative;}
-  .bento .cell img{width:100%;height:100%;object-fit:cover;transition:transform .6s cubic-bezier(.22,1,.36,1);}
-  .bento .cell:hover img{transform:scale(1.08);}
-  .bento .img1{grid-column:1/2;grid-row:1/3;}
-  .bento .img2{grid-column:3/4;grid-row:1/3;}
-  .stat{
-    background:var(--white);display:flex;flex-direction:column;justify-content:center;padding:20px 22px;
-  }
-  .stat b{font-family:'Playfair Display',serif;font-size:32px;font-weight:600;color:var(--terracotta);}
-  .stat span{font-size:12.5px;color:var(--ink-soft);margin-top:4px;}
-  @media(max-width:760px){
-    .bento{grid-template-columns:repeat(2,1fr);grid-template-rows:repeat(4,140px);}
-    .bento .img1{grid-column:1/2;grid-row:1/3;}
-    .bento .img2{grid-column:2/3;grid-row:1/3;}
-  }
-
-  /* ---------------- DISCOVER ---------------- */
-  .discover{background:var(--cream-2);}
-  .discover-grid{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center;}
-  .cat-list{margin-top:30px;border-top:1px solid var(--line);}
-  .cat-item{
-    padding:18px 0;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;
-    cursor:pointer;font-size:15px;font-weight:500;color:var(--ink-soft);transition:color .3s ease;
-  }
-  .cat-item:hover, .cat-item.active{color:var(--ink);}
-  .cat-panel{
-    margin-top:8px;background:var(--ink);color:#fff;border-radius:16px;padding:20px 22px;
-    display:flex;align-items:center;gap:16px;
-  }
-  .cat-panel .tag{
-    width:34px;height:34px;border-radius:50%;background:var(--terracotta);flex-shrink:0;
-  }
-  .cat-panel b{display:block;font-size:14.5px;margin-bottom:4px;}
-  .cat-panel span{font-size:12.5px;color:#C8C1B4;line-height:1.5;}
-
-  .discover-visual{position:relative;perspective:1200px;}
-  .discover-stage{
-    border-radius:var(--radius);overflow:hidden;height:440px;box-shadow:var(--shadow);
-    transform-style:preserve-3d;transition:transform .2s ease-out;
-  }
-  .discover-stage img{width:100%;height:100%;object-fit:cover;will-change:transform;transition:transform .05s linear;}
-  .discover-index{
-    position:absolute;bottom:20px;right:24px;font-family:'Playfair Display',serif;
-    font-size:15px;color:#fff;background:rgba(0,0,0,0.35);backdrop-filter:blur(6px);
-    padding:8px 16px;border-radius:100px;
-  }
-  @media(max-width:900px){.discover-grid{grid-template-columns:1fr;}.discover-stage{height:320px;}}
 
   /* ---------------- PRODUCTS ---------------- */
-  /* Scroll functionality add kar diya gaya hai  */
+  .section{padding:70px 0;}
+  .section-head{
+    display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:40px;
+  }
+  .section-head h2{font-size:clamp(26px,3vw,36px);}
   .product-grid{
-    display:flex;
-    overflow-x:auto;
-    gap:22px;
-    perspective:1200px;
-    scrollbar-width: none; /* Hide scrollbar for clean look */
-    scroll-behavior: smooth;
+    display:grid;grid-template-columns:repeat(auto-fill, minmax(250px, 1fr));gap:24px;
   }
-  .product-grid::-webkit-scrollbar { display: none; }
   .card{
-    background:var(--white);border-radius:18px;padding:14px;
-    perspective:1000px;
-    min-width: 280px; /* Force width */
-    flex-shrink: 0;
+    background:var(--white);border-radius:14px;padding:12px; transition:transform 0.3s;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.03);
   }
+  .card:hover { transform: translateY(-5px); }
   .card-img{
-    border-radius:12px;overflow:hidden;height:230px;position:relative;background:#EFE9DD;
-    transform-style:preserve-3d;transition:transform .45s cubic-bezier(.22,1,.36,1);
+    border-radius:10px;overflow:hidden;height:220px;background:#f0f0f0;
   }
-  .card:hover .card-img{transform:rotateY(6deg) rotateX(3deg) scale(1.03);}
   .card-img img{width:100%;height:100%;object-fit:cover;}
-  .card-row{display:flex;justify-content:space-between;align-items:center;padding:14px 4px 4px;}
-  .card-row b{font-size:14px;font-weight:600;}
-  .card-row .price{display:block;font-size:13px;color:var(--terracotta);font-weight:600;margin-top:3px;}
-  .cart-btn{
-    width:38px;height:38px;border-radius:50%;background:var(--ink);color:#fff;
-    display:flex;align-items:center;justify-content:center;flex-shrink:0;
-    transition:background .3s ease, transform .3s ease;
+  .card-row{display:flex;justify-content:space-between;align-items:center;padding:12px 4px 4px;}
+  .card-row b{font-size:15px;font-weight:600;}
+  .card-row span{font-size:13px;color:var(--ink-soft);display:block;margin-top:2px;}
+  .view-btn{
+    width:36px;height:36px;border-radius:50%;background:var(--cream-2);color:var(--ink);
+    display:flex;align-items:center;justify-content:center;
+    transition:background .3s, color .3s;
   }
-  .cart-btn:hover{background:var(--terracotta);transform:scale(1.08);}
-  .cart-btn svg{width:15px;height:15px;}
-  .carousel-nav{display:flex;gap:10px;justify-content:flex-end;margin-top:30px;}
-  .nav-circle{
-    width:40px;height:40px;border-radius:50%;border:1px solid var(--line);background:transparent;
-    display:flex;align-items:center;justify-content:center;transition:all .3s ease;
-    cursor: pointer;
-  }
-  .nav-circle:hover{background:var(--ink);border-color:var(--ink);}
-  .nav-circle:hover svg{stroke:#fff;}
-  .nav-circle svg{width:15px;height:15px;stroke:var(--ink);}
-
-  /* ---------------- TESTIMONIALS ---------------- */
-  .testi{background:var(--cream-2);}
-  .testi-grid{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center;}
-  .testi-badge{
-    display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:600;color:var(--olive);
-    background:rgba(112,122,82,0.1);padding:8px 16px;border-radius:100px;margin-bottom:22px;
-  }
-  .testi blockquote{
-    font-family:'Playfair Display',serif;font-size:22px;line-height:1.5;font-style:italic;margin-bottom:20px;
-  }
-  .testi cite{font-style:normal;font-weight:600;font-size:14px;}
-  .stack{position:relative;height:380px;perspective:1200px;}
-  .stack img{
-    position:absolute;width:190px;height:240px;object-fit:cover;border-radius:16px;
-    box-shadow:0 20px 40px -14px rgba(0,0,0,0.3);border:5px solid var(--cream-2);
-    transition:transform .5s cubic-bezier(.22,1,.36,1);
-  }
-  .stack img:nth-child(1){top:0;left:40px;width:150px;height:190px;transform:rotate(-6deg);z-index:1;}
-  .stack img:nth-child(2){top:60px;left:150px;z-index:3;}
-  .stack img:nth-child(3){top:190px;left:280px;width:150px;height:190px;transform:rotate(5deg);z-index:2;}
-  .stack:hover img:nth-child(1){transform:rotate(-10deg) translateY(-8px);}
-  .stack:hover img:nth-child(3){transform:rotate(9deg) translateY(-8px);}
-  @media(max-width:900px){.testi-grid{grid-template-columns:1fr;}.stack{height:300px;margin-top:20px;}}
-
-  /* ---------------- NEWSLETTER + FOOTER ---------------- */
-  .newsletter{background:var(--footer);color:#fff;border-radius:32px 32px 0 0;padding-top:80px;}
-  .news-inner{
-    display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:center;
-    padding-bottom:64px;border-bottom:1px solid rgba(255,255,255,0.1);
-  }
-  .news-visual{position:relative;height:220px;perspective:1200px;}
-  .news-visual img{
-    position:absolute;width:150px;height:190px;object-fit:cover;border-radius:14px;
-    box-shadow:0 20px 40px -14px rgba(0,0,0,0.5);
-  }
-  .news-visual img:nth-child(1){top:10px;left:0;transform:rotate(-8deg);}
-  .news-visual img:nth-child(2){top:0;left:70px;transform:rotate(-2deg);z-index:2;}
-  .news-visual img:nth-child(3){top:20px;left:150px;transform:rotate(7deg);}
-  .news-text h2{color:#fff;font-size:clamp(26px,3vw,36px);margin-bottom:12px;line-height:1.2;}
-  .news-text p{color:var(--footer-soft);font-size:14.5px;margin-bottom:26px;max-width:420px;line-height:1.7;}
-  .news-form{display:flex;gap:10px;max-width:420px;}
-  .news-form input{
-    flex:1;padding:14px 18px;border-radius:100px;border:1px solid rgba(255,255,255,0.18);
-    background:rgba(255,255,255,0.06);color:#fff;font-size:14px;font-family:'Inter',sans-serif;
-  }
-  .news-form input::placeholder{color:#8A8072;}
-  .news-form button{
-    width:46px;height:46px;border-radius:50%;background:var(--terracotta);color:#fff;flex-shrink:0;
-    display:flex;align-items:center;justify-content:center;transition:transform .3s ease;
-  }
-  .news-form button:hover{transform:scale(1.08);}
-  .news-form button svg{width:16px;height:16px;}
-  @media(max-width:760px){.news-inner{grid-template-columns:1fr;}.news-visual{order:2;}}
-
-  .footer-cols{
-    display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:40px;padding:56px 0 40px;
-  }
-  .foot-brand .logo{color:#fff;margin-bottom:14px;}
-  .footer-cols p{color:var(--footer-soft);font-size:13.5px;line-height:1.7;max-width:260px;}
-  .footer-cols h4{font-size:13px;text-transform:uppercase;letter-spacing:0.08em;color:#fff;margin-bottom:16px;font-weight:600;}
-  .footer-cols li{margin-bottom:10px;}
-  .footer-cols a{color:var(--footer-soft);font-size:14px;transition:color .3s ease;}
-  .footer-cols a:hover{color:var(--terracotta);}
+  .card:hover .view-btn { background:var(--terracotta); color:#fff; }
+  .view-btn svg{width:16px;height:16px;}
+  
+  /* ---------------- FOOTER ---------------- */
+  .footer{background:var(--footer);color:#fff;padding:60px 0 30px;}
+  .foot-brand p{color:var(--footer-soft);font-size:14px;margin-top:10px;}
   .foot-bottom{
-    border-top:1px solid rgba(255,255,255,0.1);padding:22px 0 30px;
-    display:flex;justify-content:space-between;color:var(--footer-soft);font-size:12.5px;
+    border-top:1px solid rgba(255,255,255,0.1);padding-top:20px; margin-top:40px;
+    display:flex;justify-content:space-between;color:var(--footer-soft);font-size:13px;
   }
-  @media(max-width:760px){.footer-cols{grid-template-columns:1fr 1fr;}.foot-bottom{flex-direction:column;gap:8px;}}
 </style>
 </head>
 <body>
 
 <header>
   <nav>
-    <a href="#" class="logo"><span class="logo-mark">T</span>Terrova</a>
+    <a href="#" class="logo"><span class="logo-mark">R</span>R.K sales</a>
+    
+    <div class="search-bar">
+      <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="var(--ink-soft)" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.3-4.3"/></svg>
+      <input type="text" placeholder="Search products, hardware...">
+    </div>
+
     <ul class="nav-links">
       <li><a href="#home">Home</a></li>
-      <li><a href="#about">About</a></li>
       <li><a href="#products">Products</a></li>
-      <li><a href="#collections">Collections</a></li>
+      <li><a href="#categories">Categories</a></li>
       <li><a href="#contact">Contact</a></li>
     </ul>
+    
     <div class="nav-icons">
-      <svg viewBox="0 0 24 24" fill="none" stroke-width="1.7" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
-      <svg viewBox="0 0 24 24" fill="none" stroke-width="1.7" stroke-linecap="round"><path d="M6 6h15l-1.5 9h-12z"/><circle cx="9" cy="20" r="1"/><circle cx="18" cy="20" r="1"/><path d="M6 6L4 3H2"/></svg>
-      <svg viewBox="0 0 24 24" fill="none" stroke-width="1.7" stroke-linecap="round"><circle cx="12" cy="8" r="3.5"/><path d="M4.5 20c1.5-4 5-6 7.5-6s6 2 7.5 6"/></svg>
       <button class="burger">
-        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#2A241C" stroke-width="1.8" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+        <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="#1A1A1A" stroke-width="2" stroke-linecap="round"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
       </button>
     </div>
   </nav>
@@ -358,309 +220,117 @@
 <section class="hero" id="home">
   <div class="wrap hero-grid">
     <div class="hero-copy">
-      <p class="eyebrow hero-eyebrow">Modern Furniture Studio</p>
-      <h1>Turn Your House Into <em>a Story</em> Worth Living</h1>
-      <p>Thoughtfully crafted furniture that brings warmth, character and quiet luxury to every room you live in.</p>
+      <p class="eyebrow hero-eyebrow">Premium Hardware</p>
+      <h1>Built for Strength,<br> <em>Designed</em> for Style</h1>
+      <p>Explore our wide range of premium hardware, architectural fittings, and accessories designed to last a lifetime.</p>
       <div class="hero-ctas">
-        <a href="#products" class="btn-primary">Shop Now
-          <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round"><path d="M7 17L17 7M9 7h8v8"/></svg>
+        <!-- Changed to point to product.ejs concept -->
+        <a href="product.ejs" class="btn-primary">View All Products
+          <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
         </a>
-        <a href="#about" class="link-ghost">Our Story</a>
       </div>
     </div>
-    <div class="hero-visual intro-scale" style="animation-delay:.15s;">
-      <div class="hero-stage" id="heroStage">
-        <img id="heroImg" src="https://images.unsplash.com/photo-1567016432779-094069958ea5?w=1200&q=80" alt="Living room with cream sofa and terracotta accents">
-        <div class="hero-float-card">
-          <div class="dot"></div>
-          <div>
-            <b>Handcrafted Comfort</b>
-            <span>Since 2011 &middot; Studio made</span>
-          </div>
+    <div class="hero-stage intro-scale" style="animation-delay:.15s;">
+      <img src="https://images.unsplash.com/photo-1586864387789-628af9face72?w=800&q=80" alt="Premium Door Hardware">
+      <div class="hero-float-card">
+        <div class="dot"></div>
+        <div>
+          <b>Quality Assured</b>
+          <span>Top-grade materials</span>
         </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- CURATED / BENTO STATS -->
-<section class="section" id="about">
-  <div class="wrap">
-    <div class="section-head reveal">
-      <h2>Curated Pieces for Contemporary Homes</h2>
-      <p>Elegant furniture for homes that value quality and quiet, considered style.</p>
-    </div>
-    <div class="bento reveal-settle">
-      <div class="cell img1 stagger"><img src="https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=700&q=80" alt="Cream accent chair in sunlit corner"></div>
-      <div class="cell stat stagger"><b>15+</b><span>Years of Experience</span></div>
-      <div class="cell img2 stagger"><img src="https://images.unsplash.com/photo-1493663284031-b7e3aefcae8e?w=700&q=80" alt="Living room styled with warm textures"></div>
-      <div class="cell stat stagger"><b>25k+</b><span>Happy Customers</span></div>
-      <div class="cell stat stagger"><b>40+</b><span>Signature Collections</span></div>
-      <div class="cell stat stagger"><b>500+</b><span>Pieces Delivered Monthly</span></div>
-    </div>
-  </div>
-</section>
-
-<!-- DISCOVER / CATEGORY -->
-<section class="section discover" id="collections">
-  <div class="wrap discover-grid">
-    <div class="reveal">
-      <p class="eyebrow">Collections</p>
-      <h2>Discover Timeless Furniture Designs</h2>
-      <p style="color:var(--ink-soft);font-size:15px;line-height:1.7;margin-top:14px;max-width:420px;">From statement pieces to everyday essentials, find furniture created to elevate every room.</p>
-
-      <div class="cat-list">
-        <div class="cat-item active" data-panel="0">
-          Curved &amp; Contemporary
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
-        </div>
-        <div class="cat-panel">
-          <div class="tag"></div>
-          <div>
-            <b>Scandinavian Style</b>
-            <span>Simple, functional and beautifully crafted — our Scandinavian pieces bring warmth and clarity to any space.</span>
-          </div>
-        </div>
-        <div class="cat-item" data-panel="1">Accent Chairs
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
-        </div>
-        <div class="cat-item" data-panel="2">Modern Lounge Chairs
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
-        </div>
-      </div>
-    </div>
-
-    <div class="discover-visual reveal-settle">
-      <div class="discover-stage" id="discoverStage">
-        <img src="https://images.unsplash.com/photo-1519947486511-46149fa0a254?w=900&q=80" alt="Wooden accent chair">
-      </div>
-      <div class="discover-index">02</div>
-    </div>
-  </div>
-</section>
-
-<!-- PRODUCTS -->
+<!-- PRODUCTS VIEW (Portfolio style, no cart) -->
 <section class="section" id="products">
   <div class="wrap">
     <div class="section-head reveal">
-      <h2>Where Comfort Meets Craftsmanship</h2>
-      <p>Discover timeless pieces created to complement every corner of your home.</p>
+      <h2>Featured Products</h2>
+      <a href="product.ejs" style="color:var(--terracotta); font-weight:600; font-size:14px;">See All Products &rarr;</a>
     </div>
 
-    <div class="product-grid reveal-settle">
-      <div class="card stagger">
-        <div class="card-img"><img src="https://images.unsplash.com/photo-1567538096630-e0c55bd6374c?w=500&q=80" alt="Nova Accent Chair"></div>
+    <div class="product-grid" id="infinite-grid">
+      <!-- Dummy Product 1 -->
+      <a href="shop.ejs" class="card reveal">
+        <div class="card-img"><img src="https://images.unsplash.com/photo-1542010589005-d1eabd394997?w=500&q=80" alt="Brass Handle"></div>
         <div class="card-row">
-          <div><b>Nova Accent Chair</b><span class="price">$200</span></div>
-          <div class="cart-btn"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round"><path d="M6 6h15l-1.5 9h-12z"/><circle cx="9" cy="20" r="1"/><circle cx="18" cy="20" r="1"/></svg></div>
+          <div><b>Vintage Brass Handle</b><span>Architectural Series</span></div>
+          <div class="view-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></div>
         </div>
-      </div>
-      <div class="card stagger">
-        <div class="card-img"><img src="https://images.unsplash.com/photo-1598300042247-d088f8ab3a91?w=500&q=80" alt="Orion Luxe Chair"></div>
+      </a>
+      <!-- Dummy Product 2 -->
+      <a href="shop.ejs" class="card reveal">
+        <div class="card-img"><img src="https://images.unsplash.com/photo-1589939705384-5185137a7f0f?w=500&q=80" alt="Steel Hinges"></div>
         <div class="card-row">
-          <div><b>Orion Luxe Chair</b><span class="price">$260</span></div>
-          <div class="cart-btn"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round"><path d="M6 6h15l-1.5 9h-12z"/><circle cx="9" cy="20" r="1"/><circle cx="18" cy="20" r="1"/></svg></div>
+          <div><b>Heavy Duty Hinges</b><span>Steel Collection</span></div>
+          <div class="view-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></div>
         </div>
-      </div>
-      <div class="card stagger">
-        <div class="card-img"><img src="https://images.unsplash.com/photo-1503602642458-232111445657?w=500&q=80" alt="Luna Modern Chair"></div>
+      </a>
+      <!-- Dummy Product 3 -->
+      <a href="shop.ejs" class="card reveal">
+        <div class="card-img"><img src="https://images.unsplash.com/photo-1621905251189-08b45d6a269e?w=500&q=80" alt="Smart Lock"></div>
         <div class="card-row">
-          <div><b>Luna Modern Chair</b><span class="price">$220</span></div>
-          <div class="cart-btn"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round"><path d="M6 6h15l-1.5 9h-12z"/><circle cx="9" cy="20" r="1"/><circle cx="18" cy="20" r="1"/></svg></div>
+          <div><b>Smart Door Lock</b><span>Digital Security</span></div>
+          <div class="view-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></div>
         </div>
-      </div>
-      <div class="card stagger">
-        <div class="card-img"><img src="https://images.unsplash.com/photo-1519710164239-da123dc03ef4?w=500&q=80" alt="Astra Comfort Chair"></div>
+      </a>
+      <!-- Dummy Product 4 -->
+      <a href="shop.ejs" class="card reveal">
+        <div class="card-img"><img src="https://images.unsplash.com/photo-1504148455328-c376907d081c?w=500&q=80" alt="Tool Set"></div>
         <div class="card-row">
-          <div><b>Astra Comfort Chair</b><span class="price">$215</span></div>
-          <div class="cart-btn"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round"><path d="M6 6h15l-1.5 9h-12z"/><circle cx="9" cy="20" r="1"/><circle cx="18" cy="20" r="1"/></svg></div>
+          <div><b>Premium Wrench Set</b><span>Hand Tools</span></div>
+          <div class="view-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></div>
         </div>
-      </div>
-    </div>
-
-    <div class="carousel-nav reveal">
-      <button class="nav-circle" id="prodPrev"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M15 18l-6-6 6-6"/></svg></button>
-      <button class="nav-circle" id="prodNext"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M9 18l6-6-6-6"/></svg></button>
+      </a>
     </div>
   </div>
 </section>
 
-<!-- TESTIMONIALS -->
-<section class="section testi">
-  <div class="wrap testi-grid">
-    <div class="reveal">
-      <p class="eyebrow" style="margin-bottom:14px;">Testimonials</p>
-      <h2 style="margin-bottom:16px;">Stories from Our Happy Customers</h2>
-      <p style="color:var(--ink-soft);font-size:15px;line-height:1.7;margin-bottom:28px;max-width:400px;">See why design lovers trust our collections to bring elegance, warmth, and functionality into their homes.</p>
-      <span class="testi-badge">✓ Trusted</span>
-      <blockquote>"From the premium materials to the flawless finish, every detail feels carefully crafted. It adds elegance and warmth to the space, completely transforming the look and feel of our home."</blockquote>
-      <cite>David Anderson</cite>
-    </div>
-    <div class="stack reveal-settle">
-      <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=300&q=80" alt="Happy customer portrait">
-      <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=300&q=80" alt="Happy customer portrait">
-      <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=300&q=80" alt="Happy customer portrait">
-    </div>
-  </div>
-</section>
-
-<!-- NEWSLETTER + FOOTER -->
-<section class="newsletter" id="contact">
-  <div class="wrap news-inner">
-    <div class="news-visual reveal-settle">
-      <img src="https://images.unsplash.com/photo-1567016432779-094069958ea5?w=300&q=80" alt="">
-      <img src="https://images.unsplash.com/photo-1493663284031-b7e3aefcae8e?w=300&q=80" alt="">
-      <img src="https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=300&q=80" alt="">
-    </div>
-    <div class="news-text reveal">
-      <h2>Be the First to Discover New Collections</h2>
-      <p>Join our community and enjoy early access to new collections, special offers and expert interior styling ideas.</p>
-      <form class="news-form" onsubmit="return false;">
-        <input type="email" placeholder="Enter your email" required>
-        <button type="submit" aria-label="Subscribe">
-          <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-        </button>
-      </form>
-    </div>
-  </div>
-
+<footer class="footer" id="contact">
   <div class="wrap">
-    <div class="footer-cols">
-      <div class="foot-brand">
-        <a href="#" class="logo"><span class="logo-mark">T</span>Terrova</a>
-        <p>A modern furniture studio crafting elegant and functional home pieces.</p>
-      </div>
-      <div>
-        <h4>Features</h4>
-        <ul><li><a href="#">High-Quality Goods</a></li><li><a href="#">Latest Trends</a></li></ul>
-      </div>
-      <div>
-        <h4>Support Info</h4>
-        <ul><li><a href="#">FAQ</a></li><li><a href="#">Terms &amp; Conditions</a></li></ul>
-      </div>
-      <div>
-        <h4>Social Media</h4>
-        <ul><li><a href="#">Instagram</a></li><li><a href="#">Pinterest</a></li></ul>
-      </div>
+    <div class="foot-brand">
+      <h2 style="color:#fff;">R.K sales</h2>
+      <p>Premium hardware and accessories portfolio.</p>
     </div>
     <div class="foot-bottom">
-      <span>&copy; <%= new Date().getFullYear() %> Terrova. All rights reserved.</span>
+      <span>&copy; <%= new Date().getFullYear() %> R.K sales. All rights reserved.</span>
       <span>Built by Webglut.in</span>
     </div>
   </div>
-</section>
+</footer>
+
+<!-- STICKY BOTTOM NAV (MOBILE ONLY) -->
+<div class="bottom-nav">
+  <a href="#home" class="b-nav-item active">
+    <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
+    <span>Home</span>
+  </a>
+  <a href="product.ejs" class="b-nav-item">
+    <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+    <span>Category</span>
+  </a>
+  <a href="#" class="b-nav-item">
+    <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.3-4.3"/></svg>
+    <span>Search</span>
+  </a>
+</div>
 
 <script>
-  // Scroll reveal — plain fade-up for text only (one-shot on entering view)
-  const revealEls = document.querySelectorAll('.reveal');
-  const io = new IntersectionObserver((entries)=>{
-    entries.forEach(e=>{ 
-      if(e.isIntersecting){ 
-        e.target.classList.add('in'); 
-        io.unobserve(e.target); 
-      } 
-    });
-  }, { threshold: 0.15 });
-  revealEls.forEach(el=>io.observe(el));
-
-  // 3D tilt effect helper
-  function tilt(el, strength){
-    if(!el) return;
-    el.addEventListener('mousemove', (e)=>{
-      const r = el.getBoundingClientRect();
-      const x = (e.clientX - r.left) / r.width - 0.5;
-      const y = (e.clientY - r.top) / r.height - 0.5;
-      el.style.transform = `rotateY(${x*strength}deg) rotateX(${-y*strength}deg)`;
-    });
-    el.addEventListener('mouseleave', ()=>{ el.style.transform = 'rotateY(0deg) rotateX(0deg)'; });
-  }
-  tilt(document.getElementById('heroStage'), 6);
-  tilt(document.getElementById('discoverStage'), 5);
-
-  // Scroll parallax — hero (and discover) image drifts inside its frame as you scroll
-  const heroSection = document.querySelector('.hero');
-  const heroImg = document.getElementById('heroImg');
-  const discoverSection = document.querySelector('.discover');
-  const discoverImg = discoverSection ? discoverSection.querySelector('.discover-stage img') : null;
-
-  let ticking = false;
-  function clamp(v, min, max){ return Math.min(Math.max(v, min), max); }
-
-  function updateParallax(){
-    if(heroSection && heroImg){
-      const rect = heroSection.getBoundingClientRect();
-      const progress = clamp(-rect.top / (rect.height || 1), 0, 1);
-      heroImg.style.transform = `translateY(${progress * 70}px) scale(1.06)`;
-    }
-    if(discoverSection && discoverImg){
-      const rect = discoverSection.getBoundingClientRect();
-      const vh = window.innerHeight || document.documentElement.clientHeight;
-      const centerOffset = (rect.top + rect.height / 2 - vh / 2) / (vh / 2 + rect.height / 2);
-      const progress = clamp(centerOffset, -1, 1);
-      discoverImg.style.transform = `translateY(${progress * -40}px) scale(1.08)`;
-    }
-    ticking = false;
-  }
-
-  window.addEventListener('resize', updateParallax);
-  updateParallax();
-
-  // Scroll-scrubbed "rise and settle"
-  const settleEls = Array.from(document.querySelectorAll('.reveal-settle'));
-  const easeOut = p => 1 - Math.pow(1 - p, 3);
-
-  function settleProgress(el, startVH, endVH){
-    const rect = el.getBoundingClientRect();
-    const vh = window.innerHeight || document.documentElement.clientHeight;
-    const start = vh * startVH; 
-    const end = vh * endVH;     
-    return clamp((start - rect.top) / (start - end), 0, 1);
-  }
-
-  function updateSettle(){
-    settleEls.forEach(el=>{
-      const p = easeOut(settleProgress(el, 1.05, 0.62));
-      const staggerKids = el.querySelectorAll('.stagger');
-      if(staggerKids.length){
-        staggerKids.forEach((kid, i)=>{
-          const kp = easeOut(settleProgress(el, 1.05 + i*0.05, 0.62 + i*0.05));
-          kid.style.opacity = kp;
-          kid.style.transform = `translateY(${(1-kp)*70}px) scale(${0.92 + kp*0.08})`;
-        });
-        el.style.opacity = 1;
-        el.style.transform = 'none';
-      } else {
-        el.style.opacity = p;
-        el.style.transform = `translateY(${(1-p)*130}px) scale(${0.88 + p*0.12}) rotateX(${(1-p)*18}deg)`;
-      }
-    });
-  }
-
-  window.addEventListener('scroll', ()=>{
-    if(!ticking){ 
-      requestAnimationFrame(()=>{ 
-        updateParallax(); 
-        updateSettle(); 
-        ticking = false; 
-      }); 
-      ticking = true; 
-    }
-  }, { passive: true });
-  window.addEventListener('resize', updateSettle);
-  updateSettle(); // trigger once on load
-
-  // Category list interaction
-  document.querySelectorAll('.cat-item').forEach(item=>{
-    item.addEventListener('click', ()=>{
-      document.querySelectorAll('.cat-item').forEach(i=>i.classList.remove('active'));
-      item.classList.add('active');
-    });
+  // Mobile Menu Toggle
+  const burger = document.querySelector('.burger');
+  const navLinks = document.querySelector('.nav-links');
+  burger.addEventListener('click', () => {
+    navLinks.classList.toggle('active');
   });
 
-  // Product carousel 
-  const grid = document.querySelector('.product-grid');
-  document.getElementById('prodNext')?.addEventListener('click', ()=> grid.scrollBy({left:300, behavior:'smooth'}));
-  document.getElementById('prodPrev')?.addEventListener('click', ()=> grid.scrollBy({left:-300, behavior:'smooth'}));
+  // Scroll reveal animation
+  const revealEls = document.querySelectorAll('.reveal');
+  const io = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
+  }, { threshold: 0.15 });
+  revealEls.forEach(el=>io.observe(el));
 </script>
 
 </body>
