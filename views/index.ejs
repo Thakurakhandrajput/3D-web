@@ -2,355 +2,369 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>R.K Sales - Door Fittings & Hardware</title>
-<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>R.K Sales - Premium Hardware</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
   :root {
-    --fk-blue: #2874f0;
-    --fk-yellow: #ffe500;
-    --bg-color: #f1f3f6;
-    --white: #ffffff;
-    --text-main: #212121;
-    --text-muted: #878787;
-    --border: #f0f0f0;
+    --bg-main: #FCFAF7; /* Warm white background from screenshot */
+    --primary-red: #D32F2F;
+    --text-dark: #2C2C2C;
+    --text-light: #757575;
+    --card-bg: #FFFFFF;
+    --border-color: #EAEAEA;
+    --hero-bg: #F3EAE1;
   }
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
   body {
-    font-family: 'Roboto', sans-serif; background-color: var(--bg-color); color: var(--text-main);
-    padding-bottom: 60px; /* For bottom nav */
+    font-family: 'Inter', sans-serif;
+    background-color: var(--bg-main);
+    color: var(--text-dark);
+    padding-bottom: 70px; /* Space for bottom nav */
+    -webkit-font-smoothing: antialiased;
   }
   a { text-decoration: none; color: inherit; }
-  ul { list-style: none; }
+  
+  /* --- APP CONTAINER (For desktop view to look like mobile) --- */
+  .app-container {
+    max-width: 500px; /* Limits width on desktop to maintain app look */
+    margin: 0 auto;
+    background-color: var(--bg-main);
+    min-height: 100vh;
+    box-shadow: 0 0 20px rgba(0,0,0,0.05);
+    position: relative;
+    overflow-x: hidden;
+  }
 
   /* --- HEADER --- */
   header {
-    background-color: var(--fk-blue); color: var(--white); position: sticky; top: 0; z-index: 1000;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 16px 20px;
+    background: var(--bg-main);
+    position: sticky; top: 0; z-index: 100;
   }
-  .header-container {
-    max-width: 1200px; margin: 0 auto; padding: 10px 20px; display: flex; align-items: center; justify-content: space-between; gap: 20px;
+  .menu-btn {
+    background: none; border: none; cursor: pointer; display: flex; flex-direction: column; gap: 4px;
   }
-  .logo { font-size: 20px; font-weight: 700; font-style: italic; letter-spacing: 1px; }
-  .logo span { color: var(--fk-yellow); }
+  .menu-btn span { display: block; width: 22px; height: 2px; background: var(--text-dark); border-radius: 2px; }
+  .menu-btn span:nth-child(2) { width: 16px; }
   
-  .search-box {
-    flex: 1; display: flex; background: var(--white); border-radius: 4px; overflow: hidden; height: 36px; max-width: 600px;
+  .brand { display: flex; align-items: center; gap: 10px; }
+  .brand-logo {
+    width: 32px; height: 32px; background: var(--primary-red); border-radius: 50%;
+    display: flex; align-items: center; justify-content: center; color: #fff; font-weight: 700; font-size: 16px;
   }
-  .search-box input {
-    flex: 1; border: none; outline: none; padding: 0 15px; font-size: 14px;
-  }
-  .search-box button {
-    background: var(--white); border: none; padding: 0 15px; cursor: pointer; color: var(--fk-blue);
-  }
-  .header-links { display: flex; gap: 25px; font-weight: 500; font-size: 15px; }
-  @media(max-width: 768px) {
-    .header-links { display: none; }
-    .header-container { flex-wrap: wrap; padding: 10px 15px; gap: 10px; }
-    .search-box { min-width: 100%; order: 3; }
-  }
-
-  /* --- CATEGORY STRIP --- */
-  .category-strip {
-    background: var(--white); padding: 15px 10px; margin-bottom: 10px; overflow-x: auto; white-space: nowrap;
-    box-shadow: 0 1px 2px rgba(0,0,0,0.05); display: flex; justify-content: center; gap: 30px; scrollbar-width: none;
-  }
-  .category-strip::-webkit-scrollbar { display: none; }
-  .cat-item { display: inline-flex; flex-direction: column; align-items: center; gap: 8px; cursor: pointer; }
-  .cat-img { width: 64px; height: 64px; border-radius: 50%; background: #f5f5f5; padding: 5px; object-fit: contain; }
-  .cat-item span { font-size: 13px; font-weight: 500; }
-  @media(max-width: 768px) { .category-strip { justify-content: flex-start; padding: 15px; } }
-
-  /* --- SLIDER BANNER --- */
-  .slider-container {
-    max-width: 1200px; margin: 0 auto 10px; position: relative; overflow: hidden; background: var(--white);
-    box-shadow: 0 1px 2px rgba(0,0,0,0.05); height: 280px;
-  }
-  @media(max-width: 768px) { .slider-container { height: 180px; } }
-  .slides { display: flex; height: 100%; transition: transform 0.5s ease-in-out; }
-  .slide { min-width: 100%; height: 100%; position: relative; }
-  .slide img { width: 100%; height: 100%; object-fit: cover; }
+  .brand-text h1 { font-size: 16px; font-weight: 600; line-height: 1.2; color: var(--text-dark); }
+  .brand-text p { font-size: 10px; color: var(--text-light); }
   
-  .slide-content {
-    position: absolute; top: 50%; left: 10%; transform: translateY(-50%); color: var(--white); text-shadow: 1px 1px 4px rgba(0,0,0,0.6);
+  /* Hidden space to balance flexbox since we removed cart */
+  .header-right { width: 24px; height: 24px; }
+
+  /* --- SEARCH BAR --- */
+  .search-wrapper { padding: 0 20px 16px; }
+  .search-bar {
+    display: flex; align-items: center; background: var(--card-bg);
+    border-radius: 25px; padding: 10px 16px; box-shadow: 0 2px 10px rgba(0,0,0,0.03);
+    border: 1px solid var(--border-color);
   }
-  /* Pop-up Animation */
-  .slide-content h2, .slide-content p, .slide-content .btn { opacity: 0; transform: scale(0.8); }
-  .slide.active .slide-content h2 { animation: popUp 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; animation-delay: 0.1s; font-size: clamp(24px, 4vw, 40px); margin-bottom: 10px; }
-  .slide.active .slide-content p { animation: popUp 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; animation-delay: 0.3s; font-size: clamp(14px, 2vw, 18px); margin-bottom: 20px; }
-  .slide.active .slide-content .btn { animation: popUp 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; animation-delay: 0.5s; }
+  .search-bar input {
+    flex: 1; border: none; outline: none; background: transparent; font-size: 13px; font-family: 'Inter', sans-serif;
+    padding: 0 10px; color: var(--text-dark);
+  }
+  .search-bar input::placeholder { color: #A0A0A0; }
+
+  /* --- HERO SECTION (Curved UI) --- */
+  .hero-section { padding: 0 20px 24px; }
+  .hero-card {
+    display: flex; border-radius: 20px; overflow: hidden; height: 160px;
+    background: var(--hero-bg); position: relative;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+  }
+  .hero-text {
+    flex: 1; padding: 24px 20px; position: relative; z-index: 2;
+    background: var(--hero-bg);
+    border-radius: 0 100px 100px 0; /* Creates the curve */
+    margin-right: -40px; /* Overlaps the image */
+  }
+  .hero-text h2 { font-size: 18px; font-weight: 600; line-height: 1.3; color: var(--text-dark); margin-bottom: 8px; }
+  .hero-text h2 span { color: var(--primary-red); }
+  .hero-text p { font-size: 11px; color: var(--text-light); font-weight: 500; }
   
-  @keyframes popUp {
-    0% { opacity: 0; transform: scale(0.8) translateY(20px); }
-    100% { opacity: 1; transform: scale(1) translateY(0); }
+  .hero-img { flex: 1; position: relative; z-index: 1; }
+  .hero-img img { width: 100%; height: 100%; object-fit: cover; }
+
+  /* --- SHOP BY CATEGORY --- */
+  .section { padding: 0 20px 24px; }
+  .section-head { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 16px; }
+  .section-head h3 { font-size: 15px; font-weight: 600; }
+  .view-all { font-size: 12px; color: var(--primary-red); font-weight: 600; }
+
+  .category-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+  .cat-item { display: flex; flex-direction: column; align-items: center; gap: 8px; }
+  .cat-img-box {
+    width: 100%; aspect-ratio: 1; background: var(--card-bg); border-radius: 12px;
+    padding: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.04); display: flex; align-items: center; justify-content: center;
+  }
+  .cat-img-box img { width: 100%; height: 100%; object-fit: contain; border-radius: 8px; }
+  .cat-item span { font-size: 11px; font-weight: 500; color: var(--text-dark); text-align: center; }
+
+  /* --- PROMO BANNERS --- */
+  .promo-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 24px; padding: 0 20px; }
+  .promo-card {
+    background: #F4F6F6; border-radius: 16px; padding: 16px; position: relative; height: 120px; overflow: hidden;
+  }
+  .promo-card h4 { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
+  .promo-card p { font-size: 10px; color: var(--text-light); }
+  .promo-card img {
+    position: absolute; bottom: 0; right: 0; width: 70%; height: 70%; object-fit: contain;
+    transform: translate(10%, 10%);
   }
 
-  .btn {
-    display: inline-block; background: var(--fk-yellow); color: var(--text-main); font-weight: 500; padding: 10px 20px;
-    border-radius: 4px; box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+  /* --- WHY CHOOSE US --- */
+  .features-grid {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px;
+    background: var(--card-bg); border-radius: 16px; padding: 20px 10px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.03);
   }
-
-  .slider-nav { position: absolute; bottom: 15px; left: 50%; transform: translateX(-50%); display: flex; gap: 8px; }
-  .dot { width: 10px; height: 10px; border-radius: 50%; background: rgba(255,255,255,0.5); cursor: pointer; }
-  .dot.active { background: var(--white); width: 20px; border-radius: 5px; }
-
-  /* --- PRODUCT GRID (Infinite Scroll) --- */
-  .product-section { max-width: 1200px; margin: 0 auto 20px; padding: 0 10px; }
-  .section-title { background: var(--white); padding: 15px 20px; font-size: 18px; font-weight: 500; border-bottom: 1px solid var(--border); }
-  
-  .grid {
-    display: grid; grid-template-columns: repeat(4, 1fr); gap: 2px; background: var(--border); padding: 2px;
+  .feature-item { display: flex; flex-direction: column; align-items: center; gap: 8px; text-align: center; }
+  .feat-icon {
+    width: 36px; height: 36px; border-radius: 50%; border: 1px solid #F0D9D9;
+    display: flex; align-items: center; justify-content: center; color: var(--primary-red);
   }
-  @media(max-width: 1024px) { .grid { grid-template-columns: repeat(3, 1fr); } }
-  @media(max-width: 600px) { .grid { grid-template-columns: repeat(2, 1fr); } }
+  .feature-item span { font-size: 10px; font-weight: 500; color: var(--text-dark); line-height: 1.2; }
 
+  /* --- INFINITE PRODUCT GRID --- */
+  .product-grid {
+    display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px;
+  }
   .product-card {
-    background: var(--white); padding: 15px; display: flex; flex-direction: column; align-items: center; text-align: center;
-    position: relative; transition: box-shadow 0.2s;
+    background: var(--card-bg); border-radius: 12px; padding: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04); display: flex; flex-direction: column;
   }
-  .product-card:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.1); z-index: 2; }
-  .product-image { width: 100%; height: 180px; object-fit: contain; margin-bottom: 15px; }
-  @media(max-width: 600px) { .product-image { height: 140px; } }
-  
-  .product-title { font-size: 14px; font-weight: 500; color: var(--text-main); margin-bottom: 8px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
-  .product-sub { font-size: 13px; color: #388e3c; font-weight: 500; margin-bottom: 12px; }
-  
+  .product-img { width: 100%; height: 120px; object-fit: contain; margin-bottom: 12px; border-radius: 8px; }
+  .product-title { font-size: 12px; font-weight: 500; line-height: 1.4; margin-bottom: 8px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
   .view-btn {
-    width: 100%; padding: 10px 0; background: var(--bg-color); color: var(--fk-blue); border: 1px solid var(--border);
-    font-weight: 500; border-radius: 4px; text-transform: uppercase; font-size: 13px; cursor: pointer; transition: background 0.2s;
+    margin-top: auto; padding: 8px 0; background: var(--bg-main); color: var(--text-dark);
+    text-align: center; font-size: 11px; font-weight: 600; border-radius: 6px; border: 1px solid var(--border-color);
   }
-  .view-btn:hover { background: var(--fk-blue); color: var(--white); }
-
+  
   /* Loader */
-  .loader-container { text-align: center; padding: 20px; display: none; }
-  .loader { border: 3px solid #f3f3f3; border-top: 3px solid var(--fk-blue); border-radius: 50%; width: 30px; height: 30px; animation: spin 1s linear infinite; margin: 0 auto; }
-  @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+  .loader { text-align: center; padding: 20px; display: none; }
+  .loader svg { width: 24px; height: 24px; animation: spin 1s linear infinite; stroke: var(--primary-red); }
+  @keyframes spin { 100% { transform: rotate(360deg); } }
 
-  /* --- BOTTOM NAVIGATION (Sticky Mobile) --- */
+  /* --- BOTTOM NAV --- */
   .bottom-nav {
-    display: none; position: fixed; bottom: 0; left: 0; width: 100%; background: var(--white); z-index: 1000;
-    box-shadow: 0 -2px 10px rgba(0,0,0,0.1); justify-content: space-around; padding: 10px 0; border-top: 1px solid var(--border);
+    position: fixed; bottom: 0; width: 100%; max-width: 500px;
+    background: var(--card-bg); display: flex; justify-content: space-around;
+    padding: 12px 0 16px; box-shadow: 0 -4px 15px rgba(0,0,0,0.04);
+    border-top: 1px solid var(--border-color); z-index: 1000;
   }
-  .nav-item { display: flex; flex-direction: column; align-items: center; gap: 4px; color: var(--text-muted); font-size: 11px; font-weight: 500; }
-  .nav-item.active { color: var(--fk-blue); }
-  @media(max-width: 768px) { .bottom-nav { display: flex; } }
+  .nav-item { display: flex; flex-direction: column; align-items: center; gap: 4px; color: var(--text-light); }
+  .nav-item.active { color: var(--primary-red); }
+  .nav-item svg { width: 20px; height: 20px; }
+  .nav-item span { font-size: 10px; font-weight: 500; }
 
 </style>
 </head>
 <body>
 
-<header>
-  <div class="header-container">
-    <a href="index.ejs" class="logo">R.K <span>Sales</span></a>
-    
-    <div class="search-box">
-      <input type="text" placeholder="Search for door handles, locks, hinges...">
-      <button>
-        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.3-4.3"/></svg>
-      </button>
-    </div>
-
-    <div class="header-links">
-      <a href="index.ejs">Home</a>
-      <a href="product.ejs">All Products</a>
-    </div>
-  </div>
-</header>
-
-<!-- CATEGORY STRIP -->
-<div class="category-strip">
-  <div class="cat-item">
-    <img src="https://images.unsplash.com/photo-1542010589005-d1eabd394997?w=150&q=80" class="cat-img" alt="Handles">
-    <span>Handles</span>
-  </div>
-  <div class="cat-item">
-    <img src="https://images.unsplash.com/photo-1621905251189-08b45d6a269e?w=150&q=80" class="cat-img" alt="Smart Locks">
-    <span>Locks</span>
-  </div>
-  <div class="cat-item">
-    <img src="https://images.unsplash.com/photo-1589939705384-5185137a7f0f?w=150&q=80" class="cat-img" alt="Hinges">
-    <span>Hinges</span>
-  </div>
-  <div class="cat-item">
-    <img src="https://images.unsplash.com/photo-1558025232-0c9f133bc420?w=150&q=80" class="cat-img" alt="Knobs">
-    <span>Knobs</span>
-  </div>
-  <div class="cat-item">
-    <img src="https://images.unsplash.com/photo-1581428982868-e410dd047a90?w=150&q=80" class="cat-img" alt="Accessories">
-    <span>Accessories</span>
-  </div>
-</div>
-
-<!-- SLIDER BANNER -->
-<div class="slider-container">
-  <div class="slides" id="slider">
-    <!-- Slide 1 -->
-    <div class="slide active">
-      <img src="https://images.unsplash.com/photo-1558227691-41ea78d1f631?w=1200&q=80" alt="Premium Handles">
-      <div class="slide-content">
-        <h2>Premium Brass Handles</h2>
-        <p>Give your doors a royal touch.</p>
-        <a href="product.ejs" class="btn">View Range</a>
-      </div>
-    </div>
-    <!-- Slide 2 -->
-    <div class="slide">
-      <img src="https://images.unsplash.com/photo-1616460341757-19b0d625d6b4?w=1200&q=80" alt="Smart Locks">
-      <div class="slide-content">
-        <h2 style="color:#212121;">Smart Digital Locks</h2>
-        <p style="color:#212121;">Advanced security for modern homes.</p>
-        <a href="product.ejs" class="btn">Explore Now</a>
-      </div>
-    </div>
-    <!-- Slide 3 -->
-    <div class="slide">
-      <img src="https://images.unsplash.com/photo-1586864387789-628af9face72?w=1200&q=80" alt="Heavy Duty Hinges">
-      <div class="slide-content">
-        <h2>Heavy Duty Hinges</h2>
-        <p>Rust-free, durable steel fittings.</p>
-        <a href="product.ejs" class="btn">Check Details</a>
-      </div>
-    </div>
-  </div>
+<div class="app-container">
   
-  <div class="slider-nav">
-    <div class="dot active" onclick="goToSlide(0)"></div>
-    <div class="dot" onclick="goToSlide(1)"></div>
-    <div class="dot" onclick="goToSlide(2)"></div>
-  </div>
-</div>
+  <!-- Header -->
+  <header>
+    <button class="menu-btn">
+      <span></span><span></span><span></span>
+    </button>
+    <div class="brand">
+      <div class="brand-logo">R</div>
+      <div class="brand-text">
+        <h1>R.K Sales</h1>
+        <p>Premium Hardware</p>
+      </div>
+    </div>
+    <div class="header-right"></div> <!-- Kept empty to balance flexbox, no cart -->
+  </header>
 
-<!-- PRODUCT SECTION (Infinite Scroll) -->
-<div class="product-section">
-  <div class="section-title">Best of Door Hardware</div>
-  <div class="grid" id="productGrid">
-    <!-- Initial Load Products -->
-    <!-- Card 1 -->
-    <a href="shop.ejs" class="product-card">
-      <img src="https://images.unsplash.com/photo-1542010589005-d1eabd394997?w=300&q=80" class="product-image" alt="Handle">
-      <div class="product-title">Antique Brass Door Handle Main Door Fitting</div>
-      <div class="product-sub">Premium Finish</div>
-      <button class="view-btn">View Details</button>
-    </a>
-    <!-- Card 2 -->
-    <a href="shop.ejs" class="product-card">
-      <img src="https://images.unsplash.com/photo-1621905251189-08b45d6a269e?w=300&q=80" class="product-image" alt="Lock">
-      <div class="product-title">Digital Smart Door Lock with Fingerprint</div>
-      <div class="product-sub">High Security</div>
-      <button class="view-btn">View Details</button>
-    </a>
-    <!-- Card 3 -->
-    <a href="shop.ejs" class="product-card">
-      <img src="https://images.unsplash.com/photo-1589939705384-5185137a7f0f?w=300&q=80" class="product-image" alt="Hinge">
-      <div class="product-title">Stainless Steel 4-inch Bearing Hinges (Pack of 4)</div>
-      <div class="product-sub">Rust Proof</div>
-      <button class="view-btn">View Details</button>
-    </a>
-    <!-- Card 4 -->
-    <a href="shop.ejs" class="product-card">
-      <img src="https://images.unsplash.com/photo-1558025232-0c9f133bc420?w=300&q=80" class="product-image" alt="Knob">
-      <div class="product-title">Round Crystal Glass Door Knob for Bedroom</div>
-      <div class="product-sub">Elegant Look</div>
-      <button class="view-btn">View Details</button>
-    </a>
+  <!-- Search Bar -->
+  <div class="search-wrapper">
+    <div class="search-bar">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#757575" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.3-4.3"/></svg>
+      <input type="text" placeholder="Search premium hardware...">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#757575" stroke-width="2"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="22"/></svg>
+    </div>
   </div>
 
-  <!-- Loader for Infinite Scroll -->
-  <div class="loader-container" id="loader">
-    <div class="loader"></div>
+  <!-- Hero Section -->
+  <div class="hero-section">
+    <div class="hero-card">
+      <div class="hero-text">
+        <h2>Premium Hardware<br>for <span>Every Space</span></h2>
+        <p>Design • Security • Living</p>
+      </div>
+      <div class="hero-img">
+        <!-- Replace with real door/lock image -->
+        <img src="https://images.unsplash.com/photo-1558227691-41ea78d1f631?w=400&q=80" alt="Smart Lock">
+      </div>
+    </div>
   </div>
-</div>
 
-<!-- BOTTOM NAV (MOBILE) -->
-<div class="bottom-nav">
-  <a href="index.ejs" class="nav-item active">
-    <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
-    <span>Home</span>
-  </a>
-  <a href="product.ejs" class="nav-item">
-    <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
-    <span>Categories</span>
-  </a>
-  <a href="#" class="nav-item">
-    <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
-    <span>Updates</span>
-  </a>
-  <a href="#" class="nav-item">
-    <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-    <span>Profile</span>
-  </a>
+  <!-- Categories -->
+  <div class="section">
+    <div class="section-head">
+      <h3>Shop by Category</h3>
+      <a href="product.ejs" class="view-all">View All</a>
+    </div>
+    <div class="category-grid">
+      <a href="product.ejs" class="cat-item">
+        <div class="cat-img-box"><img src="https://images.unsplash.com/photo-1542010589005-d1eabd394997?w=150&q=80" alt="Kitchen"></div>
+        <span>Kitchen</span>
+      </a>
+      <a href="product.ejs" class="cat-item">
+        <div class="cat-img-box"><img src="https://images.unsplash.com/photo-1558025232-0c9f133bc420?w=150&q=80" alt="Furniture"></div>
+        <span>Furniture</span>
+      </a>
+      <a href="product.ejs" class="cat-item">
+        <div class="cat-img-box"><img src="https://images.unsplash.com/photo-1589939705384-5185137a7f0f?w=150&q=80" alt="Doors"></div>
+        <span>Doors</span>
+      </a>
+      <a href="product.ejs" class="cat-item">
+        <div class="cat-img-box"><img src="https://images.unsplash.com/photo-1621905251189-08b45d6a269e?w=150&q=80" alt="Security"></div>
+        <span>Security</span>
+      </a>
+    </div>
+  </div>
+
+  <!-- Promo Banners -->
+  <div class="promo-grid">
+    <div class="promo-card">
+      <h4>New Arrivals</h4>
+      <p>Discover Now &rarr;</p>
+      <img src="https://images.unsplash.com/photo-1581428982868-e410dd047a90?w=200&q=80" alt="Handle">
+    </div>
+    <div class="promo-card" style="background: #F8F3EE;">
+      <h4>Best Sellers</h4>
+      <p>Explore Now &rarr;</p>
+      <img src="https://images.unsplash.com/photo-1558025232-0c9f133bc420?w=200&q=80" alt="Knob">
+    </div>
+  </div>
+
+  <!-- Why Choose Us -->
+  <div class="section">
+    <h3 style="font-size: 15px; margin-bottom: 16px;">Why Choose Us</h3>
+    <div class="features-grid">
+      <div class="feature-item">
+        <div class="feat-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg></div>
+        <span>Premium<br>Quality</span>
+      </div>
+      <div class="feature-item">
+        <div class="feat-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></div>
+        <span>Modern<br>Design</span>
+      </div>
+      <div class="feature-item">
+        <div class="feat-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div>
+        <span>Trusted<br>Brand</span>
+      </div>
+      <div class="feature-item">
+        <div class="feat-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 18v-6a9 9 0 0 1 18 0v6"/><path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"/></svg></div>
+        <span>Expert<br>Support</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Infinite Scroll Products -->
+  <div class="section">
+    <div class="section-head">
+      <h3>Explore Collection</h3>
+    </div>
+    <div class="product-grid" id="productGrid">
+      <a href="shop.ejs" class="product-card">
+        <img src="https://images.unsplash.com/photo-1542010589005-d1eabd394997?w=300&q=80" class="product-img" alt="Handle">
+        <div class="product-title">Antique Brass Mortise Handle</div>
+        <div class="view-btn">View Details</div>
+      </a>
+      <a href="shop.ejs" class="product-card">
+        <img src="https://images.unsplash.com/photo-1621905251189-08b45d6a269e?w=300&q=80" class="product-img" alt="Lock">
+        <div class="product-title">Digital Smart Door Lock</div>
+        <div class="view-btn">View Details</div>
+      </a>
+      <a href="shop.ejs" class="product-card">
+        <img src="https://images.unsplash.com/photo-1589939705384-5185137a7f0f?w=300&q=80" class="product-img" alt="Hinge">
+        <div class="product-title">Steel Bearing Hinges (Pack of 4)</div>
+        <div class="view-btn">View Details</div>
+      </a>
+      <a href="shop.ejs" class="product-card">
+        <img src="https://images.unsplash.com/photo-1558025232-0c9f133bc420?w=300&q=80" class="product-img" alt="Knob">
+        <div class="product-title">Crystal Glass Door Knob</div>
+        <div class="view-btn">View Details</div>
+      </a>
+    </div>
+    <!-- Loader -->
+    <div class="loader" id="loader">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg>
+    </div>
+  </div>
+
+  <!-- Bottom Navigation -->
+  <nav class="bottom-nav">
+    <a href="index.ejs" class="nav-item active">
+      <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
+      <span>Home</span>
+    </a>
+    <a href="product.ejs" class="nav-item">
+      <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+      <span>Categories</span>
+    </a>
+    <a href="product.ejs" class="nav-item">
+      <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.3-4.3"/></svg>
+      <span>Search</span>
+    </a>
+    <a href="#" class="nav-item">
+      <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      <span>Profile</span>
+    </a>
+  </nav>
+
 </div>
 
 <script>
-  // --- SLIDER LOGIC ---
-  const slider = document.getElementById('slider');
-  const slides = document.querySelectorAll('.slide');
-  const dots = document.querySelectorAll('.dot');
-  let currentIndex = 0;
-  const totalSlides = slides.length;
-
-  function goToSlide(index) {
-    currentIndex = index;
-    slider.style.transform = `translateX(-${currentIndex * 100}%)`;
-    
-    slides.forEach(s => s.classList.remove('active'));
-    dots.forEach(d => d.classList.remove('active'));
-    
-    slides[currentIndex].classList.add('active');
-    dots[currentIndex].classList.add('active');
-  }
-
-  setInterval(() => {
-    let nextIndex = (currentIndex + 1) % totalSlides;
-    goToSlide(nextIndex);
-  }, 4000); // Slides every 4 seconds
-
-
-  // --- INFINITE SCROLL LOGIC ---
+  // Infinite Scroll Logic
   const productGrid = document.getElementById('productGrid');
   const loader = document.getElementById('loader');
 
-  // Dummy hardware data for infinite scroll
-  const dummyProducts = [
-    { title: "Matt Black Mortise Handle Lock Set", sub: "Top Rated", img: "https://images.unsplash.com/photo-1542010589005-d1eabd394997?w=300&q=80&1" },
-    { title: "Aluminium Door Closer Heavy Duty", sub: "Commercial Grade", img: "https://images.unsplash.com/photo-1621905251189-08b45d6a269e?w=300&q=80&2" },
-    { title: "Brass Aldrop for Double Doors", sub: "Classic Series", img: "https://images.unsplash.com/photo-1589939705384-5185137a7f0f?w=300&q=80&3" },
-    { title: "Magnetic Door Stopper Steel Finish", sub: "Best Seller", img: "https://images.unsplash.com/photo-1558025232-0c9f133bc420?w=300&q=80&4" }
+  // Dummy products
+  const dummyData = [
+    { title: "Matt Black Mortise Lock Set", img: "https://images.unsplash.com/photo-1542010589005-d1eabd394997?w=300&q=80" },
+    { title: "Aluminium Door Closer", img: "https://images.unsplash.com/photo-1621905251189-08b45d6a269e?w=300&q=80" },
+    { title: "Brass Aldrop for Double Doors", img: "https://images.unsplash.com/photo-1589939705384-5185137a7f0f?w=300&q=80" },
+    { title: "Magnetic Door Stopper", img: "https://images.unsplash.com/photo-1558025232-0c9f133bc420?w=300&q=80" }
   ];
-
-  function createProductCard(product) {
-    return `
-      <a href="shop.ejs" class="product-card">
-        <img src="${product.img}" class="product-image" alt="Hardware">
-        <div class="product-title">${product.title}</div>
-        <div class="product-sub">${product.sub}</div>
-        <button class="view-btn">View Details</button>
-      </a>
-    `;
-  }
 
   function loadMoreProducts() {
     loader.style.display = 'block';
-    // Simulate network delay
     setTimeout(() => {
-      let newCardsHTML = '';
+      let html = '';
       for(let i=0; i<4; i++) {
-        // Just looping the dummy data for demonstration
-        newCardsHTML += createProductCard(dummyProducts[i % dummyProducts.length]);
+        let p = dummyData[i % dummyData.length];
+        html += `
+          <a href="shop.ejs" class="product-card">
+            <img src="${p.img}" class="product-img" alt="Hardware">
+            <div class="product-title">${p.title}</div>
+            <div class="view-btn">View Details</div>
+          </a>
+        `;
       }
-      productGrid.insertAdjacentHTML('beforeend', newCardsHTML);
+      productGrid.insertAdjacentHTML('beforeend', html);
       loader.style.display = 'none';
     }, 1000);
   }
 
-  // Intersection Observer for Infinite Scroll
   const observer = new IntersectionObserver((entries) => {
     if (entries[0].isIntersecting) {
       loadMoreProducts();
     }
-  }, { rootMargin: '100px' }); // Trigger 100px before reaching the bottom
-
+  }, { rootMargin: '100px' });
   observer.observe(loader);
 </script>
 
