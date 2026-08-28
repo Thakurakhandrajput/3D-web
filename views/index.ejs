@@ -3,334 +3,355 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>R.K sales — Premium Hardware & Accessories</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<title>R.K Sales - Door Fittings & Hardware</title>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
-  :root{
-    --cream:#F4F4F4;
-    --cream-2:#EAEAEA;
-    --ink:#1A1A1A;
-    --ink-soft:#555555;
-    --terracotta:#D35400;
-    --terracotta-dark:#A04000;
-    --olive:#5D6D7E;
-    --line:rgba(0,0,0,0.1);
-    --white:#FFFFFF;
-    --footer:#111111;
-    --footer-soft:#A6ACAF;
-    --radius:16px;
-    --shadow: 0 20px 40px -10px rgba(0,0,0,0.15);
+  :root {
+    --fk-blue: #2874f0;
+    --fk-yellow: #ffe500;
+    --bg-color: #f1f3f6;
+    --white: #ffffff;
+    --text-main: #212121;
+    --text-muted: #878787;
+    --border: #f0f0f0;
   }
 
-  *{margin:0;padding:0;box-sizing:border-box;}
-  html{scroll-behavior:smooth;}
-  body{
-    background:var(--cream);
-    color:var(--ink);
-    font-family:'Inter',sans-serif;
-    overflow-x:hidden;
-    -webkit-font-smoothing:antialiased;
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Roboto', sans-serif; background-color: var(--bg-color); color: var(--text-main);
+    padding-bottom: 60px; /* For bottom nav */
   }
-  img{display:block;max-width:100%;}
-  a{text-decoration:none;color:inherit;}
-  ul{list-style:none;}
-  h1,h2,h3{font-family:'Playfair Display',serif;font-weight:600;letter-spacing:-0.01em;color:var(--ink);}
-  .eyebrow{
-    text-transform:uppercase;font-size:12px;letter-spacing:0.15em;color:var(--terracotta);font-weight:700;
-  }
-  .wrap{max-width:1240px;margin:0 auto;padding:0 32px;}
-  @media(max-width:640px){.wrap{padding:0 20px;}}
+  a { text-decoration: none; color: inherit; }
+  ul { list-style: none; }
 
-  button, .btn{
-    font-family:'Inter',sans-serif;cursor:pointer;border:none;
+  /* --- HEADER --- */
+  header {
+    background-color: var(--fk-blue); color: var(--white); position: sticky; top: 0; z-index: 1000;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
   }
-
-  /* Reveal animations */
-  .reveal{opacity:0;transform:translateY(28px);transition:opacity .8s cubic-bezier(.22,1,.36,1), transform .8s cubic-bezier(.22,1,.36,1);}
-  .reveal.in{opacity:1;transform:translateY(0);}
-  .hero-copy > *{opacity:0;transform:translateY(24px);animation:introUp .9s cubic-bezier(.22,1,.36,1) forwards;}
-  .hero-copy > .hero-eyebrow{animation-delay:.05s;}
-  .hero-copy > h1{animation-delay:.18s;}
-  .hero-copy > p{animation-delay:.32s;}
-  .hero-copy > .hero-ctas{animation-delay:.46s;}
-  .hero-float-card{opacity:0;animation:introUp .8s cubic-bezier(.22,1,.36,1) forwards;animation-delay:.75s;}
-  .intro-scale{opacity:0;transform:scale(0.82) translateY(30px) rotateX(10deg);transform-origin:center bottom;animation:introScale 1.3s cubic-bezier(.16,1,.3,1) forwards;}
-  @keyframes introUp{to{opacity:1;transform:translateY(0);}}
-  @keyframes introScale{to{opacity:1;transform:scale(1) translateY(0) rotateX(0deg);}}
-
-  /* ---------------- NAV & SEARCH ---------------- */
-  header{
-    position:sticky;top:0;z-index:100;
-    background:rgba(244,244,244,0.9);
-    backdrop-filter:blur(12px);
-    border-bottom:1px solid var(--line);
+  .header-container {
+    max-width: 1200px; margin: 0 auto; padding: 10px 20px; display: flex; align-items: center; justify-content: space-between; gap: 20px;
   }
-  nav{
-    max-width:1240px;margin:0 auto;padding:16px 32px;
-    display:flex;align-items:center;justify-content:space-between;
-  }
-  .logo{display:flex;align-items:center;gap:10px;font-family:'Playfair Display',serif;font-size:24px;font-weight:700;}
-  .logo-mark{
-    width:28px;height:28px;border-radius:6px;
-    background:linear-gradient(135deg,var(--terracotta),var(--terracotta-dark));
-    display:flex;align-items:center;justify-content:center;color:#fff;font-size:14px;
-  }
+  .logo { font-size: 20px; font-weight: 700; font-style: italic; letter-spacing: 1px; }
+  .logo span { color: var(--fk-yellow); }
   
-  .search-bar {
-    display: flex; align-items: center; background: var(--white); border-radius: 100px; 
-    padding: 6px 14px; border: 1px solid var(--line); flex: 0.5;
+  .search-box {
+    flex: 1; display: flex; background: var(--white); border-radius: 4px; overflow: hidden; height: 36px; max-width: 600px;
   }
-  .search-bar input {
-    border: none; outline: none; background: transparent; width: 100%; padding-left: 8px; font-family: 'Inter', sans-serif;
+  .search-box input {
+    flex: 1; border: none; outline: none; padding: 0 15px; font-size: 14px;
+  }
+  .search-box button {
+    background: var(--white); border: none; padding: 0 15px; cursor: pointer; color: var(--fk-blue);
+  }
+  .header-links { display: flex; gap: 25px; font-weight: 500; font-size: 15px; }
+  @media(max-width: 768px) {
+    .header-links { display: none; }
+    .header-container { flex-wrap: wrap; padding: 10px 15px; gap: 10px; }
+    .search-box { min-width: 100%; order: 3; }
   }
 
-  .nav-links{display:flex;gap:32px;font-size:14.5px;font-weight:600;}
-  .nav-links a{position:relative;padding:4px 0;}
-  .nav-links a::after{
-    content:"";position:absolute;left:0;bottom:-2px;width:0;height:2px;background:var(--terracotta);
-    transition:width .3s ease;
+  /* --- CATEGORY STRIP --- */
+  .category-strip {
+    background: var(--white); padding: 15px 10px; margin-bottom: 10px; overflow-x: auto; white-space: nowrap;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.05); display: flex; justify-content: center; gap: 30px; scrollbar-width: none;
   }
-  .nav-links a:hover::after{width:100%;}
-  .nav-icons{display:flex;align-items:center;gap:20px;}
-  .burger{display:none;background:none;}
+  .category-strip::-webkit-scrollbar { display: none; }
+  .cat-item { display: inline-flex; flex-direction: column; align-items: center; gap: 8px; cursor: pointer; }
+  .cat-img { width: 64px; height: 64px; border-radius: 50%; background: #f5f5f5; padding: 5px; object-fit: contain; }
+  .cat-item span { font-size: 13px; font-weight: 500; }
+  @media(max-width: 768px) { .category-strip { justify-content: flex-start; padding: 15px; } }
+
+  /* --- SLIDER BANNER --- */
+  .slider-container {
+    max-width: 1200px; margin: 0 auto 10px; position: relative; overflow: hidden; background: var(--white);
+    box-shadow: 0 1px 2px rgba(0,0,0,0.05); height: 280px;
+  }
+  @media(max-width: 768px) { .slider-container { height: 180px; } }
+  .slides { display: flex; height: 100%; transition: transform 0.5s ease-in-out; }
+  .slide { min-width: 100%; height: 100%; position: relative; }
+  .slide img { width: 100%; height: 100%; object-fit: cover; }
   
-  /* Mobile Nav active state */
-  @media(max-width:900px){
-    .nav-links{
-      display:none; position:absolute; top:70px; left:0; width:100%; 
-      background:var(--white); flex-direction:column; padding:20px; 
-      box-shadow: 0 10px 20px rgba(0,0,0,0.1); gap:15px;
-    }
-    .nav-links.active{display:flex;}
-    .search-bar{display:none;} /* Hidden on mobile header, can put in menu or hero */
-    .burger{display:block;}
+  .slide-content {
+    position: absolute; top: 50%; left: 10%; transform: translateY(-50%); color: var(--white); text-shadow: 1px 1px 4px rgba(0,0,0,0.6);
+  }
+  /* Pop-up Animation */
+  .slide-content h2, .slide-content p, .slide-content .btn { opacity: 0; transform: scale(0.8); }
+  .slide.active .slide-content h2 { animation: popUp 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; animation-delay: 0.1s; font-size: clamp(24px, 4vw, 40px); margin-bottom: 10px; }
+  .slide.active .slide-content p { animation: popUp 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; animation-delay: 0.3s; font-size: clamp(14px, 2vw, 18px); margin-bottom: 20px; }
+  .slide.active .slide-content .btn { animation: popUp 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; animation-delay: 0.5s; }
+  
+  @keyframes popUp {
+    0% { opacity: 0; transform: scale(0.8) translateY(20px); }
+    100% { opacity: 1; transform: scale(1) translateY(0); }
   }
 
-  /* ---------------- BOTTOM STICKY NAV (Mobile) ---------------- */
+  .btn {
+    display: inline-block; background: var(--fk-yellow); color: var(--text-main); font-weight: 500; padding: 10px 20px;
+    border-radius: 4px; box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+  }
+
+  .slider-nav { position: absolute; bottom: 15px; left: 50%; transform: translateX(-50%); display: flex; gap: 8px; }
+  .dot { width: 10px; height: 10px; border-radius: 50%; background: rgba(255,255,255,0.5); cursor: pointer; }
+  .dot.active { background: var(--white); width: 20px; border-radius: 5px; }
+
+  /* --- PRODUCT GRID (Infinite Scroll) --- */
+  .product-section { max-width: 1200px; margin: 0 auto 20px; padding: 0 10px; }
+  .section-title { background: var(--white); padding: 15px 20px; font-size: 18px; font-weight: 500; border-bottom: 1px solid var(--border); }
+  
+  .grid {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 2px; background: var(--border); padding: 2px;
+  }
+  @media(max-width: 1024px) { .grid { grid-template-columns: repeat(3, 1fr); } }
+  @media(max-width: 600px) { .grid { grid-template-columns: repeat(2, 1fr); } }
+
+  .product-card {
+    background: var(--white); padding: 15px; display: flex; flex-direction: column; align-items: center; text-align: center;
+    position: relative; transition: box-shadow 0.2s;
+  }
+  .product-card:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.1); z-index: 2; }
+  .product-image { width: 100%; height: 180px; object-fit: contain; margin-bottom: 15px; }
+  @media(max-width: 600px) { .product-image { height: 140px; } }
+  
+  .product-title { font-size: 14px; font-weight: 500; color: var(--text-main); margin-bottom: 8px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+  .product-sub { font-size: 13px; color: #388e3c; font-weight: 500; margin-bottom: 12px; }
+  
+  .view-btn {
+    width: 100%; padding: 10px 0; background: var(--bg-color); color: var(--fk-blue); border: 1px solid var(--border);
+    font-weight: 500; border-radius: 4px; text-transform: uppercase; font-size: 13px; cursor: pointer; transition: background 0.2s;
+  }
+  .view-btn:hover { background: var(--fk-blue); color: var(--white); }
+
+  /* Loader */
+  .loader-container { text-align: center; padding: 20px; display: none; }
+  .loader { border: 3px solid #f3f3f3; border-top: 3px solid var(--fk-blue); border-radius: 50%; width: 30px; height: 30px; animation: spin 1s linear infinite; margin: 0 auto; }
+  @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+  /* --- BOTTOM NAVIGATION (Sticky Mobile) --- */
   .bottom-nav {
-    display: none; position: fixed; bottom: 0; width: 100%; background: var(--white);
-    z-index: 1000; justify-content: space-around; padding: 10px 0 15px 0;
-    border-top: 1px solid var(--line); box-shadow: 0 -4px 15px rgba(0,0,0,0.05);
+    display: none; position: fixed; bottom: 0; left: 0; width: 100%; background: var(--white); z-index: 1000;
+    box-shadow: 0 -2px 10px rgba(0,0,0,0.1); justify-content: space-around; padding: 10px 0; border-top: 1px solid var(--border);
   }
-  .b-nav-item {
-    display: flex; flex-direction: column; align-items: center; font-size: 11px; font-weight: 600; color: var(--ink-soft); gap: 4px;
-  }
-  .b-nav-item.active { color: var(--terracotta); }
-  @media(max-width:900px){
-    .bottom-nav { display: flex; }
-    body { padding-bottom: 70px; } /* Prevent footer hide */
-  }
+  .nav-item { display: flex; flex-direction: column; align-items: center; gap: 4px; color: var(--text-muted); font-size: 11px; font-weight: 500; }
+  .nav-item.active { color: var(--fk-blue); }
+  @media(max-width: 768px) { .bottom-nav { display: flex; } }
 
-  /* ---------------- HERO ---------------- */
-  .hero{padding:50px 0 90px;}
-  .hero-grid{display:grid;grid-template-columns:1fr 1.1fr;gap:40px;align-items:center;}
-  .hero-eyebrow{margin-bottom:16px;}
-  .hero h1{font-size:clamp(32px,4vw,52px);line-height:1.1;margin-bottom:20px;}
-  .hero p{color:var(--ink-soft);font-size:16px;line-height:1.6;max-width:400px;margin-bottom:30px;}
-  .hero-ctas{display:flex;align-items:center;gap:20px;}
-  .btn-primary{
-    background:var(--terracotta);color:#fff;padding:14px 26px;border-radius:100px;
-    font-size:14px;font-weight:600;display:inline-flex;align-items:center;gap:8px;
-    transition:transform .3s ease, box-shadow .3s ease;
-  }
-  .btn-primary:hover{transform:translateY(-2px);box-shadow:0 10px 20px rgba(211,84,0,0.3);}
-  .hero-stage{
-    position:relative;border-radius:var(--radius);overflow:hidden; height:480px; box-shadow:var(--shadow);
-  }
-  .hero-stage img{ width:100%;height:100%;object-fit:cover; }
-  .hero-float-card{
-    position:absolute;bottom:20px;left:20px;background:rgba(255,255,255,0.95);
-    backdrop-filter:blur(8px); border-radius:12px;padding:12px 16px;display:flex;align-items:center;gap:12px;
-    box-shadow:0 10px 20px rgba(0,0,0,0.15);
-  }
-  .hero-float-card .dot{width:32px;height:32px;border-radius:50%;background:var(--olive);flex-shrink:0;}
-  .hero-float-card b{display:block;font-size:13px;}
-  .hero-float-card span{font-size:11px;color:var(--ink-soft);}
-  @media(max-width:900px){
-    .hero-grid{grid-template-columns:1fr;}
-    .hero-stage{height:300px;}
-  }
-
-  /* ---------------- PRODUCTS ---------------- */
-  .section{padding:70px 0;}
-  .section-head{
-    display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:40px;
-  }
-  .section-head h2{font-size:clamp(26px,3vw,36px);}
-  .product-grid{
-    display:grid;grid-template-columns:repeat(auto-fill, minmax(250px, 1fr));gap:24px;
-  }
-  .card{
-    background:var(--white);border-radius:14px;padding:12px; transition:transform 0.3s;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.03);
-  }
-  .card:hover { transform: translateY(-5px); }
-  .card-img{
-    border-radius:10px;overflow:hidden;height:220px;background:#f0f0f0;
-  }
-  .card-img img{width:100%;height:100%;object-fit:cover;}
-  .card-row{display:flex;justify-content:space-between;align-items:center;padding:12px 4px 4px;}
-  .card-row b{font-size:15px;font-weight:600;}
-  .card-row span{font-size:13px;color:var(--ink-soft);display:block;margin-top:2px;}
-  .view-btn{
-    width:36px;height:36px;border-radius:50%;background:var(--cream-2);color:var(--ink);
-    display:flex;align-items:center;justify-content:center;
-    transition:background .3s, color .3s;
-  }
-  .card:hover .view-btn { background:var(--terracotta); color:#fff; }
-  .view-btn svg{width:16px;height:16px;}
-  
-  /* ---------------- FOOTER ---------------- */
-  .footer{background:var(--footer);color:#fff;padding:60px 0 30px;}
-  .foot-brand p{color:var(--footer-soft);font-size:14px;margin-top:10px;}
-  .foot-bottom{
-    border-top:1px solid rgba(255,255,255,0.1);padding-top:20px; margin-top:40px;
-    display:flex;justify-content:space-between;color:var(--footer-soft);font-size:13px;
-  }
 </style>
 </head>
 <body>
 
 <header>
-  <nav>
-    <a href="#" class="logo"><span class="logo-mark">R</span>R.K sales</a>
+  <div class="header-container">
+    <a href="index.ejs" class="logo">R.K <span>Sales</span></a>
     
-    <div class="search-bar">
-      <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="var(--ink-soft)" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.3-4.3"/></svg>
-      <input type="text" placeholder="Search products, hardware...">
-    </div>
-
-    <ul class="nav-links">
-      <li><a href="#home">Home</a></li>
-      <li><a href="#products">Products</a></li>
-      <li><a href="#categories">Categories</a></li>
-      <li><a href="#contact">Contact</a></li>
-    </ul>
-    
-    <div class="nav-icons">
-      <button class="burger">
-        <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="#1A1A1A" stroke-width="2" stroke-linecap="round"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+    <div class="search-box">
+      <input type="text" placeholder="Search for door handles, locks, hinges...">
+      <button>
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.3-4.3"/></svg>
       </button>
     </div>
-  </nav>
+
+    <div class="header-links">
+      <a href="index.ejs">Home</a>
+      <a href="product.ejs">All Products</a>
+    </div>
+  </div>
 </header>
 
-<!-- HERO -->
-<section class="hero" id="home">
-  <div class="wrap hero-grid">
-    <div class="hero-copy">
-      <p class="eyebrow hero-eyebrow">Premium Hardware</p>
-      <h1>Built for Strength,<br> <em>Designed</em> for Style</h1>
-      <p>Explore our wide range of premium hardware, architectural fittings, and accessories designed to last a lifetime.</p>
-      <div class="hero-ctas">
-        <!-- Changed to point to product.ejs concept -->
-        <a href="product.ejs" class="btn-primary">View All Products
-          <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-        </a>
+<!-- CATEGORY STRIP -->
+<div class="category-strip">
+  <div class="cat-item">
+    <img src="https://images.unsplash.com/photo-1542010589005-d1eabd394997?w=150&q=80" class="cat-img" alt="Handles">
+    <span>Handles</span>
+  </div>
+  <div class="cat-item">
+    <img src="https://images.unsplash.com/photo-1621905251189-08b45d6a269e?w=150&q=80" class="cat-img" alt="Smart Locks">
+    <span>Locks</span>
+  </div>
+  <div class="cat-item">
+    <img src="https://images.unsplash.com/photo-1589939705384-5185137a7f0f?w=150&q=80" class="cat-img" alt="Hinges">
+    <span>Hinges</span>
+  </div>
+  <div class="cat-item">
+    <img src="https://images.unsplash.com/photo-1558025232-0c9f133bc420?w=150&q=80" class="cat-img" alt="Knobs">
+    <span>Knobs</span>
+  </div>
+  <div class="cat-item">
+    <img src="https://images.unsplash.com/photo-1581428982868-e410dd047a90?w=150&q=80" class="cat-img" alt="Accessories">
+    <span>Accessories</span>
+  </div>
+</div>
+
+<!-- SLIDER BANNER -->
+<div class="slider-container">
+  <div class="slides" id="slider">
+    <!-- Slide 1 -->
+    <div class="slide active">
+      <img src="https://images.unsplash.com/photo-1558227691-41ea78d1f631?w=1200&q=80" alt="Premium Handles">
+      <div class="slide-content">
+        <h2>Premium Brass Handles</h2>
+        <p>Give your doors a royal touch.</p>
+        <a href="product.ejs" class="btn">View Range</a>
       </div>
     </div>
-    <div class="hero-stage intro-scale" style="animation-delay:.15s;">
-      <img src="https://images.unsplash.com/photo-1586864387789-628af9face72?w=800&q=80" alt="Premium Door Hardware">
-      <div class="hero-float-card">
-        <div class="dot"></div>
-        <div>
-          <b>Quality Assured</b>
-          <span>Top-grade materials</span>
-        </div>
+    <!-- Slide 2 -->
+    <div class="slide">
+      <img src="https://images.unsplash.com/photo-1616460341757-19b0d625d6b4?w=1200&q=80" alt="Smart Locks">
+      <div class="slide-content">
+        <h2 style="color:#212121;">Smart Digital Locks</h2>
+        <p style="color:#212121;">Advanced security for modern homes.</p>
+        <a href="product.ejs" class="btn">Explore Now</a>
+      </div>
+    </div>
+    <!-- Slide 3 -->
+    <div class="slide">
+      <img src="https://images.unsplash.com/photo-1586864387789-628af9face72?w=1200&q=80" alt="Heavy Duty Hinges">
+      <div class="slide-content">
+        <h2>Heavy Duty Hinges</h2>
+        <p>Rust-free, durable steel fittings.</p>
+        <a href="product.ejs" class="btn">Check Details</a>
       </div>
     </div>
   </div>
-</section>
-
-<!-- PRODUCTS VIEW (Portfolio style, no cart) -->
-<section class="section" id="products">
-  <div class="wrap">
-    <div class="section-head reveal">
-      <h2>Featured Products</h2>
-      <a href="product.ejs" style="color:var(--terracotta); font-weight:600; font-size:14px;">See All Products &rarr;</a>
-    </div>
-
-    <div class="product-grid" id="infinite-grid">
-      <!-- Dummy Product 1 -->
-      <a href="shop.ejs" class="card reveal">
-        <div class="card-img"><img src="https://images.unsplash.com/photo-1542010589005-d1eabd394997?w=500&q=80" alt="Brass Handle"></div>
-        <div class="card-row">
-          <div><b>Vintage Brass Handle</b><span>Architectural Series</span></div>
-          <div class="view-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></div>
-        </div>
-      </a>
-      <!-- Dummy Product 2 -->
-      <a href="shop.ejs" class="card reveal">
-        <div class="card-img"><img src="https://images.unsplash.com/photo-1589939705384-5185137a7f0f?w=500&q=80" alt="Steel Hinges"></div>
-        <div class="card-row">
-          <div><b>Heavy Duty Hinges</b><span>Steel Collection</span></div>
-          <div class="view-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></div>
-        </div>
-      </a>
-      <!-- Dummy Product 3 -->
-      <a href="shop.ejs" class="card reveal">
-        <div class="card-img"><img src="https://images.unsplash.com/photo-1621905251189-08b45d6a269e?w=500&q=80" alt="Smart Lock"></div>
-        <div class="card-row">
-          <div><b>Smart Door Lock</b><span>Digital Security</span></div>
-          <div class="view-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></div>
-        </div>
-      </a>
-      <!-- Dummy Product 4 -->
-      <a href="shop.ejs" class="card reveal">
-        <div class="card-img"><img src="https://images.unsplash.com/photo-1504148455328-c376907d081c?w=500&q=80" alt="Tool Set"></div>
-        <div class="card-row">
-          <div><b>Premium Wrench Set</b><span>Hand Tools</span></div>
-          <div class="view-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></div>
-        </div>
-      </a>
-    </div>
+  
+  <div class="slider-nav">
+    <div class="dot active" onclick="goToSlide(0)"></div>
+    <div class="dot" onclick="goToSlide(1)"></div>
+    <div class="dot" onclick="goToSlide(2)"></div>
   </div>
-</section>
+</div>
 
-<footer class="footer" id="contact">
-  <div class="wrap">
-    <div class="foot-brand">
-      <h2 style="color:#fff;">R.K sales</h2>
-      <p>Premium hardware and accessories portfolio.</p>
-    </div>
-    <div class="foot-bottom">
-      <span>&copy; <%= new Date().getFullYear() %> R.K sales. All rights reserved.</span>
-      <span>Built by Webglut.in</span>
-    </div>
+<!-- PRODUCT SECTION (Infinite Scroll) -->
+<div class="product-section">
+  <div class="section-title">Best of Door Hardware</div>
+  <div class="grid" id="productGrid">
+    <!-- Initial Load Products -->
+    <!-- Card 1 -->
+    <a href="shop.ejs" class="product-card">
+      <img src="https://images.unsplash.com/photo-1542010589005-d1eabd394997?w=300&q=80" class="product-image" alt="Handle">
+      <div class="product-title">Antique Brass Door Handle Main Door Fitting</div>
+      <div class="product-sub">Premium Finish</div>
+      <button class="view-btn">View Details</button>
+    </a>
+    <!-- Card 2 -->
+    <a href="shop.ejs" class="product-card">
+      <img src="https://images.unsplash.com/photo-1621905251189-08b45d6a269e?w=300&q=80" class="product-image" alt="Lock">
+      <div class="product-title">Digital Smart Door Lock with Fingerprint</div>
+      <div class="product-sub">High Security</div>
+      <button class="view-btn">View Details</button>
+    </a>
+    <!-- Card 3 -->
+    <a href="shop.ejs" class="product-card">
+      <img src="https://images.unsplash.com/photo-1589939705384-5185137a7f0f?w=300&q=80" class="product-image" alt="Hinge">
+      <div class="product-title">Stainless Steel 4-inch Bearing Hinges (Pack of 4)</div>
+      <div class="product-sub">Rust Proof</div>
+      <button class="view-btn">View Details</button>
+    </a>
+    <!-- Card 4 -->
+    <a href="shop.ejs" class="product-card">
+      <img src="https://images.unsplash.com/photo-1558025232-0c9f133bc420?w=300&q=80" class="product-image" alt="Knob">
+      <div class="product-title">Round Crystal Glass Door Knob for Bedroom</div>
+      <div class="product-sub">Elegant Look</div>
+      <button class="view-btn">View Details</button>
+    </a>
   </div>
-</footer>
 
-<!-- STICKY BOTTOM NAV (MOBILE ONLY) -->
+  <!-- Loader for Infinite Scroll -->
+  <div class="loader-container" id="loader">
+    <div class="loader"></div>
+  </div>
+</div>
+
+<!-- BOTTOM NAV (MOBILE) -->
 <div class="bottom-nav">
-  <a href="#home" class="b-nav-item active">
-    <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
+  <a href="index.ejs" class="nav-item active">
+    <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
     <span>Home</span>
   </a>
-  <a href="product.ejs" class="b-nav-item">
-    <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
-    <span>Category</span>
+  <a href="product.ejs" class="nav-item">
+    <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+    <span>Categories</span>
   </a>
-  <a href="#" class="b-nav-item">
-    <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.3-4.3"/></svg>
-    <span>Search</span>
+  <a href="#" class="nav-item">
+    <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+    <span>Updates</span>
+  </a>
+  <a href="#" class="nav-item">
+    <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+    <span>Profile</span>
   </a>
 </div>
 
 <script>
-  // Mobile Menu Toggle
-  const burger = document.querySelector('.burger');
-  const navLinks = document.querySelector('.nav-links');
-  burger.addEventListener('click', () => {
-    navLinks.classList.toggle('active');
-  });
+  // --- SLIDER LOGIC ---
+  const slider = document.getElementById('slider');
+  const slides = document.querySelectorAll('.slide');
+  const dots = document.querySelectorAll('.dot');
+  let currentIndex = 0;
+  const totalSlides = slides.length;
 
-  // Scroll reveal animation
-  const revealEls = document.querySelectorAll('.reveal');
-  const io = new IntersectionObserver((entries)=>{
-    entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
-  }, { threshold: 0.15 });
-  revealEls.forEach(el=>io.observe(el));
+  function goToSlide(index) {
+    currentIndex = index;
+    slider.style.transform = `translateX(-${currentIndex * 100}%)`;
+    
+    slides.forEach(s => s.classList.remove('active'));
+    dots.forEach(d => d.classList.remove('active'));
+    
+    slides[currentIndex].classList.add('active');
+    dots[currentIndex].classList.add('active');
+  }
+
+  setInterval(() => {
+    let nextIndex = (currentIndex + 1) % totalSlides;
+    goToSlide(nextIndex);
+  }, 4000); // Slides every 4 seconds
+
+
+  // --- INFINITE SCROLL LOGIC ---
+  const productGrid = document.getElementById('productGrid');
+  const loader = document.getElementById('loader');
+
+  // Dummy hardware data for infinite scroll
+  const dummyProducts = [
+    { title: "Matt Black Mortise Handle Lock Set", sub: "Top Rated", img: "https://images.unsplash.com/photo-1542010589005-d1eabd394997?w=300&q=80&1" },
+    { title: "Aluminium Door Closer Heavy Duty", sub: "Commercial Grade", img: "https://images.unsplash.com/photo-1621905251189-08b45d6a269e?w=300&q=80&2" },
+    { title: "Brass Aldrop for Double Doors", sub: "Classic Series", img: "https://images.unsplash.com/photo-1589939705384-5185137a7f0f?w=300&q=80&3" },
+    { title: "Magnetic Door Stopper Steel Finish", sub: "Best Seller", img: "https://images.unsplash.com/photo-1558025232-0c9f133bc420?w=300&q=80&4" }
+  ];
+
+  function createProductCard(product) {
+    return `
+      <a href="shop.ejs" class="product-card">
+        <img src="${product.img}" class="product-image" alt="Hardware">
+        <div class="product-title">${product.title}</div>
+        <div class="product-sub">${product.sub}</div>
+        <button class="view-btn">View Details</button>
+      </a>
+    `;
+  }
+
+  function loadMoreProducts() {
+    loader.style.display = 'block';
+    // Simulate network delay
+    setTimeout(() => {
+      let newCardsHTML = '';
+      for(let i=0; i<4; i++) {
+        // Just looping the dummy data for demonstration
+        newCardsHTML += createProductCard(dummyProducts[i % dummyProducts.length]);
+      }
+      productGrid.insertAdjacentHTML('beforeend', newCardsHTML);
+      loader.style.display = 'none';
+    }, 1000);
+  }
+
+  // Intersection Observer for Infinite Scroll
+  const observer = new IntersectionObserver((entries) => {
+    if (entries[0].isIntersecting) {
+      loadMoreProducts();
+    }
+  }, { rootMargin: '100px' }); // Trigger 100px before reaching the bottom
+
+  observer.observe(loader);
 </script>
 
 </body>
